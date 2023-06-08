@@ -1,0 +1,77 @@
+:root {
+  font-family: system-ui;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+$segment-height: 90px;
+$segment-width: 30px;
+
+$color-on: yellow;
+$color-off: #4a3939;
+
+.segment-container {
+  display: inline-grid;
+  margin: 10px;
+
+  &.segment-container-7 {
+    grid-template-columns: $segment-width $segment-height $segment-width;
+    grid-template-rows: $segment-width $segment-height $segment-width $segment-height $segment-width;
+    grid-template-areas:
+      "  .   seg-a   .  "
+      "seg-d   .   seg-b"
+      "  .   seg-g   .  "
+      "seg-e   .   seg-c"
+      "  .   seg-f   .  "
+    ;
+  }
+}
+
+.segment {
+  background-color: $color-off;
+  color: $color-off;
+  text-align: center;
+
+  &.segment-a {
+    grid-area: seg-a;
+  }
+
+  &.segment-b {
+    grid-area: seg-b;
+  }
+
+  &.segment-c {
+    grid-area: seg-c;
+  }
+
+  &.segment-d {
+    grid-area: seg-d;
+  }
+
+  &.segment-e {
+    grid-area: seg-e;
+  }
+
+  &.segment-f {
+    grid-area: seg-f;
+  }
+
+  &.segment-g {
+    grid-area: seg-g;
+  }
+}
+
+.on {
+  background-color: $color-on;
+  color: $color-on;
+}
