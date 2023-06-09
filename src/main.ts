@@ -14,17 +14,9 @@ appRoot.innerHTML = `
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const container = document.getElementById('display')!;
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const svgContainer = document.getElementById('svg-display')!;
 
 const DIGITS = [
-  new SevenSegmentDigit(container),
-  new SevenSegmentDigit(container),
-  new SevenSegmentDigit(container),
-  new SevenSegmentDigit(container),
-];
-const FANCY_DIGITS = [
   new FancySevenSegmentDisplay(svgContainer),
   new FancySevenSegmentDisplay(svgContainer),
   new FancySevenSegmentDisplay(svgContainer),
@@ -54,8 +46,5 @@ setInterval(() => {
   )}`.toUpperCase();
   for (let idx = 0; idx < DIGITS.length; idx++) {
     DIGITS[idx].setDigit(renderValue[renderValue.length - DIGITS.length + idx]);
-    FANCY_DIGITS[idx].setDigit(
-      renderValue[renderValue.length - DIGITS.length + idx]
-    );
   }
 }, INT);
