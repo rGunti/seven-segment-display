@@ -74,9 +74,14 @@ $color-off: #4a3939;
 .svg-display {
   height: 250px;
 
-  & > svg {
+  &>svg {
     height: 100%;
   }
+
+}
+
+.seg-group {
+  transform: skew(-5deg) translateX(6px);
 }
 
 .on {

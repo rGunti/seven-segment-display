@@ -1,4 +1,4 @@
-import { FancySevenSegmentDisplay, SevenSegmentDigit } from './seven-segment-component'
+import { FancySevenSegmentDisplay, SevenSegmentDigit } from './segment-display'
 import './style.scss'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
