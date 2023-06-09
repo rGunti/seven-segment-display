@@ -29,10 +29,10 @@ $color-off: #4a3939;
     grid-template-rows: $segment-width $segment-height $segment-width $segment-height $segment-width;
     grid-template-areas:
       "  .   seg-a   .  "
-      "seg-d   .   seg-b"
+      "seg-f   .   seg-b"
       "  .   seg-g   .  "
       "seg-e   .   seg-c"
-      "  .   seg-f   .  "
+      "  .   seg-d   .  "
     ;
   }
 }
@@ -71,7 +71,19 @@ $color-off: #4a3939;
   }
 }
 
+.svg-display {
+  height: 250px;
+
+  & > svg {
+    height: 100%;
+  }
+}
+
 .on {
   background-color: $color-on;
   color: $color-on;
+}
+
+.svg-on {
+  fill: $color-on;
 }
