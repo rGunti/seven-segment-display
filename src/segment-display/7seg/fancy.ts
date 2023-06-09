@@ -2,7 +2,7 @@ import { FluentSegmentDisplay, SegmentDisplay } from '..';
 import { DIGIT_SEGMENTS, SegmentId } from './internal';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const SVG_TEMPLATE: Record<SegmentId, { [key: string]: any }> = {
+const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown }> = {
   a: { href: '#h-seg', x: 0, y: 0 },
   b: { href: '#v-seg', x: -48, y: 0, transform: 'scale(-1,1)' },
   c: { href: '#v-seg', x: -48, y: -80, transform: 'scale(-1,-1)' },
@@ -57,6 +57,7 @@ export class FancySevenSegmentDisplay
     Object.keys(SVG_TEMPLATE)
       .map((elementId) =>
         FancySevenSegmentDisplay.createSvgElement('use', {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ...(SVG_TEMPLATE as unknown as any)[elementId],
           'data-segment-id': elementId,
         })
@@ -83,13 +84,13 @@ export class FancySevenSegmentDisplay
 
   private static createSvgElement(
     elType: string,
-    attributes?: { [attributeName: string]: any },
+    attributes?: { [attributeName: string]: unknown },
     children?: SVGElement[]
   ): SVGElement {
     const el = document.createElementNS(SVG_NS, elType);
     if (attributes) {
       Object.keys(attributes).forEach((attribute) => {
-        const attrVal = (attributes as any)[attribute];
+        const attrVal = attributes[attribute];
         if (attrVal !== null && attrVal !== undefined) {
           el.setAttribute(attribute, `${attrVal}`);
         }
@@ -103,12 +104,19 @@ export class FancySevenSegmentDisplay
 
   private generateRecord(): Record<SegmentId, SVGElement> {
     return {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       a: this.svgRoot.querySelector(`[data-segment-id=a]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       b: this.svgRoot.querySelector(`[data-segment-id=b]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       c: this.svgRoot.querySelector(`[data-segment-id=c]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       d: this.svgRoot.querySelector(`[data-segment-id=d]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       e: this.svgRoot.querySelector(`[data-segment-id=e]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       f: this.svgRoot.querySelector(`[data-segment-id=f]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
     };
   }

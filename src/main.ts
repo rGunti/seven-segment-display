@@ -1,7 +1,11 @@
 import { FancySevenSegmentDisplay, SevenSegmentDigit } from './segment-display';
 import './style.scss';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+const appRoot = document.querySelector<HTMLDivElement>('#app');
+if (!appRoot) {
+  throw new Error('App Root not found!');
+}
+appRoot.innerHTML = `
   <div id="display">
   </div>
 
@@ -9,7 +13,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </div>
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('display')!;
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const svgContainer = document.getElementById('svg-display')!;
 
 const DIGITS = [
