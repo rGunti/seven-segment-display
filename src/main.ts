@@ -1,4 +1,4 @@
-import { FancySevenSegmentDisplay, SevenSegmentDigit } from './segment-display';
+import { FancySevenSegmentDisplay } from './segment-display';
 import './style.scss';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
@@ -21,12 +21,17 @@ const DIGITS = [
   new FancySevenSegmentDisplay(svgContainer),
   new FancySevenSegmentDisplay(svgContainer),
   new FancySevenSegmentDisplay(svgContainer),
+  new FancySevenSegmentDisplay(svgContainer),
+  new FancySevenSegmentDisplay(svgContainer),
+  new FancySevenSegmentDisplay(svgContainer),
+  new FancySevenSegmentDisplay(svgContainer),
 ];
 
 let i = 0;
-const INC = 1;
+const RDX = 10;
+const INC = 0.01;
 const INT = 10;
-const MAX = Math.pow(16, DIGITS.length);
+const MAX = Math.pow(RDX, DIGITS.length);
 function tick() {
   i = (i + INC) % MAX;
 }
@@ -39,12 +44,14 @@ function repeatStr(str: string, num: number): string {
   return s;
 }
 
+/**/
 setInterval(() => {
   tick();
-  const renderValue = `${repeatStr('0', DIGITS.length)}${i.toString(
-    16
+  const renderValue = `${repeatStr('0', DIGITS.length)}${i.toFixed(
+    2
   )}`.toUpperCase();
   for (let idx = 0; idx < DIGITS.length; idx++) {
     DIGITS[idx].setDigit(renderValue[renderValue.length - DIGITS.length + idx]);
   }
 }, INT);
+/**/

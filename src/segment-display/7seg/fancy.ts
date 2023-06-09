@@ -2,7 +2,7 @@ import { FluentSegmentDisplay, SegmentDisplay } from '..';
 import { DIGIT_SEGMENTS, SegmentId } from './internal';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown }> = {
+const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown } | null> = {
   a: { href: '#h-seg', x: 0, y: 0 },
   b: { href: '#v-seg', x: -48, y: 0, transform: 'scale(-1,1)' },
   c: { href: '#v-seg', x: -48, y: -80, transform: 'scale(-1,-1)' },
@@ -10,6 +10,7 @@ const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown }> = {
   e: { href: '#v-seg', x: 0, y: -80, transform: 'scale(1,-1)' },
   f: { href: '#v-seg', x: 0, y: 0 },
   g: { href: '#h-seg', x: 0, y: 35 },
+  h: null,
 };
 
 export class FancySevenSegmentDisplay
@@ -55,11 +56,16 @@ export class FancySevenSegmentDisplay
     });
     // Create Segments
     Object.keys(SVG_TEMPLATE)
-      .map((elementId) =>
+      .map((elementId) => ({
+        elementId,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        element: (SVG_TEMPLATE as unknown as any)[elementId],
+      }))
+      .filter((e) => !!e.element)
+      .map((e) =>
         FancySevenSegmentDisplay.createSvgElement('use', {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ...(SVG_TEMPLATE as unknown as any)[elementId],
-          'data-segment-id': elementId,
+          ...e.element,
+          'data-segment-id': e.elementId,
         })
       )
       .forEach((el) => {
@@ -75,7 +81,7 @@ export class FancySevenSegmentDisplay
         cx: 52,
         cy: 75,
         r: 5,
-        'data-segment-id': 'dec',
+        'data-segment-id': 'h',
       })
     );
 
@@ -118,6 +124,8 @@ export class FancySevenSegmentDisplay
       f: this.svgRoot.querySelector(`[data-segment-id=f]`)!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      h: this.svgRoot.querySelector(`[data-segment-id=h]`)!,
     };
   }
 
