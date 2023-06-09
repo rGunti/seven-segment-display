@@ -1,5 +1,5 @@
-import { FancySevenSegmentDisplay, SevenSegmentDigit } from './segment-display'
-import './style.scss'
+import { FancySevenSegmentDisplay, SevenSegmentDigit } from './segment-display';
+import './style.scss';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div id="display">
@@ -7,7 +7,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
   <div id="svg-display" style="height: 250px">
   </div>
-`
+`;
 
 const container = document.getElementById('display')!;
 const svgContainer = document.getElementById('svg-display')!;
@@ -43,9 +43,13 @@ function repeatStr(str: string, num: number): string {
 
 setInterval(() => {
   tick();
-  const renderValue = `${repeatStr('0', DIGITS.length)}${i.toString(16)}`.toUpperCase();
+  const renderValue = `${repeatStr('0', DIGITS.length)}${i.toString(
+    16
+  )}`.toUpperCase();
   for (let idx = 0; idx < DIGITS.length; idx++) {
     DIGITS[idx].setDigit(renderValue[renderValue.length - DIGITS.length + idx]);
-    FANCY_DIGITS[idx].setDigit(renderValue[renderValue.length - DIGITS.length + idx]);
+    FANCY_DIGITS[idx].setDigit(
+      renderValue[renderValue.length - DIGITS.length + idx]
+    );
   }
 }, INT);
