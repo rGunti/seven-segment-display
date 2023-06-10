@@ -1,8 +1,8 @@
 import { SegmentDisplay } from '..';
-import { DIGIT_SEGMENTS, SegmentId } from './internal';
+import { DIGIT_SEGMENTS, SegmentId } from '../internal';
 
 export class SevenSegmentDigit implements SegmentDisplay {
-  private readonly segments: Record<SegmentId, HTMLElement | null>;
+  private readonly segments: Record<string, HTMLElement | null>;
   private readonly parent: HTMLElement;
 
   constructor(target: HTMLElement) {
@@ -14,7 +14,6 @@ export class SevenSegmentDigit implements SegmentDisplay {
       e: SevenSegmentDigit.generateSegment('e'),
       f: SevenSegmentDigit.generateSegment('f'),
       g: SevenSegmentDigit.generateSegment('g'),
-      h: null,
     };
     this.parent = SevenSegmentDigit.generateParent();
 
@@ -43,16 +42,24 @@ export class SevenSegmentDigit implements SegmentDisplay {
     });
   }
 
-  private setSegment(segment: SegmentId, state: boolean): void {
-    const el = this.segments[segment];
+  setSegment(pin: string, on: boolean): void {
+    const el = this.segments[pin];
     if (!el) {
       return;
     }
-    if (state) {
+    if (on) {
       el.classList.add('on');
     } else {
       el.classList.remove('on');
     }
+  }
+
+  setSegments(pins: string[], skipClear?: boolean | undefined): void {
+    if (!skipClear) {
+      this.clear();
+    }
+
+    pins.forEach((pin) => this.setSegment(pin, true));
   }
 
   setDigit(digit: string, skipClearingSegments?: boolean): void {

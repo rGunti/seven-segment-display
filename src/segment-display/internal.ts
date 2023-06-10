@@ -29,6 +29,9 @@ export const DIGIT_SEGMENTS: { [character: string]: SegmentId[] } = {
   e: ['e'],
   f: ['f'],
   g: ['g'],
+  h: ['h'],
 };
+
+export const INTEGRATED_CHARS = ['.'];
 
 export declare type SegmentId = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h';

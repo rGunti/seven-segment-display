@@ -1,4 +1,7 @@
-import { FancySevenSegmentDisplay } from './segment-display';
+import {
+  FancySevenSegmentDisplay,
+  SegmentDisplayController,
+} from './segment-display';
 import './style.scss';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
@@ -26,6 +29,7 @@ const DIGITS = [
   new FancySevenSegmentDisplay(svgContainer),
   new FancySevenSegmentDisplay(svgContainer),
 ];
+const CONTROLLER = new SegmentDisplayController(DIGITS);
 
 let i = 0;
 const RDX = 10;
@@ -47,11 +51,7 @@ function repeatStr(str: string, num: number): string {
 /**/
 setInterval(() => {
   tick();
-  const renderValue = `${repeatStr('0', DIGITS.length)}${i.toFixed(
-    2
-  )}`.toUpperCase();
-  for (let idx = 0; idx < DIGITS.length; idx++) {
-    DIGITS[idx].setDigit(renderValue[renderValue.length - DIGITS.length + idx]);
-  }
+  const renderValue = `${i.toFixed(2)}`.toUpperCase();
+  CONTROLLER.show(renderValue);
 }, INT);
 /**/

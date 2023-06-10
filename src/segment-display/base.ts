@@ -1,8 +1,9 @@
 export interface SegmentDisplay {
   clear(): void;
-  setDigit(digit: string, skipClearingSegments?: boolean): void;
+  setSegment(pin: string, on: boolean): void;
+  setSegments(pins: string[], skipClear?: boolean): void;
 }
 
 export interface FluentSegmentDisplay<T extends FluentSegmentDisplay<T>> {
-  withDigit(digit: string, skipClearingSegments?: boolean): T;
+  withSegment(pin: string, on: boolean): T;
 }

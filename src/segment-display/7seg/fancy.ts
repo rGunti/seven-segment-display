@@ -1,8 +1,8 @@
 import { FluentSegmentDisplay, SegmentDisplay } from '..';
-import { DIGIT_SEGMENTS, SegmentId } from './internal';
+import { DIGIT_SEGMENTS, SegmentId } from '../internal';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown } | null> = {
+const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   a: { href: '#h-seg', x: 0, y: 0 },
   b: { href: '#v-seg', x: -48, y: 0, transform: 'scale(-1,1)' },
   c: { href: '#v-seg', x: -48, y: -80, transform: 'scale(-1,-1)' },
@@ -10,14 +10,13 @@ const SVG_TEMPLATE: Record<SegmentId, { [key: string]: unknown } | null> = {
   e: { href: '#v-seg', x: 0, y: -80, transform: 'scale(1,-1)' },
   f: { href: '#v-seg', x: 0, y: 0 },
   g: { href: '#h-seg', x: 0, y: 35 },
-  h: null,
 };
 
 export class FancySevenSegmentDisplay
   implements SegmentDisplay, FluentSegmentDisplay<FancySevenSegmentDisplay>
 {
   private readonly svgRoot: SVGElement;
-  private readonly segments: Record<SegmentId, SVGElement>;
+  private readonly segments: Record<string, SVGElement>;
 
   constructor(host: HTMLElement) {
     this.svgRoot = this.constructSvg();
@@ -129,19 +128,27 @@ export class FancySevenSegmentDisplay
     };
   }
 
-  private setSegment(segment: SegmentId, state: boolean): void {
-    const el = this.segments[segment];
-    if (state) {
+  clear(): void {
+    Object.keys(this.segments).forEach((seg) => {
+      this.setSegment(seg as SegmentId, false);
+    });
+  }
+
+  setSegment(pin: string, on: boolean): void {
+    const el = this.segments[pin];
+    if (on) {
       el.classList.add('svg-on');
     } else {
       el.classList.remove('svg-on');
     }
   }
 
-  clear(): void {
-    Object.keys(this.segments).forEach((seg) => {
-      this.setSegment(seg as SegmentId, false);
-    });
+  setSegments(pins: string[], skipClear?: boolean | undefined): void {
+    if (!skipClear) {
+      this.clear();
+    }
+
+    pins.forEach((pin) => this.setSegment(pin, true));
   }
 
   setDigit(digit: string, skipClearingSegments?: boolean | undefined): void {
@@ -153,6 +160,11 @@ export class FancySevenSegmentDisplay
     segmentsToDisplay.forEach((segmentId) => {
       this.setSegment(segmentId, true);
     });
+  }
+
+  withSegment(pin: string, on: boolean): FancySevenSegmentDisplay {
+    this.setSegment(pin, on);
+    return this;
   }
 
   withDigit(
