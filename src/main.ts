@@ -10,7 +10,7 @@ if (!appRoot) {
   throw new Error('App Root not found!');
 }
 appRoot.innerHTML = `
-  <div id="svg-display" style="height: 250px">
+  <div id="svg-display" class="display-main">
   </div>
 `;
 

@@ -3,13 +3,31 @@ import { DIGIT_SEGMENTS, SegmentId } from '../internal';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
-  a: { href: '#h-seg', x: 0, y: 0 },
-  b: { href: '#v-seg', x: -48, y: 0, transform: 'scale(-1,1)' },
-  c: { href: '#v-seg', x: -48, y: -80, transform: 'scale(-1,-1)' },
-  d: { href: '#h-seg', x: 0, y: 70 },
-  e: { href: '#v-seg', x: 0, y: -80, transform: 'scale(1,-1)' },
-  f: { href: '#v-seg', x: 0, y: 0 },
-  g: { href: '#h-seg', x: 0, y: 35 },
+  a: { href: '#h-seg', class: 'svg-seg', x: 0, y: 0 },
+  b: {
+    href: '#v-seg',
+    class: 'svg-seg',
+    x: -48,
+    y: 0,
+    transform: 'scale(-1,1)',
+  },
+  c: {
+    href: '#v-seg',
+    class: 'svg-seg',
+    x: -48,
+    y: -80,
+    transform: 'scale(-1,-1)',
+  },
+  d: { href: '#h-seg', class: 'svg-seg', x: 0, y: 70 },
+  e: {
+    href: '#v-seg',
+    class: 'svg-seg',
+    x: 0,
+    y: -80,
+    transform: 'scale(1,-1)',
+  },
+  f: { href: '#v-seg', class: 'svg-seg', x: 0, y: 0 },
+  g: { href: '#h-seg', class: 'svg-seg', x: 0, y: 35 },
 };
 
 export class FancySevenSegmentDisplay
@@ -81,6 +99,7 @@ export class FancySevenSegmentDisplay
         cy: 75,
         r: 5,
         'data-segment-id': 'h',
+        class: 'svg-seg',
       })
     );
 
@@ -137,9 +156,9 @@ export class FancySevenSegmentDisplay
   setSegment(pin: string, on: boolean): void {
     const el = this.segments[pin];
     if (on) {
-      el.classList.add('svg-on');
+      el.classList.add('svg-seg-on');
     } else {
-      el.classList.remove('svg-on');
+      el.classList.remove('svg-seg-on');
     }
   }
 
