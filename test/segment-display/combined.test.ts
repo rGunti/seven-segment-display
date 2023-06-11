@@ -52,3 +52,11 @@ test('displays decimal point correctly', () => {
     ].map((i) => i.sort())
   );
 });
+
+test('clears decimal point correctly', () => {
+  const display = new FakeSegmentDisplay();
+  display.setSegment('h', true);
+  display.clear();
+
+  expect(display.activeSegments).toEqual([]);
+});

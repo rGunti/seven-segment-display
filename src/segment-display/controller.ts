@@ -1,5 +1,5 @@
 import { SegmentDisplay } from '.';
-import { DIGIT_SEGMENTS } from './internal';
+import { DIGIT_SEGMENTS, INTEGRATED_CHARS } from './internal';
 
 export class SegmentDisplayController {
   constructor(public readonly displays: SegmentDisplay[]) {}
@@ -11,22 +11,26 @@ export class SegmentDisplayController {
   show(str: string): void {
     this.clear();
 
-    for (let i = 0; i < this.displayCount; i++) {
+    let offset = 0; /* str
+      .split('')
+      .filter((c) => INTEGRATED_CHARS.indexOf(c) >= 0).length*/
+    for (let i = this.displayCount - 1; i >= 0; i--) {
       const display = this.displays[i];
-      const strIdx = str.length - this.displayCount + i;
+      const strIdx = str.length - this.displayCount + i - offset;
       if (strIdx < 0) {
         display.clear();
         continue;
       }
 
-      const char = str[strIdx];
-      //if (false && INTEGRATED_CHARS.indexOf(char) >= 0) {
-      //  offset -= 1;
-      //  strIdx -= 1;
-      //  char = str[strIdx];
-      //}
+      let chars = str[strIdx];
+      if (INTEGRATED_CHARS.indexOf(chars) >= 0 && strIdx > 0) {
+        offset += 1;
+        chars += str[strIdx - 1];
+      }
 
-      const segments = DIGIT_SEGMENTS[char] || [];
+      const segments = chars
+        .split('')
+        .flatMap((char) => DIGIT_SEGMENTS[char] || []);
       display.setSegments(segments);
     }
   }
