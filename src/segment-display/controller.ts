@@ -2,7 +2,7 @@ import { SegmentDisplay } from '.';
 import { DIGIT_SEGMENTS } from './internal';
 
 export class SegmentDisplayController {
-  constructor(private readonly displays: SegmentDisplay[]) {}
+  constructor(public readonly displays: SegmentDisplay[]) {}
 
   get displayCount(): number {
     return this.displays.length;
