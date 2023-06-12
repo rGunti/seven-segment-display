@@ -10,51 +10,52 @@ if (!appRoot) {
   throw new Error('App Root not found!');
 }
 appRoot.innerHTML = `
-  <div id="svg-display" class="display-main">
-  </div>
+  <div id="time-display" class="display"></div>
+  <div id="date-display" class="display"></div>
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const svgContainer = document.getElementById('svg-display')!;
+const timeContainer = document.getElementById('time-display')!;
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const dateContainer = document.getElementById('date-display')!;
 
 const DIGITS = [
-  new FancySevenSegmentDisplay(svgContainer),
-  new FancySevenSegmentDisplay(svgContainer),
-  new FancySevenSegmentDisplay(svgContainer),
-  new FancySevenSegmentDisplay(svgContainer),
-  new FancySevenSegmentDisplay(svgContainer),
-  new FancySevenSegmentDisplay(svgContainer),
+  new FancySevenSegmentDisplay(timeContainer),
+  new FancySevenSegmentDisplay(timeContainer),
+  new FancySevenSegmentDisplay(timeContainer),
+  new FancySevenSegmentDisplay(timeContainer),
+  new FancySevenSegmentDisplay(timeContainer),
+  new FancySevenSegmentDisplay(timeContainer),
 ];
 const CONTROLLER = new SegmentDisplayController(DIGITS);
 
-let i = 0;
-const RDX = 10;
-const INC = 0.01;
-const INT = 50;
-const MAX = Math.pow(RDX, DIGITS.length);
-function tick() {
-  i = (i + INC) % MAX;
-}
-
-function repeatStr(str: string, num: number): string {
-  let s = ``;
-  for (let i = 0; i < num; i++) {
-    s += str;
-  }
-  return s;
-}
+const DATE_CONTROLLER = new SegmentDisplayController([
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+  new FancySevenSegmentDisplay(dateContainer),
+]);
 
 function getCurrentTimeAsString(): string {
   const now = new Date();
   const format = now.getMilliseconds() > 500 ? 'HH.MM.ss' : 'HHMMss';
-  return dateFormat(new Date(), format);
+  return dateFormat(now, format);
+}
+
+function getCurrentDateAsString(): string {
+  return dateFormat(new Date(), 'yyyy-mm-dd');
 }
 
 /**/
 setInterval(() => {
-  //tick();
-  //const renderValue = `${i.toFixed(2)}`.toUpperCase();
   const renderValue = getCurrentTimeAsString();
   CONTROLLER.show(renderValue);
-}, INT);
+  DATE_CONTROLLER.show(getCurrentDateAsString());
+}, 50);
 /**/
