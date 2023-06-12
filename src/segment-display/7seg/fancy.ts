@@ -1,5 +1,5 @@
 import { FluentSegmentDisplay, SegmentDisplay } from '..';
-import { DIGIT_SEGMENTS, SegmentId } from '../internal';
+import { SegmentId } from '../internal';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
@@ -30,6 +30,26 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   g: { href: '#h-seg', class: 'svg-seg', x: 0, y: 35 },
 };
 
+function createSvgElement(
+  elType: string,
+  attributes?: { [attributeName: string]: unknown },
+  children?: SVGElement[]
+): SVGElement {
+  const el = document.createElementNS(SVG_NS, elType);
+  if (attributes) {
+    Object.keys(attributes).forEach((attribute) => {
+      const attrVal = attributes[attribute];
+      if (attrVal !== null && attrVal !== undefined) {
+        el.setAttribute(attribute, `${attrVal}`);
+      }
+    });
+  }
+  if (children) {
+    children.forEach((child) => el.appendChild(child));
+  }
+  return el;
+}
+
 export class FancySevenSegmentDisplay
   implements SegmentDisplay, FluentSegmentDisplay<FancySevenSegmentDisplay>
 {
@@ -46,7 +66,7 @@ export class FancySevenSegmentDisplay
 
   private constructSvg(): SVGElement {
     // Create root
-    const root = FancySevenSegmentDisplay.createSvgElement('svg', {
+    const root = createSvgElement('svg', {
       viewBox: '0 0 57 80',
       version: '1.1',
       xmlns: SVG_NS,
@@ -55,12 +75,12 @@ export class FancySevenSegmentDisplay
     });
 
     // Create definitions
-    const defs = FancySevenSegmentDisplay.createSvgElement('defs', undefined, [
-      FancySevenSegmentDisplay.createSvgElement('polyline', {
+    const defs = createSvgElement('defs', undefined, [
+      createSvgElement('polyline', {
         id: 'h-seg',
         points: '11 0, 37 0, 42 5, 37 10, 11 10, 6 5',
       }),
-      FancySevenSegmentDisplay.createSvgElement('polyline', {
+      createSvgElement('polyline', {
         id: 'v-seg',
         points: '0 11, 5 6, 10 11, 10 34, 5 39, 0 39',
       }),
@@ -68,7 +88,7 @@ export class FancySevenSegmentDisplay
     root.appendChild(defs);
 
     // Create Display
-    const g = FancySevenSegmentDisplay.createSvgElement('g', {
+    const g = createSvgElement('g', {
       class: 'seg-group',
     });
     // Create Segments
@@ -80,7 +100,7 @@ export class FancySevenSegmentDisplay
       }))
       .filter((e) => !!e.element)
       .map((e) =>
-        FancySevenSegmentDisplay.createSvgElement('use', {
+        createSvgElement('use', {
           ...e.element,
           'data-segment-id': e.elementId,
         })
@@ -94,7 +114,7 @@ export class FancySevenSegmentDisplay
 
     // Create Decimal Point
     root.appendChild(
-      FancySevenSegmentDisplay.createSvgElement('circle', {
+      createSvgElement('circle', {
         cx: 52,
         cy: 75,
         r: 5,
@@ -104,26 +124,6 @@ export class FancySevenSegmentDisplay
     );
 
     return root;
-  }
-
-  private static createSvgElement(
-    elType: string,
-    attributes?: { [attributeName: string]: unknown },
-    children?: SVGElement[]
-  ): SVGElement {
-    const el = document.createElementNS(SVG_NS, elType);
-    if (attributes) {
-      Object.keys(attributes).forEach((attribute) => {
-        const attrVal = attributes[attribute];
-        if (attrVal !== null && attrVal !== undefined) {
-          el.setAttribute(attribute, `${attrVal}`);
-        }
-      });
-    }
-    if (children) {
-      children.forEach((child) => el.appendChild(child));
-    }
-    return el;
   }
 
   private generateRecord(): Record<SegmentId, SVGElement> {
@@ -170,27 +170,96 @@ export class FancySevenSegmentDisplay
     pins.forEach((pin) => this.setSegment(pin, true));
   }
 
-  setDigit(digit: string, skipClearingSegments?: boolean | undefined): void {
-    if (!skipClearingSegments) {
-      this.clear();
-    }
-
-    const segmentsToDisplay = DIGIT_SEGMENTS[digit] || [];
-    segmentsToDisplay.forEach((segmentId) => {
-      this.setSegment(segmentId, true);
-    });
-  }
-
   withSegment(pin: string, on: boolean): FancySevenSegmentDisplay {
     this.setSegment(pin, on);
     return this;
   }
+}
 
-  withDigit(
-    digit: string,
-    skipClearingSegments?: boolean | undefined
-  ): FancySevenSegmentDisplay {
-    this.setDigit(digit, skipClearingSegments);
+export class ColonDisplay
+  implements SegmentDisplay, FluentSegmentDisplay<ColonDisplay>
+{
+  private readonly svgRoot: SVGElement;
+  private readonly segments: Record<string, SVGElement>;
+
+  constructor(host: HTMLElement) {
+    this.svgRoot = this.constructSvg();
+    host.appendChild(this.svgRoot);
+
+    this.segments = this.generateRecord();
+  }
+
+  private constructSvg(): SVGElement {
+    return createSvgElement(
+      'svg',
+      {
+        viewBox: '0 0 30 80',
+        version: '1.1',
+        xmlns: SVG_NS,
+        focusable: false,
+        style: 'height: 100%',
+      },
+      [
+        createSvgElement(
+          'g',
+          {
+            class: 'seg-group',
+          },
+          [
+            createSvgElement('circle', {
+              cx: 12,
+              cy: 60,
+              r: 5,
+              'data-segment-id': 'd',
+              class: 'svg-seg',
+            }),
+            createSvgElement('circle', {
+              cx: 12,
+              cy: 30,
+              r: 5,
+              'data-segment-id': 'g',
+              class: 'svg-seg',
+            }),
+          ]
+        ),
+      ]
+    );
+  }
+
+  private generateRecord(): Record<string, SVGElement> {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      d: this.svgRoot.querySelector(`[data-segment-id=d]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
+    };
+  }
+
+  clear(): void {
+    Object.keys(this.segments).forEach((seg) => {
+      this.setSegment(seg as SegmentId, false);
+    });
+  }
+
+  setSegment(pin: string, on: boolean): void {
+    const el = this.segments[pin];
+    if (on) {
+      el.classList.add('svg-seg-on');
+    } else {
+      el.classList.remove('svg-seg-on');
+    }
+  }
+
+  setSegments(pins: string[], skipClear?: boolean | undefined): void {
+    if (!skipClear) {
+      this.clear();
+    }
+
+    pins.forEach((pin) => this.setSegment(pin, true));
+  }
+
+  withSegment(pin: string, on: boolean): ColonDisplay {
+    this.setSegment(pin, on);
     return this;
   }
 }

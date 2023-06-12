@@ -14,6 +14,7 @@ export const DIGIT_SEGMENTS: { [character: string]: SegmentId[] } = {
   _: [],
   '-': ['g'],
   '.': ['h'],
+  ':': ['d', 'g'],
   // Letters
   A: ['a', 'b', 'c', 'e', 'f', 'g'],
   B: ['c', 'd', 'e', 'f', 'g'],
