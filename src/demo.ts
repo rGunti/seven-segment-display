@@ -64,7 +64,7 @@ const SEVEN_SEGS: SegmentDisplay[] = [
 ];
 const REF_CONTROLLER = new SegmentDisplayController(SEVEN_SEGS, SEVEN_FONT);
 
-/**
+/**/
 setInterval(() => {
   let renderValue = ``;
   for (let i = 0; i < SIXTEEN_SEGS.length; i++) {

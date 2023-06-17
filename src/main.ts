@@ -1,17 +1,11 @@
 import {
   ColonDisplay,
-  FancySevenSegmentDisplay,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from './segment-display';
 import dateFormat from 'dateformat';
 import './style.scss';
-import {
-  SEVEN_FONT,
-  SEVEN_FONT_SPECIAL,
-  SIXTEEN_FONT,
-  SIXTEEN_FONT_SPECIAL,
-} from './segment-display/fonts';
+import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from './segment-display/fonts';
 import { center } from './utils';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
