@@ -13,7 +13,7 @@ export const DIGIT_SEGMENTS: { [character: string]: SegmentId[] } = {
   // Characters
   _: [],
   '-': ['g'],
-  '.': ['h'],
+  '.': ['dec'],
   ':': ['d', 'g'],
   // Letters
   A: ['a', 'b', 'c', 'e', 'f', 'g'],
@@ -30,9 +30,8 @@ export const DIGIT_SEGMENTS: { [character: string]: SegmentId[] } = {
   e: ['e'],
   f: ['f'],
   g: ['g'],
-  h: ['h'],
 };
 
 export const INTEGRATED_CHARS = ['.'];
 
-export declare type SegmentId = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h';
+export declare type SegmentId = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'dec';

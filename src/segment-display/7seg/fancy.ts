@@ -1,7 +1,7 @@
 import { FluentSegmentDisplay, SegmentDisplay } from '..';
 import { SegmentId } from '../internal';
+import { SVG_NS, createSvgElement } from '../shared';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   a: { href: '#h-seg', class: 'svg-seg', x: 0, y: 0 },
   b: {
@@ -30,26 +30,6 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   g: { href: '#h-seg', class: 'svg-seg', x: 0, y: 35 },
 };
 
-function createSvgElement(
-  elType: string,
-  attributes?: { [attributeName: string]: unknown },
-  children?: SVGElement[]
-): SVGElement {
-  const el = document.createElementNS(SVG_NS, elType);
-  if (attributes) {
-    Object.keys(attributes).forEach((attribute) => {
-      const attrVal = attributes[attribute];
-      if (attrVal !== null && attrVal !== undefined) {
-        el.setAttribute(attribute, `${attrVal}`);
-      }
-    });
-  }
-  if (children) {
-    children.forEach((child) => el.appendChild(child));
-  }
-  return el;
-}
-
 export class FancySevenSegmentDisplay
   implements SegmentDisplay, FluentSegmentDisplay<FancySevenSegmentDisplay>
 {
@@ -58,7 +38,6 @@ export class FancySevenSegmentDisplay
 
   constructor(host: HTMLElement) {
     this.svgRoot = this.constructSvg();
-    console.log('Constructed SVG', this.svgRoot);
     host.appendChild(this.svgRoot);
 
     this.segments = this.generateRecord();
@@ -118,7 +97,7 @@ export class FancySevenSegmentDisplay
         cx: 52,
         cy: 75,
         r: 5,
-        'data-segment-id': 'h',
+        'data-segment-id': 'dec',
         class: 'svg-seg',
       })
     );
@@ -143,7 +122,7 @@ export class FancySevenSegmentDisplay
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      h: this.svgRoot.querySelector(`[data-segment-id=h]`)!,
+      dec: this.svgRoot.querySelector(`[data-segment-id=dec]`)!,
     };
   }
 
