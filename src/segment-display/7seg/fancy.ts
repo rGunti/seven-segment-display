@@ -1,5 +1,5 @@
 import { FluentSegmentDisplay, SegmentDisplay } from '..';
-import { SegmentId } from '../internal';
+import { SegmentId, SevenSegmentId } from '../fonts';
 import { SVG_NS, createSvgElement } from '../shared';
 
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
@@ -105,7 +105,7 @@ export class FancySevenSegmentDisplay
     return root;
   }
 
-  private generateRecord(): Record<SegmentId, SVGElement> {
+  private generateRecord(): Record<SevenSegmentId, SVGElement> {
     return {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       a: this.svgRoot.querySelector(`[data-segment-id=a]`)!,

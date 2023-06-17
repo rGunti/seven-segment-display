@@ -1,5 +1,5 @@
 import { SegmentDisplay } from '..';
-import { DIGIT_SEGMENTS, SegmentId } from '../internal';
+import { SEVEN_FONT, SegmentId } from '../fonts';
 
 export class SevenSegmentDigit implements SegmentDisplay {
   private readonly segments: Record<string, HTMLElement | null>;
@@ -67,7 +67,7 @@ export class SevenSegmentDigit implements SegmentDisplay {
       this.clear();
     }
 
-    const segmentsToDisplay = DIGIT_SEGMENTS[digit] || [];
+    const segmentsToDisplay = SEVEN_FONT[digit] || [];
     segmentsToDisplay.forEach((segmentId) => {
       this.setSegment(segmentId, true);
     });

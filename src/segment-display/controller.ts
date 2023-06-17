@@ -1,8 +1,12 @@
 import { SegmentDisplay } from '.';
-import { DIGIT_SEGMENTS, INTEGRATED_CHARS } from './internal';
+import { SegmentDisplayFont } from './fonts';
 
 export class SegmentDisplayController {
-  constructor(public readonly displays: SegmentDisplay[]) {}
+  constructor(
+    public readonly displays: SegmentDisplay[],
+    public readonly font: SegmentDisplayFont<string>,
+    public readonly specialChars: string[] = []
+  ) {}
 
   get displayCount(): number {
     return this.displays.length;
@@ -23,14 +27,18 @@ export class SegmentDisplayController {
       }
 
       let chars = str[strIdx];
-      if (INTEGRATED_CHARS.indexOf(chars) >= 0 && strIdx > 0) {
+      if (this.specialChars.indexOf(chars) >= 0 && strIdx > 0) {
         offset += 1;
         chars += str[strIdx - 1];
       }
 
-      const segments = chars
-        .split('')
-        .flatMap((char) => DIGIT_SEGMENTS[char] || []);
+      const segments = chars.split('').flatMap((char) => {
+        const charPins = this.font[char];
+        if (charPins === undefined) {
+          return [];
+        }
+        return charPins;
+      });
       display.setSegments(segments);
     }
   }

@@ -5,6 +5,7 @@ import {
   SegmentDisplayController,
 } from './segment-display';
 import { SixteenSegmentDisplay } from './segment-display/16seg';
+import { SEVEN_FONT, SIXTEEN_FONT } from './segment-display/fonts';
 
 function generateCharArray(...range: [number, number][]): string[] {
   const output = [];
@@ -30,9 +31,11 @@ appRoot.innerHTML = `
 
 let currentCharIndex = 0;
 const CHARS_TO_SHOW = generateCharArray(
-  [48, 57], // 0-9
-  [65, 90] // A-Z
-).concat(['.', ':', '-', '_']);
+  /*  [48, 57], // 0-9
+  [65, 90], // A-Z
+  [97, 122], // a-z
+*/ [32, 127]
+); /*.concat(['.', ':', '-', '_'])*/
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const HOST = appRoot.querySelector<HTMLDivElement>('#sixteen-seg-display')!;
@@ -45,7 +48,7 @@ const SIXTEEN_SEGS: SegmentDisplay[] = [
   new SixteenSegmentDisplay(HOST),
   new SixteenSegmentDisplay(HOST),
 ];
-const CONTROLLER = new SegmentDisplayController(SIXTEEN_SEGS);
+const CONTROLLER = new SegmentDisplayController(SIXTEEN_SEGS, SIXTEEN_FONT);
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const REF_HOST = appRoot.querySelector<HTMLDivElement>('#ref-display')!;
@@ -58,7 +61,7 @@ const SEVEN_SEGS: SegmentDisplay[] = [
   new FancySevenSegmentDisplay(REF_HOST),
   new FancySevenSegmentDisplay(REF_HOST),
 ];
-const REF_CONTROLLER = new SegmentDisplayController(SEVEN_SEGS);
+const REF_CONTROLLER = new SegmentDisplayController(SEVEN_SEGS, SEVEN_FONT);
 
 /**/
 setInterval(() => {
@@ -69,5 +72,5 @@ setInterval(() => {
   CONTROLLER.show(renderValue);
   REF_CONTROLLER.show(renderValue);
   currentCharIndex = (currentCharIndex + 1) % CHARS_TO_SHOW.length;
-}, 125);
+}, 250);
 /**/

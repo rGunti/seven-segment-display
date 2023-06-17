@@ -1,42 +1,59 @@
 import { FluentSegmentDisplay, SegmentDisplay } from '..';
 import { SVG_NS, createPointList, createSvgElement } from '../shared';
 
-const SVG_OBJECT_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
+declare type SvgElement = {
+  type: string;
+  attributes?: { [key: string]: unknown };
+};
+
+const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
   'h-seg-17': {
-    points: createPointList([
-      [1, 0],
-      [8, 0],
-      [9, 1],
-      [8, 2],
-      [1, 2],
-      [0, 1],
-    ]),
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [1, 0],
+        [8, 0],
+        [9, 1],
+        [8, 2],
+        [1, 2],
+        [0, 1],
+      ]),
+    },
   },
   'v-seg-17': {
-    points: createPointList([
-      [1, 0],
-      [2, 1],
-      [2, 19],
-      [1, 20],
-      [0, 19],
-      [0, 1],
-    ]),
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [1, 0],
+        [2, 1],
+        [2, 19],
+        [1, 20],
+        [0, 19],
+        [0, 1],
+      ]),
+    },
   },
   'd-seg-17': {
-    points: createPointList([
-      [0, 0],
-      [7, 14],
-      [7, 18],
-      [0, 4],
-    ]),
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [0, 0],
+        [7, 14],
+        [7, 18],
+        [0, 4],
+      ]),
+    },
   },
   'dr-seg-17': {
-    points: createPointList([
-      [7, 0],
-      [0, 14],
-      [0, 18],
-      [7, 4],
-    ]),
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [7, 0],
+        [0, 14],
+        [0, 18],
+        [7, 4],
+      ]),
+    },
   },
 };
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
@@ -56,11 +73,6 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   k: { href: '#dr-seg-17', class: 'svg-seg', x: 14, y: 3 },
   l: { href: '#d-seg-17', class: 'svg-seg', x: 14, y: 25 },
   m: { href: '#dr-seg-17', class: 'svg-seg', x: 3, y: 25 },
-};
-const ALIASES: Record<string, string[]> = {
-  a: ['a1', 'a2'],
-  d: ['d1', 'd2'],
-  g: ['g1', 'g2'],
 };
 
 export class SixteenSegmentDisplay
@@ -88,12 +100,14 @@ export class SixteenSegmentDisplay
     const defs = createSvgElement(
       'defs',
       undefined,
-      Object.keys(SVG_OBJECT_TEMPLATE).map((id) =>
-        createSvgElement('polyline', {
+      Object.keys(SVG_OBJECT_TEMPLATE).map((id) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const element = SVG_OBJECT_TEMPLATE[id]!;
+        return createSvgElement(element.type, {
           id,
-          ...SVG_OBJECT_TEMPLATE[id],
-        })
-      )
+          ...element.attributes,
+        });
+      })
     );
     root.appendChild(defs);
 
@@ -120,12 +134,21 @@ export class SixteenSegmentDisplay
     root.appendChild(g);
 
     // Create Decimal Point
-    root.appendChild(
+    g.appendChild(
       createSvgElement('circle', {
         cx: 25,
         cy: 45,
         r: 1,
         'data-segment-id': 'dec',
+        class: 'svg-seg',
+      })
+    );
+    g.appendChild(
+      createSvgElement('circle', {
+        cx: 25,
+        cy: 23,
+        r: 1,
+        'data-segment-id': 'dec2',
         class: 'svg-seg',
       })
     );
@@ -137,7 +160,7 @@ export class SixteenSegmentDisplay
     const objects: { key: string; obj: SVGElement }[] = Object.keys(
       SVG_TEMPLATE
     )
-      .concat('dec')
+      .concat('dec', 'dec2')
       .map((key) => ({
         key,
         obj: this.svgRoot.querySelector(
@@ -176,15 +199,7 @@ export class SixteenSegmentDisplay
       this.clear();
     }
 
-    pins
-      .flatMap((pin) => {
-        const aliases = ALIASES[pin];
-        if (aliases !== undefined) {
-          return aliases;
-        }
-        return [pin];
-      })
-      .forEach((pin) => this.setSegment(pin, true));
+    pins.forEach((pin) => this.setSegment(pin, true));
   }
 
   withSegment(pin: string, on: boolean): SixteenSegmentDisplay {

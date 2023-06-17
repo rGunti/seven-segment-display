@@ -1,13 +1,16 @@
 import { SegmentDisplayController } from '../../src/segment-display';
 import { FakeSegmentDisplay } from '../../src/segment-display/7seg';
-import { DIGIT_SEGMENTS } from '../../src/segment-display/internal';
+import {
+  SEVEN_FONT,
+  SEVEN_FONT_SPECIAL,
+} from '../../src/segment-display/fonts';
 
 function constructDisplay(characters: number): SegmentDisplayController {
   const displays: FakeSegmentDisplay[] = [];
   for (let i = 0; i < characters; i++) {
     displays.push(new FakeSegmentDisplay());
   }
-  return new SegmentDisplayController(displays);
+  return new SegmentDisplayController(displays, SEVEN_FONT, SEVEN_FONT_SPECIAL);
 }
 
 test('display is empty when initialized', () => {
@@ -24,16 +27,16 @@ test('display shows numbers correctly', () => {
     display.displays.map((d) => (d as FakeSegmentDisplay).activeSegments.sort())
   ).toEqual(
     [
-      DIGIT_SEGMENTS[1],
-      DIGIT_SEGMENTS[2],
-      DIGIT_SEGMENTS[3],
-      DIGIT_SEGMENTS[4],
-      DIGIT_SEGMENTS[5],
-      DIGIT_SEGMENTS[6],
-      DIGIT_SEGMENTS[7],
-      DIGIT_SEGMENTS[8],
-      DIGIT_SEGMENTS[9],
-      DIGIT_SEGMENTS[0],
+      SEVEN_FONT[1],
+      SEVEN_FONT[2],
+      SEVEN_FONT[3],
+      SEVEN_FONT[4],
+      SEVEN_FONT[5],
+      SEVEN_FONT[6],
+      SEVEN_FONT[7],
+      SEVEN_FONT[8],
+      SEVEN_FONT[9],
+      SEVEN_FONT[0],
     ].map((i) => i.sort())
   );
 });
@@ -45,17 +48,17 @@ test('displays decimal point correctly', () => {
     display.displays.map((d) => (d as FakeSegmentDisplay).activeSegments.sort())
   ).toEqual(
     [
-      DIGIT_SEGMENTS[1],
-      [...DIGIT_SEGMENTS[2], 'h'],
-      DIGIT_SEGMENTS[3],
-      DIGIT_SEGMENTS[4],
+      SEVEN_FONT[1],
+      [...SEVEN_FONT[2], 'dec'],
+      SEVEN_FONT[3],
+      SEVEN_FONT[4],
     ].map((i) => i.sort())
   );
 });
 
 test('clears decimal point correctly', () => {
   const display = new FakeSegmentDisplay();
-  display.setSegment('h', true);
+  display.setSegment('dec', true);
   display.clear();
 
   expect(display.activeSegments).toEqual([]);

@@ -2,9 +2,16 @@ import {
   ColonDisplay,
   FancySevenSegmentDisplay,
   SegmentDisplayController,
+  SixteenSegmentDisplay,
 } from './segment-display';
 import dateFormat from 'dateformat';
 import './style.scss';
+import {
+  SEVEN_FONT,
+  SIXTEEN_FONT,
+  SIXTEEN_FONT_SPECIAL,
+} from './segment-display/fonts';
+import { center } from './utils';
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) {
@@ -29,36 +36,49 @@ const DIGITS = [
   new FancySevenSegmentDisplay(timeContainer),
   new FancySevenSegmentDisplay(timeContainer),
 ];
-const CONTROLLER = new SegmentDisplayController(DIGITS);
+const CONTROLLER = new SegmentDisplayController(DIGITS, SEVEN_FONT);
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const dateContainer = document.getElementById('date-display')!;
-const DATE_CONTROLLER = new SegmentDisplayController([
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-  new FancySevenSegmentDisplay(dateContainer),
-]);
+const DATE_CONTROLLER = new SegmentDisplayController(
+  [
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+    new SixteenSegmentDisplay(dateContainer),
+  ],
+  SIXTEEN_FONT,
+  SIXTEEN_FONT_SPECIAL
+);
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const demoContainer = document.getElementById('demo-display')!;
-const DEMO_CONTROLLER = new SegmentDisplayController([
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-  new FancySevenSegmentDisplay(demoContainer),
-]);
-DEMO_CONTROLLER.show('abcdefgh');
+const weekdayContainer = document.getElementById('demo-display')!;
+const WEEKDAY_CONTROLLER = new SegmentDisplayController(
+  [
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+    new SixteenSegmentDisplay(weekdayContainer),
+  ],
+  SIXTEEN_FONT,
+  SIXTEEN_FONT_SPECIAL
+);
 
 function getCurrentTimeAsString(): string {
   const now = new Date();
@@ -67,15 +87,26 @@ function getCurrentTimeAsString(): string {
 }
 
 function getCurrentDateAsString(): string {
-  return dateFormat(new Date(), 'yyyy-mm-dd');
+  return dateFormat(new Date(), 'dd. mmm. yyyy');
 }
 
 /**/
 setInterval(() => {
   const renderValue = getCurrentTimeAsString();
   CONTROLLER.show(renderValue);
-  DATE_CONTROLLER.show(getCurrentDateAsString());
+  DATE_CONTROLLER.show(
+    center(
+      getCurrentDateAsString(),
+      DATE_CONTROLLER.displayCount,
+      DATE_CONTROLLER.specialChars
+    )
+  );
+  WEEKDAY_CONTROLLER.show(
+    center(
+      `${dateFormat(new Date(), 'dddd')}`,
+      WEEKDAY_CONTROLLER.displayCount,
+      WEEKDAY_CONTROLLER.specialChars
+    )
+  );
 }, 50);
 /**/
-
-console.log('Initialized', { CONTROLLER, DATE_CONTROLLER });
