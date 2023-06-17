@@ -11,12 +11,25 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     type: 'polyline',
     attributes: {
       points: createPointList([
-        [1, 0],
-        [8, 0],
-        [9, 1],
-        [8, 2],
-        [1, 2],
-        [0, 1],
+        [2, 0],
+        [7, 0],
+        [9, 2],
+        [7, 4],
+        [2, 4],
+        [0, 2],
+      ]),
+    },
+  },
+  'h-seg-17-side': {
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [2, 0],
+        [9, 0],
+        [9, 2],
+        [7, 4],
+        [2, 4],
+        [0, 2],
       ]),
     },
   },
@@ -24,12 +37,25 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     type: 'polyline',
     attributes: {
       points: createPointList([
-        [1, 0],
-        [2, 1],
-        [2, 19],
-        [1, 20],
-        [0, 19],
-        [0, 1],
+        [2, 0],
+        [4, 2],
+        [4, 18],
+        [2, 20],
+        [0, 18],
+        [0, 2],
+      ]),
+    },
+  },
+  'v-seg-17-side': {
+    type: 'polyline',
+    attributes: {
+      points: createPointList([
+        [2, 0],
+        [4, 0],
+        [4, 18],
+        [2, 20],
+        [0, 18],
+        [0, 2],
       ]),
     },
   },
@@ -38,9 +64,9 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     attributes: {
       points: createPointList([
         [0, 0],
-        [7, 14],
-        [7, 18],
-        [0, 4],
+        [5, 9],
+        [5, 16],
+        [0, 7],
       ]),
     },
   },
@@ -48,31 +74,72 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     type: 'polyline',
     attributes: {
       points: createPointList([
-        [7, 0],
-        [0, 14],
-        [0, 18],
-        [7, 4],
+        [5, 0],
+        [0, 9],
+        [0, 16],
+        [5, 7],
       ]),
     },
   },
 };
 const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
-  a1: { href: '#h-seg-17', class: 'svg-seg', x: 2, y: 0 },
-  a2: { href: '#h-seg-17', class: 'svg-seg', x: 13, y: 0 },
-  b: { href: '#v-seg-17', class: 'svg-seg', x: 22, y: 2 },
-  c: { href: '#v-seg-17', class: 'svg-seg', x: 22, y: 24 },
-  d1: { href: '#h-seg-17', class: 'svg-seg', x: 2, y: 44 },
-  d2: { href: '#h-seg-17', class: 'svg-seg', x: 13, y: 44 },
-  e: { href: '#v-seg-17', class: 'svg-seg', x: 0, y: 24 },
-  f: { href: '#v-seg-17', class: 'svg-seg', x: 0, y: 2 },
-  g1: { href: '#h-seg-17', class: 'svg-seg', x: 2, y: 22 },
-  g2: { href: '#h-seg-17', class: 'svg-seg', x: 13, y: 22 },
-  h: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 2 },
-  i: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 24 },
-  j: { href: '#d-seg-17', class: 'svg-seg', x: 3, y: 3 },
-  k: { href: '#dr-seg-17', class: 'svg-seg', x: 14, y: 3 },
-  l: { href: '#d-seg-17', class: 'svg-seg', x: 14, y: 25 },
-  m: { href: '#dr-seg-17', class: 'svg-seg', x: 3, y: 25 },
+  a1: { href: '#h-seg-17-side', class: 'svg-seg', x: 3, y: 0 },
+  a2: {
+    href: '#h-seg-17-side',
+    class: 'svg-seg',
+    x: -23,
+    y: 0,
+    transform: 'scale(-1,1)',
+  },
+  b: {
+    href: '#v-seg-17-side',
+    class: 'svg-seg',
+    x: 22,
+    y: -23,
+    transform: 'scale(1,-1)',
+  },
+  c: {
+    href: '#v-seg-17-side',
+    class: 'svg-seg',
+    x: 22,
+    y: 25,
+  },
+  d1: {
+    href: '#h-seg-17-side',
+    class: 'svg-seg',
+    x: 3,
+    y: -48,
+    transform: 'scale(1,-1)',
+  },
+  d2: {
+    href: '#h-seg-17-side',
+    class: 'svg-seg',
+    x: -23,
+    y: -48,
+    transform: 'scale(-1,-1)',
+  },
+  e: {
+    href: '#v-seg-17-side',
+    class: 'svg-seg',
+    x: -4,
+    y: 25,
+    transform: 'scale(-1,1)',
+  },
+  f: {
+    href: '#v-seg-17-side',
+    class: 'svg-seg',
+    x: -4,
+    y: -23,
+    transform: 'scale(-1,-1)',
+  },
+  g1: { href: '#h-seg-17', class: 'svg-seg', x: 3, y: 22 },
+  g2: { href: '#h-seg-17', class: 'svg-seg', x: 14, y: 22 },
+  h: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 3 },
+  i: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 25 },
+  j: { href: '#d-seg-17', class: 'svg-seg', x: 5, y: 5 },
+  k: { href: '#dr-seg-17', class: 'svg-seg', x: 16, y: 5 },
+  l: { href: '#d-seg-17', class: 'svg-seg', x: 16, y: 27 },
+  m: { href: '#dr-seg-17', class: 'svg-seg', x: 5, y: 27 },
 };
 
 export class SixteenSegmentDisplay
@@ -90,7 +157,7 @@ export class SixteenSegmentDisplay
 
   private constructSvg(): SVGElement {
     const root = createSvgElement('svg', {
-      viewBox: '0 0 30 46',
+      viewBox: '0 0 35 49',
       version: '1.1',
       xmlns: SVG_NS,
       focusable: false,
@@ -136,18 +203,18 @@ export class SixteenSegmentDisplay
     // Create Decimal Point
     g.appendChild(
       createSvgElement('circle', {
-        cx: 25,
-        cy: 45,
-        r: 1,
+        cx: 29,
+        cy: 47,
+        r: 2,
         'data-segment-id': 'dec',
         class: 'svg-seg',
       })
     );
     g.appendChild(
       createSvgElement('circle', {
-        cx: 25,
+        cx: 29,
         cy: 23,
-        r: 1,
+        r: 2,
         'data-segment-id': 'dec2',
         class: 'svg-seg',
       })
@@ -187,9 +254,10 @@ export class SixteenSegmentDisplay
     if (!el) {
       return;
     }
-    if (on) {
+    const isOn = el.classList.contains('svg-seg-on');
+    if (on && !isOn) {
       el.classList.add('svg-seg-on');
-    } else {
+    } else if (!on && isOn) {
       el.classList.remove('svg-seg-on');
     }
   }

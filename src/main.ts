@@ -8,6 +8,7 @@ import dateFormat from 'dateformat';
 import './style.scss';
 import {
   SEVEN_FONT,
+  SEVEN_FONT_SPECIAL,
   SIXTEEN_FONT,
   SIXTEEN_FONT_SPECIAL,
 } from './segment-display/fonts';
@@ -19,6 +20,7 @@ if (!appRoot) {
 }
 appRoot.innerHTML = `
   <div id="time-display" class="display"></div>
+  <div id="time-ms-display" class="display"></div>
   <div id="date-display" class="display"></div>
   <div id="demo-display" class="display"></div>
 `;
@@ -27,22 +29,25 @@ appRoot.innerHTML = `
 const timeContainer = document.getElementById('time-display')!;
 
 const DIGITS = [
-  new FancySevenSegmentDisplay(timeContainer),
-  new FancySevenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
   new ColonDisplay(timeContainer),
-  new FancySevenSegmentDisplay(timeContainer),
-  new FancySevenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
   new ColonDisplay(timeContainer),
-  new FancySevenSegmentDisplay(timeContainer),
-  new FancySevenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
+  new SixteenSegmentDisplay(timeContainer),
 ];
-const CONTROLLER = new SegmentDisplayController(DIGITS, SEVEN_FONT);
+const CONTROLLER = new SegmentDisplayController(
+  DIGITS,
+  SIXTEEN_FONT
+  //SIXTEEN_FONT_SPECIAL
+);
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const dateContainer = document.getElementById('date-display')!;
 const DATE_CONTROLLER = new SegmentDisplayController(
   [
-    new SixteenSegmentDisplay(dateContainer),
     new SixteenSegmentDisplay(dateContainer),
     new SixteenSegmentDisplay(dateContainer),
     new SixteenSegmentDisplay(dateContainer),

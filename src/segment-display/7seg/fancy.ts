@@ -134,9 +134,13 @@ export class FancySevenSegmentDisplay
 
   setSegment(pin: string, on: boolean): void {
     const el = this.segments[pin];
-    if (on) {
+    if (!el) {
+      return;
+    }
+    const isOn = el.classList.contains('svg-seg-on');
+    if (on && !isOn) {
       el.classList.add('svg-seg-on');
-    } else {
+    } else if (!on && isOn) {
       el.classList.remove('svg-seg-on');
     }
   }
@@ -208,9 +212,9 @@ export class ColonDisplay
   private generateRecord(): Record<string, SVGElement> {
     return {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      d: this.svgRoot.querySelector(`[data-segment-id=d]`)!,
+      dec: this.svgRoot.querySelector(`[data-segment-id=d]`)!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
+      dec2: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
     };
   }
 
@@ -222,6 +226,9 @@ export class ColonDisplay
 
   setSegment(pin: string, on: boolean): void {
     const el = this.segments[pin];
+    if (!el) {
+      return;
+    }
     if (on) {
       el.classList.add('svg-seg-on');
     } else {

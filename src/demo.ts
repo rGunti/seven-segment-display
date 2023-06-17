@@ -49,6 +49,7 @@ const SIXTEEN_SEGS: SegmentDisplay[] = [
   new SixteenSegmentDisplay(HOST),
 ];
 const CONTROLLER = new SegmentDisplayController(SIXTEEN_SEGS, SIXTEEN_FONT);
+CONTROLLER.show('§§§§§§§');
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const REF_HOST = appRoot.querySelector<HTMLDivElement>('#ref-display')!;
@@ -63,7 +64,7 @@ const SEVEN_SEGS: SegmentDisplay[] = [
 ];
 const REF_CONTROLLER = new SegmentDisplayController(SEVEN_SEGS, SEVEN_FONT);
 
-/**/
+/**
 setInterval(() => {
   let renderValue = ``;
   for (let i = 0; i < SIXTEEN_SEGS.length; i++) {
