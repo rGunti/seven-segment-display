@@ -1,10 +1,4 @@
-$segment-height: 90px;
-$segment-width: 30px;
-
-$color-bg: black;
-
-$color-on: rgba(255, 0, 0, 1);
-$color-off: rgba(255, 0, 0, 0.1);
+@import './vars.scss';
 
 :root {
   font-family: system-ui;
@@ -39,56 +33,6 @@ body {
   align-items: center;
 }
 
-.segment-container {
-  display: inline-grid;
-  margin: 10px;
-
-  &.segment-container-7 {
-    grid-template-columns: $segment-width $segment-height $segment-width;
-    grid-template-rows: $segment-width $segment-height $segment-width $segment-height $segment-width;
-    grid-template-areas:
-      '  .   seg-a   .  '
-      'seg-f   .   seg-b'
-      '  .   seg-g   .  '
-      'seg-e   .   seg-c'
-      '  .   seg-d   .  ';
-  }
-}
-
-.segment {
-  background-color: $color-off;
-  color: $color-off;
-  text-align: center;
-
-  &.segment-a {
-    grid-area: seg-a;
-  }
-
-  &.segment-b {
-    grid-area: seg-b;
-  }
-
-  &.segment-c {
-    grid-area: seg-c;
-  }
-
-  &.segment-d {
-    grid-area: seg-d;
-  }
-
-  &.segment-e {
-    grid-area: seg-e;
-  }
-
-  &.segment-f {
-    grid-area: seg-f;
-  }
-
-  &.segment-g {
-    grid-area: seg-g;
-  }
-}
-
 .display {
   display: block;
 
@@ -114,6 +58,7 @@ body {
   fill: $color-on;
 }
 
+/*
 #time-display {
   height: 250px;
 }
@@ -131,3 +76,4 @@ body {
   margin: 20px;
   height: 120px;
 }
+*/

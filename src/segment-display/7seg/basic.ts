@@ -1,3 +1,4 @@
+import './basic.scss';
 import { SegmentDisplay } from '..';
 import { SEVEN_FONT, SegmentId } from '../fonts';
 
