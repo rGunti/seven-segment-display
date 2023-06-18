@@ -72,7 +72,6 @@ const WEEKDAY_CONTROLLER = new SegmentDisplayController(
     new SixteenSegmentDisplay(weekdayContainer),
     new SixteenSegmentDisplay(weekdayContainer),
     new SixteenSegmentDisplay(weekdayContainer),
-    new SixteenSegmentDisplay(weekdayContainer),
   ],
   SIXTEEN_FONT,
   SIXTEEN_FONT_SPECIAL
