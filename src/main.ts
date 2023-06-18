@@ -14,7 +14,6 @@ if (!appRoot) {
 }
 appRoot.innerHTML = `
   <div id="time-display" class="display"></div>
-  <div id="time-ms-display" class="display"></div>
   <div id="date-display" class="display"></div>
   <div id="demo-display" class="display"></div>
 `;

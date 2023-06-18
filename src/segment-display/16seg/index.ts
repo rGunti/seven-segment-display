@@ -161,7 +161,6 @@ export class SixteenSegmentDisplay
       version: '1.1',
       xmlns: SVG_NS,
       focusable: false,
-      style: 'height: 100%',
     });
 
     const defs = createSvgElement(
