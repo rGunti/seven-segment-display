@@ -15,7 +15,7 @@ export const SIXTEEN_FONT: SegmentDisplayFont<SixteenSegmentId> = {
   '-': ['g1', 'g2'],
   '.': ['dec'],
   '/': ['k', 'm'],
-  0: ['a1', 'a2', 'b', 'c', 'd1', 'd2', 'e', 'f', 'j', 'l'],
+  0: ['a1', 'a2', 'b', 'c', 'd1', 'd2', 'e', 'f', 'k', 'm'],
   1: ['b', 'c', 'k'],
   2: ['a1', 'a2', 'b', 'd1', 'd2', 'e', 'g1', 'g2'],
   3: ['a1', 'a2', 'b', 'c', 'd1', 'd2', 'g1', 'g2'],
