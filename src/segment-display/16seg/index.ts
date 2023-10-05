@@ -64,9 +64,11 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     attributes: {
       points: createPointList([
         [0, 0],
-        [6, 9],
-        [6, 16],
-        [0, 7],
+        [2.5, 0],
+        [6, 14],
+        [6, 17],
+        [3.5, 17],
+        [0, 3],
       ]),
     },
   },
@@ -75,9 +77,11 @@ const SVG_OBJECT_TEMPLATE: Record<string, SvgElement | null> = {
     attributes: {
       points: createPointList([
         [6, 0],
-        [0, 9],
-        [0, 16],
-        [6, 7],
+        [3.5, 0],
+        [0, 14],
+        [0, 17],
+        [2.5, 17],
+        [6, 3],
       ]),
     },
   },
@@ -136,10 +140,10 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   g2: { href: '#h-seg-17', class: 'svg-seg', x: 13.5, y: 22 },
   h: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 2.5 },
   i: { href: '#v-seg-17', class: 'svg-seg', x: 11, y: 24.5 },
-  j: { href: '#d-seg-17', class: 'svg-seg', x: 4.5, y: 5 },
-  k: { href: '#dr-seg-17', class: 'svg-seg', x: 15.5, y: 5 },
-  l: { href: '#d-seg-17', class: 'svg-seg', x: 15.5, y: 27 },
-  m: { href: '#dr-seg-17', class: 'svg-seg', x: 4.5, y: 27 },
+  j: { href: '#d-seg-17', class: 'svg-seg', x: 4.5, y: 4.5 },
+  k: { href: '#dr-seg-17', class: 'svg-seg', x: 15.5, y: 4.5 },
+  l: { href: '#d-seg-17', class: 'svg-seg', x: 15.5, y: 26.5 },
+  m: { href: '#dr-seg-17', class: 'svg-seg', x: 4.5, y: 26.5 },
 };
 
 export class SixteenSegmentDisplay
