@@ -16,6 +16,15 @@ function calcStringLength(str: string, ignoreChars: Set<string>): number {
   return len;
 }
 
+export function left(str: string, width: number, ignoreChars: string[] = []) {
+  const strLen = calcStringLength(str, new Set<string>(ignoreChars));
+  if (strLen >= width) {
+    return str;
+  }
+  const diff = width - strLen;
+  return `${str}${repeat(' ', diff)}`;
+}
+
 export function center(
   str: string,
   width: number,

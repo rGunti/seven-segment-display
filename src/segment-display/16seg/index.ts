@@ -146,6 +146,8 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown } | null> = {
   m: { href: '#dr-seg-17', class: 'svg-seg', x: 4.5, y: 26.5 },
 };
 
+export const SIXTEEN_FONT_PINS = Object.keys(SVG_TEMPLATE).sort();
+
 export class SixteenSegmentDisplay
   implements SegmentDisplay, FluentSegmentDisplay<SixteenSegmentDisplay>
 {

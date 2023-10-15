@@ -1,12 +1,16 @@
 import {
   ColonDisplay,
+  SIXTEEN_FONT_PINS,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from './segment-display';
 import dateFormat from 'dateformat';
 import './style.scss';
 import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from './segment-display/fonts';
-import { center } from './utils';
+import { center, left } from './utils';
+
+const MODE_CLOCK = 0;
+const MODE_DEBUG_CHARS = 1;
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) {
@@ -87,23 +91,69 @@ function getCurrentDateAsString(): string {
   return dateFormat(new Date(), 'dd. mmm. yyyy');
 }
 
+let mode = MODE_CLOCK;
+
+window.addEventListener('keydown', (e) => {
+  e.preventDefault();
+  console.log('keydown', e.key);
+
+  switch (e.key) {
+    case 'd':
+      mode = MODE_DEBUG_CHARS;
+      break;
+    case 'c':
+    case 'Escape':
+      mode = MODE_CLOCK;
+      break;
+  }
+});
+
+const MODES: Record<number, () => void> = {
+  [MODE_CLOCK]: () => {
+    const renderValue = getCurrentTimeAsString();
+    CONTROLLER.show(renderValue);
+    DATE_CONTROLLER.show(
+      center(
+        getCurrentDateAsString(),
+        DATE_CONTROLLER.displayCount,
+        DATE_CONTROLLER.specialChars
+      )
+    );
+    WEEKDAY_CONTROLLER.show(
+      center(
+        `${dateFormat(new Date(), 'dddd')}`,
+        WEEKDAY_CONTROLLER.displayCount,
+        WEEKDAY_CONTROLLER.specialChars
+      )
+    );
+  },
+  [MODE_DEBUG_CHARS]: () => {
+    const pinIndex = Math.floor(new Date().getTime() / 1000) % 16;
+    const pin = SIXTEEN_FONT_PINS[pinIndex];
+    CONTROLLER.show(
+      left(pin, CONTROLLER.displayCount, CONTROLLER.specialChars)
+    );
+    CONTROLLER.displays[6].setSegments([pin]);
+    CONTROLLER.displays[7].setSegments([pin]);
+    DATE_CONTROLLER.show(
+      center(
+        'SEGMENT',
+        DATE_CONTROLLER.displayCount,
+        DATE_CONTROLLER.specialChars
+      )
+    );
+    WEEKDAY_CONTROLLER.show(
+      center(
+        'DEBUG',
+        WEEKDAY_CONTROLLER.displayCount,
+        WEEKDAY_CONTROLLER.specialChars
+      )
+    );
+  },
+};
+
 /**/
 setInterval(() => {
-  const renderValue = getCurrentTimeAsString();
-  CONTROLLER.show(renderValue);
-  DATE_CONTROLLER.show(
-    center(
-      getCurrentDateAsString(),
-      DATE_CONTROLLER.displayCount,
-      DATE_CONTROLLER.specialChars
-    )
-  );
-  WEEKDAY_CONTROLLER.show(
-    center(
-      `${dateFormat(new Date(), 'dddd')}`,
-      WEEKDAY_CONTROLLER.displayCount,
-      WEEKDAY_CONTROLLER.specialChars
-    )
-  );
+  MODES[mode]();
 }, 50);
 /**/
