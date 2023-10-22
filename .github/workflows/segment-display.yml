@@ -35,8 +35,6 @@ jobs:
         uses: magnetikonline/action-node-modules-cache@v1
       - name: NPM Install
         run: npm install
-      - name: NPM SemVer
-        uses: odinr/action-npm-semver@v1
       - name: Build
         run: npm build
       - name: Setup Pages
