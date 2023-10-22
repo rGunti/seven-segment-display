@@ -94,16 +94,15 @@ function getCurrentDateAsString(): string {
 let mode = MODE_CLOCK;
 
 window.addEventListener('keydown', (e) => {
-  e.preventDefault();
-  console.log('keydown', e.key);
-
   switch (e.key) {
     case 'd':
       mode = MODE_DEBUG_CHARS;
+      e.preventDefault();
       break;
     case 'c':
     case 'Escape':
       mode = MODE_CLOCK;
+      e.preventDefault();
       break;
   }
 });
