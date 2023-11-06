@@ -9,8 +9,11 @@ import './style.scss';
 import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from './segment-display/fonts';
 import { center, left } from './utils';
 
+import * as versionInfo from './assets/version.json';
+
 const MODE_CLOCK = 0;
 const MODE_DEBUG_CHARS = 1;
+const MODE_VERSION = 2;
 
 const appRoot = document.querySelector<HTMLDivElement>('#app');
 if (!appRoot) {
@@ -104,6 +107,10 @@ window.addEventListener('keydown', (e) => {
       mode = MODE_CLOCK;
       e.preventDefault();
       break;
+    case 'v':
+      mode = MODE_VERSION;
+      e.preventDefault();
+      break;
   }
 });
 
@@ -144,6 +151,31 @@ const MODES: Record<number, () => void> = {
     WEEKDAY_CONTROLLER.show(
       center(
         'DEBUG',
+        WEEKDAY_CONTROLLER.displayCount,
+        WEEKDAY_CONTROLLER.specialChars
+      )
+    );
+  },
+  [MODE_VERSION]: () => {
+    CONTROLLER.show(
+      [
+        versionInfo.version.major,
+        versionInfo.version.minor,
+        versionInfo.version.patch,
+      ]
+        .map((v) => v.toString().padStart(2, '0'))
+        .join('.')
+    );
+    DATE_CONTROLLER.show(
+      left(
+        `Bld  ${versionInfo.version.revision}`,
+        WEEKDAY_CONTROLLER.displayCount,
+        WEEKDAY_CONTROLLER.specialChars
+      )
+    );
+    WEEKDAY_CONTROLLER.show(
+      left(
+        `<C> ${versionInfo.author}`,
         WEEKDAY_CONTROLLER.displayCount,
         WEEKDAY_CONTROLLER.specialChars
       )
