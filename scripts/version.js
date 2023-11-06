@@ -8,7 +8,7 @@ writeFileSync(
     version: {
       major: now.getFullYear() % 100,
       minor: now.getMonth() + 1,
-      patch: now.getDay(),
+      patch: now.getDate(),
       revision: `${dateFormat.default(now, 'HH.MM.ss')}`,
     },
     author: 'rGunti',
