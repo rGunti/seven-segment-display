@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "dateformat": "^5.0.3",
-    "sass": "^1.63.2"
+    "sass": "^1.69.5"
   }
 }
