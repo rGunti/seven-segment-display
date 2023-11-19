@@ -37,9 +37,6 @@ export class App {
         new ColonDisplay(this.timeControllerRoot),
         new SixteenSegmentDisplay(this.timeControllerRoot),
         new SixteenSegmentDisplay(this.timeControllerRoot),
-        new ColonDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
       ],
       SIXTEEN_FONT
     );
@@ -130,7 +127,7 @@ export class App {
 
   private static getCurrentTimeAsString(): string {
     const now = new Date();
-    const format = now.getMilliseconds() < 500 ? 'HH:MM:ss.L' : 'HH MM ss L';
+    const format = now.getMilliseconds() < 500 ? 'HH:MM:ss' : 'HH MM ss';
     return dateFormat(now, format);
   }
 
