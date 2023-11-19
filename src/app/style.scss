@@ -1,0 +1,82 @@
+// *** VARIABLES ***
+$color-bg: black;
+
+$color-on: rgba(255, 0, 0, 1);
+$color-off: rgba(255, 0, 0, 0.1);
+
+// *** STYLING ***
+:root {
+  font-family: system-ui;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: $color-bg;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.display {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow-x: auto;
+
+  height: 50px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  & > * {
+    display: inline-block;
+    height: 100%;
+  }
+}
+
+.seg-group {
+  transform: skew(-5deg) translateX(6px);
+}
+
+.svg-seg {
+  fill: $color-off;
+  transition: all 500ms ease;
+}
+
+.svg-seg-on {
+  fill: $color-on;
+}
+
+.display {
+  &.time {
+    width: 100%;
+    height: 20vh;
+    margin-bottom: 30px;
+  }
+  &.date {
+    width: 100%;
+    height: 10vh;
+  }
+}
