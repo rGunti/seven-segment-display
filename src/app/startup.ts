@@ -1,7 +1,6 @@
 import dateFormat from 'dateformat';
 import { SegmentDisplayController } from '../segment-display';
 import { center } from '../utils';
-import { App } from '.';
 
 export const WELCOME_ANIMATION = [
   // 345678901
