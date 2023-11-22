@@ -67,6 +67,7 @@ body {
 
 .svg-seg-on {
   fill: $color-on;
+  transition: all 100ms ease;
 }
 
 .display {

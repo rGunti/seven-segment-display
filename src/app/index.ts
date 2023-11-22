@@ -1,15 +1,20 @@
-import dateFormat from 'dateformat';
 import {
   ColonDisplay,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from '../segment-display';
 import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from '../segment-display/fonts';
-import { center } from '../utils';
 
 import './style.scss';
+import {
+  Application,
+  MainDisplayCollection,
+  RenderArgs,
+  Screen,
+  WelcomeScreen,
+} from './startup';
 
-export class App {
+export class App implements Application<MainDisplayCollection> {
   private readonly timeController: SegmentDisplayController;
   private readonly dateController: SegmentDisplayController;
   private readonly weekdayController: SegmentDisplayController;
@@ -17,6 +22,9 @@ export class App {
   private readonly timeControllerRoot: HTMLElement;
   private readonly dateControllerRoot: HTMLElement;
   private readonly weekdayControllerRoot: HTMLElement;
+
+  private readonly displays: MainDisplayCollection;
+  private currentScreen: Screen<MainDisplayCollection> = new WelcomeScreen();
 
   private framerate: number;
 
@@ -79,6 +87,12 @@ export class App {
       SIXTEEN_FONT_SPECIAL
     );
 
+    this.displays = {
+      main: this.timeController,
+      date: this.dateController,
+      weekday: this.weekdayController,
+    };
+
     appRoot.appendChild(this.timeControllerRoot);
     appRoot.appendChild(this.dateControllerRoot);
     appRoot.appendChild(this.weekdayControllerRoot);
@@ -97,23 +111,12 @@ export class App {
     }
   }
 
+  setScreen(screen: Screen<MainDisplayCollection>): void {
+    this.currentScreen = screen;
+  }
+
   private tick(): void {
-    const renderValue = App.getCurrentTimeAsString();
-    this.timeController.show(renderValue);
-    this.dateController.show(
-      center(
-        App.getCurrentDateAsString(),
-        this.dateController.displayCount,
-        this.dateController.specialChars
-      )
-    );
-    this.weekdayController.show(
-      center(
-        `${dateFormat(new Date(), 'dddd')}`,
-        this.weekdayController.displayCount,
-        this.weekdayController.specialChars
-      )
-    );
+    this.currentScreen.render(new RenderArgs(this.displays, new Date(), this));
   }
 
   private static createDisplayContainer(
@@ -123,15 +126,5 @@ export class App {
     container.classList.add('display');
     container.classList.add(...additionalClasses);
     return container;
-  }
-
-  private static getCurrentTimeAsString(): string {
-    const now = new Date();
-    const format = now.getMilliseconds() < 500 ? 'HH:MM:ss' : 'HH MM ss';
-    return dateFormat(now, format);
-  }
-
-  private static getCurrentDateAsString(): string {
-    return dateFormat(new Date(), 'dd. mmm. yyyy');
   }
 }
