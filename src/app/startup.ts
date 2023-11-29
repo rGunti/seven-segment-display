@@ -190,7 +190,7 @@ export class WpeMusicPlayer
     displays.date.show(
       isPaused && showFlashText
         ? center(
-            '< PAUSED >',
+            '< PAUSE >',
             displays.date.displayCount,
             displays.date.specialChars,
           )
