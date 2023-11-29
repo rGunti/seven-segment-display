@@ -15,6 +15,7 @@ import {
   WpeMusicPlayer,
 } from './startup';
 import { Logger } from '../log';
+import { repeatArr } from '../utils';
 
 const LOGGER = new Logger('App');
 const WPE_LOGGER = new Logger('App.WPE');
@@ -57,38 +58,17 @@ export class App implements Application<MainDisplayCollection> {
 
     this.dateControllerRoot = App.createDisplayContainer('date');
     this.dateController = new SegmentDisplayController(
-      [
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-        new SixteenSegmentDisplay(this.dateControllerRoot),
-      ],
+      repeatArr(() => new SixteenSegmentDisplay(this.dateControllerRoot), 20),
       SIXTEEN_FONT,
       SIXTEEN_FONT_SPECIAL,
     );
 
     this.weekdayControllerRoot = App.createDisplayContainer('date');
     this.weekdayController = new SegmentDisplayController(
-      [
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        new SixteenSegmentDisplay(this.weekdayControllerRoot),
-      ],
+      repeatArr(
+        () => new SixteenSegmentDisplay(this.weekdayControllerRoot),
+        20,
+      ),
       SIXTEEN_FONT,
       SIXTEEN_FONT_SPECIAL,
     );

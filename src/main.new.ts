@@ -6,6 +6,8 @@ if (!appRoot) {
 }
 
 const APP = new App(appRoot);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as unknown as any).APP = APP;
 setTimeout(() => {
   APP.registerEvents();
   APP.startTicking();

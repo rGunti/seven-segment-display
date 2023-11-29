@@ -6,6 +6,14 @@ export function repeat(str: string, amount: number): string {
   return sum;
 }
 
+export function repeatArr<T>(fn: () => T, amount: number): T[] {
+  const sum: T[] = [];
+  for (let i = 0; i < amount; i++) {
+    sum.push(fn());
+  }
+  return sum;
+}
+
 function calcStringLength(str: string, ignoreChars: Set<string>): number {
   let len = str.length;
   for (let i = 0; i < str.length; i++) {
@@ -50,4 +58,39 @@ export function limit(
     return str.substring(0, width);
   }
   return str;
+}
+
+export function scrollToPosition(
+  str: string,
+  width: number,
+  ignoreChars: string[] = [],
+  position: number,
+): string {
+  const ignoreCharSet = new Set<string>(ignoreChars);
+  const strLen = calcStringLength(str, ignoreCharSet);
+  if (strLen <= width) {
+    return center(str, width, ignoreChars);
+  }
+
+  let startPosition = position;
+  if (startPosition >= 0) {
+    if (startPosition > strLen) {
+      startPosition = 0;
+    } else if (ignoreCharSet.has(str[startPosition])) {
+      startPosition++;
+    }
+  }
+
+  let returnString = '';
+  while (calcStringLength(returnString, ignoreCharSet) < width) {
+    returnString += startPosition < 0 ? ' ' : str[startPosition];
+    startPosition++;
+    if (startPosition >= str.length) {
+      break;
+    }
+  }
+  if (returnString.length < width) {
+    returnString += repeat(' ', width - returnString.length);
+  }
+  return returnString;
 }

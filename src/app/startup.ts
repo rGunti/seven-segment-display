@@ -1,6 +1,6 @@
 import dateFormat from 'dateformat';
 import { SegmentDisplayController } from '../segment-display';
-import { center, limit } from '../utils';
+import { center, scrollToPosition } from '../utils';
 import {
   WallpaperMediaPlaybackEvent,
   WallpaperMediaPropertiesEvent,
@@ -149,6 +149,7 @@ export const WPE_MP_LOGGER = new Logger('WpeMusicPlayer');
 export class WpeMusicPlayer
   implements Screen<MainDisplayCollection>, WpeEventReceiver
 {
+  static readonly SCROLL_SPEED = 500;
   readonly supportsWpeEvents = true;
 
   private lastTimelineEvent: WallpaperMediaTimelineEvent | undefined;
@@ -158,6 +159,8 @@ export class WpeMusicPlayer
   //private lastPlaybackEventReceived = 0;
   private lastPropertiesEvent: WallpaperMediaPropertiesEvent | undefined;
   //private lastPropertiesEventReceived = 0;
+
+  private lastScrollReset = 0;
 
   //private songStartedAt = 0;
 
@@ -187,28 +190,63 @@ export class WpeMusicPlayer
       displays.main.show('R EA DY');
     }
 
-    displays.date.show(
-      isPaused && showFlashText
-        ? center(
-            '< PAUSE >',
-            displays.date.displayCount,
-            displays.date.specialChars,
-          )
-        : limit(
-            this.lastPropertiesEvent?.title || '',
-            displays.date.displayCount,
-            displays.date.specialChars,
-          ),
-    );
-    displays.weekday.show(
-      isPaused && showFlashText
-        ? ''
-        : limit(
-            this.lastPropertiesEvent?.artist || '',
-            displays.date.displayCount,
-            displays.date.specialChars,
-          ),
-    );
+    if (isPaused && showFlashText) {
+      displays.date.show(
+        center(
+          '< PAUSE >',
+          displays.date.displayCount,
+          displays.date.specialChars,
+        ),
+      );
+      displays.weekday.show('');
+    } else {
+      let titleText = this.lastPropertiesEvent?.title || '';
+      let artistText = this.lastPropertiesEvent?.artist || '';
+
+      const maxLength = Math.max(titleText.length, artistText.length);
+      titleText += ' '.repeat(maxLength - titleText.length);
+      artistText += ' '.repeat(maxLength - artistText.length);
+
+      const titleIndex = isPaused
+        ? 0
+        : (Math.floor(
+            (now - this.lastScrollReset) / WpeMusicPlayer.SCROLL_SPEED,
+          ) %
+            (titleText.length + displays.date.displayCount)) -
+          displays.date.displayCount;
+      const formattedTitleText = scrollToPosition(
+        titleText,
+        displays.date.displayCount,
+        displays.date.specialChars,
+        titleIndex,
+      );
+      displays.date.show(formattedTitleText);
+      //WPE_MP_LOGGER.debug(
+      //  'Formatted title text',
+      //  titleIndex,
+      //  formattedTitleText,
+      //);
+
+      const artistIndex = isPaused
+        ? 0
+        : (Math.floor(
+            (now - this.lastScrollReset) / WpeMusicPlayer.SCROLL_SPEED,
+          ) %
+            (artistText.length + displays.date.displayCount)) -
+          displays.date.displayCount;
+      const formattedArtistText = scrollToPosition(
+        artistText,
+        displays.date.displayCount,
+        displays.date.specialChars,
+        artistIndex,
+      );
+      displays.weekday.show(formattedArtistText);
+      //WPE_MP_LOGGER.debug(
+      //  'Formatted artist text',
+      //  artistIndex,
+      //  formattedArtistText,
+      //);
+    }
   }
 
   private static formatTime(time: number): string {
@@ -254,15 +292,19 @@ export class WpeMusicPlayer
   }
 
   onPlaybackChanged(event: WallpaperMediaPlaybackEvent): void {
+    const now = new Date().getTime();
     if (this.lastPlaybackEvent?.state === 2 && event.state == 1 /* playing */) {
-      this.lastTimelineEventReceived = new Date().getTime();
+      this.lastTimelineEventReceived = now;
     }
     this.lastPlaybackEvent = event;
+    this.lastScrollReset = now;
     //this.lastPlaybackEventReceived = new Date().getTime();
   }
 
   onPropertyChanged(event: WallpaperMediaPropertiesEvent): void {
+    const now = new Date().getTime();
     this.lastPropertiesEvent = event;
     //this.lastPropertiesEventReceived = new Date().getTime();
+    this.lastScrollReset = now;
   }
 }
