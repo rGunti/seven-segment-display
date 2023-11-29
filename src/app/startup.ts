@@ -44,7 +44,7 @@ export class RenderArgs<T extends DisplayCollection> {
   constructor(
     public readonly displays: T,
     public readonly now: Date,
-    public readonly owner: Application<T>
+    public readonly owner: Application<T>,
   ) {}
 
   changeScreen(screen: Screen<T>): void {
@@ -59,7 +59,7 @@ export interface Screen<T extends DisplayCollection> {
 export class WelcomeScreen implements Screen<MainDisplayCollection> {
   private currentFrame = -1;
   private lastFrameChange = 0;
-  private expectedFrameTime = 1000 / 5;
+  private expectedFrameTime = 1000 / 10;
 
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     this.advanceFrame();
@@ -95,7 +95,7 @@ export class ClockScreen implements Screen<MainDisplayCollection> {
     const { displays, now } = renderArgs;
     if (this.showTime) {
       displays.main.show(
-        dateFormat(now, now.getMilliseconds() < 500 ? 'HH:MM:ss' : 'HH MM ss')
+        dateFormat(now, now.getMilliseconds() < 500 ? 'HH:MM:ss' : 'HH MM ss'),
       );
     }
 
@@ -104,8 +104,8 @@ export class ClockScreen implements Screen<MainDisplayCollection> {
         center(
           dateFormat(now, 'dd. mmm. yyyy'),
           displays.date.displayCount,
-          displays.date.specialChars
-        )
+          displays.date.specialChars,
+        ),
       );
     }
 
@@ -114,8 +114,8 @@ export class ClockScreen implements Screen<MainDisplayCollection> {
         center(
           `${dateFormat(now, 'dddd')}`,
           displays.weekday.displayCount,
-          displays.weekday.specialChars
-        )
+          displays.weekday.specialChars,
+        ),
       );
     }
 

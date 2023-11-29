@@ -7,5 +7,6 @@ if (!appRoot) {
 
 const APP = new App(appRoot);
 setTimeout(() => {
+  APP.registerEvents();
   APP.startTicking();
 }, 100);

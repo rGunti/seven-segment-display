@@ -13,6 +13,10 @@ import {
   Screen,
   WelcomeScreen,
 } from './startup';
+import { Logger } from '../log';
+
+const LOGGER = new Logger('App');
+const WPE_LOGGER = new Logger('App.WPE');
 
 export class App implements Application<MainDisplayCollection> {
   private readonly timeController: SegmentDisplayController;
@@ -32,6 +36,7 @@ export class App implements Application<MainDisplayCollection> {
   private tickTimer: any | undefined;
 
   constructor(appRoot: HTMLElement, framerate = 60) {
+    LOGGER.debug('Creating app ...');
     this.framerate = framerate;
 
     this.timeControllerRoot = App.createDisplayContainer('time');
@@ -46,7 +51,7 @@ export class App implements Application<MainDisplayCollection> {
         new SixteenSegmentDisplay(this.timeControllerRoot),
         new SixteenSegmentDisplay(this.timeControllerRoot),
       ],
-      SIXTEEN_FONT
+      SIXTEEN_FONT,
     );
 
     this.dateControllerRoot = App.createDisplayContainer('date');
@@ -65,7 +70,7 @@ export class App implements Application<MainDisplayCollection> {
         new SixteenSegmentDisplay(this.dateControllerRoot),
       ],
       SIXTEEN_FONT,
-      SIXTEEN_FONT_SPECIAL
+      SIXTEEN_FONT_SPECIAL,
     );
 
     this.weekdayControllerRoot = App.createDisplayContainer('date');
@@ -84,7 +89,7 @@ export class App implements Application<MainDisplayCollection> {
         new SixteenSegmentDisplay(this.weekdayControllerRoot),
       ],
       SIXTEEN_FONT,
-      SIXTEEN_FONT_SPECIAL
+      SIXTEEN_FONT_SPECIAL,
     );
 
     this.displays = {
@@ -96,6 +101,37 @@ export class App implements Application<MainDisplayCollection> {
     appRoot.appendChild(this.timeControllerRoot);
     appRoot.appendChild(this.dateControllerRoot);
     appRoot.appendChild(this.weekdayControllerRoot);
+  }
+
+  registerEvents(): void {
+    if (window.wallpaperRegisterAudioListener) {
+      LOGGER.debug('Detected Wallpaper Engine, registering events');
+      this.registerWpeEvents();
+    }
+  }
+
+  private registerWpeEvents(): void {
+    if (
+      !window.wallpaperRegisterMediaPlaybackListener ||
+      !window.wallpaperRegisterMediaTimelineListener ||
+      !window.wallpaperRegisterMediaPropertiesListener ||
+      !window.wallpaperRegisterMediaThumbnailListener
+    ) {
+      LOGGER.error('Tried to initialize WPE events outside of WPE!');
+      return;
+    }
+    window.wallpaperRegisterMediaPlaybackListener((e) => {
+      WPE_LOGGER.debug('Playback Status changed', e);
+    });
+    window.wallpaperRegisterMediaTimelineListener((e) => {
+      WPE_LOGGER.debug('Timeline changed', e);
+    });
+    window.wallpaperRegisterMediaPropertiesListener((e) => {
+      WPE_LOGGER.debug('Media Properties changed', e);
+    });
+    window.wallpaperRegisterMediaThumbnailListener((e) => {
+      WPE_LOGGER.debug('Media Thumbnail changed', e);
+    });
   }
 
   startTicking(): void {
