@@ -1,6 +1,6 @@
 import dateFormat from 'dateformat';
 import { SegmentDisplayController } from '../segment-display';
-import { center } from '../utils';
+import { center, limit } from '../utils';
 import {
   WallpaperMediaPlaybackEvent,
   WallpaperMediaPropertiesEvent,
@@ -154,7 +154,7 @@ export class WpeMusicPlayer
   private lastTimelineEvent: WallpaperMediaTimelineEvent | undefined;
   private lastTimelineEventReceived = 0;
   private timelineSkew = 0;
-  //private lastPlaybackEvent: WallpaperMediaPlaybackEvent | undefined;
+  private lastPlaybackEvent: WallpaperMediaPlaybackEvent | undefined;
   //private lastPlaybackEventReceived = 0;
   private lastPropertiesEvent: WallpaperMediaPropertiesEvent | undefined;
   //private lastPropertiesEventReceived = 0;
@@ -165,28 +165,50 @@ export class WpeMusicPlayer
     const { displays } = renderArgs;
     const now = renderArgs.now.getTime();
 
-    if (this.lastTimelineEvent && this.lastTimelineEvent.duration > 0) {
+    const isPaused = this.lastPlaybackEvent?.state === 2;
+    const showFlashText = Math.floor(now / 1000) % 2 === 0;
+
+    if (isPaused && showFlashText) {
+      displays.main.show('');
+    } else if (this.lastTimelineEvent && this.lastTimelineEvent.duration > 0) {
       const { position } = this.lastTimelineEvent;
       const offset =
-        this.lastTimelineEventReceived > 0
+        this.lastTimelineEventReceived > 0 &&
+        this.lastPlaybackEvent?.state !== 2
           ? now - this.lastTimelineEventReceived
           : 0;
+      // If we're paused, we negate the offset for later
+      const skew = this.lastPlaybackEvent?.state !== 2 ? this.timelineSkew : 0;
       const time = WpeMusicPlayer.formatTime(
-        Math.round((position * 1000 + offset - this.timelineSkew) / 1000),
+        Math.round((position * 1000 + offset - skew) / 1000),
       );
       displays.main.show(time);
-      displays.weekday.show(`${this.timelineSkew} ms`);
     } else {
-      displays.main.show('--:--:--');
+      displays.main.show('R EA DY');
     }
 
-    if (this.lastPropertiesEvent) {
-      displays.date.show(this.lastPropertiesEvent.title);
-      //displays.weekday.show(this.lastPropertiesEvent.artist);
-    } else {
-      displays.date.show('No title');
-      //displays.weekday.show('No artist');
-    }
+    displays.date.show(
+      isPaused && showFlashText
+        ? center(
+            '< PAUSED >',
+            displays.date.displayCount,
+            displays.date.specialChars,
+          )
+        : limit(
+            this.lastPropertiesEvent?.title || '',
+            displays.date.displayCount,
+            displays.date.specialChars,
+          ),
+    );
+    displays.weekday.show(
+      isPaused && showFlashText
+        ? ''
+        : limit(
+            this.lastPropertiesEvent?.artist || '',
+            displays.date.displayCount,
+            displays.date.specialChars,
+          ),
+    );
   }
 
   private static formatTime(time: number): string {
@@ -231,8 +253,11 @@ export class WpeMusicPlayer
     this.lastTimelineEventReceived = now;
   }
 
-  onPlaybackChanged(_: WallpaperMediaPlaybackEvent): void {
-    //this.lastPlaybackEvent = event;
+  onPlaybackChanged(event: WallpaperMediaPlaybackEvent): void {
+    if (this.lastPlaybackEvent?.state === 2 && event.state == 1 /* playing */) {
+      this.lastTimelineEventReceived = new Date().getTime();
+    }
+    this.lastPlaybackEvent = event;
     //this.lastPlaybackEventReceived = new Date().getTime();
   }
 

@@ -28,7 +28,7 @@ export function left(str: string, width: number, ignoreChars: string[] = []) {
 export function center(
   str: string,
   width: number,
-  ignoreChars: string[] = []
+  ignoreChars: string[] = [],
 ): string {
   const strLen = calcStringLength(str, new Set<string>(ignoreChars));
   if (strLen >= width) {
@@ -38,4 +38,16 @@ export function center(
   const spacesLeft = Math.floor(diff / 2);
   const spacesRight = Math.ceil(diff / 2);
   return `${repeat(' ', spacesLeft)}${str}${repeat(' ', spacesRight)}`;
+}
+
+export function limit(
+  str: string,
+  width: number,
+  ignoreChars: string[] = [],
+): string {
+  const strLen = calcStringLength(str, new Set<string>(ignoreChars));
+  if (strLen >= width) {
+    return str.substring(0, width);
+  }
+  return str;
 }
