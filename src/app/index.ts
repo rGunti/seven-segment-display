@@ -11,7 +11,8 @@ import {
   MainDisplayCollection,
   RenderArgs,
   Screen,
-  WelcomeScreen,
+  WpeEventReceiver,
+  WpeMusicPlayer,
 } from './startup';
 import { Logger } from '../log';
 
@@ -28,7 +29,7 @@ export class App implements Application<MainDisplayCollection> {
   private readonly weekdayControllerRoot: HTMLElement;
 
   private readonly displays: MainDisplayCollection;
-  private currentScreen: Screen<MainDisplayCollection> = new WelcomeScreen();
+  private currentScreen: Screen<MainDisplayCollection> = new WpeMusicPlayer();
 
   private framerate: number;
 
@@ -122,16 +123,34 @@ export class App implements Application<MainDisplayCollection> {
     }
     window.wallpaperRegisterMediaPlaybackListener((e) => {
       WPE_LOGGER.debug('Playback Status changed', e);
+      const wpe = this.currentWpeEventReceiver;
+      if (wpe) {
+        wpe.onPlaybackChanged(e);
+      }
     });
     window.wallpaperRegisterMediaTimelineListener((e) => {
       WPE_LOGGER.debug('Timeline changed', e);
+      const wpe = this.currentWpeEventReceiver;
+      if (wpe) {
+        wpe.onTimelineChanged(e);
+      }
     });
     window.wallpaperRegisterMediaPropertiesListener((e) => {
       WPE_LOGGER.debug('Media Properties changed', e);
+      const wpe = this.currentWpeEventReceiver;
+      if (wpe) {
+        wpe.onPropertyChanged(e);
+      }
     });
-    window.wallpaperRegisterMediaThumbnailListener((e) => {
-      WPE_LOGGER.debug('Media Thumbnail changed', e);
-    });
+  }
+
+  get currentScreenSupportsWpeEvents(): boolean {
+    return (this.currentScreen as unknown as WpeEventReceiver)
+      .supportsWpeEvents;
+  }
+  get currentWpeEventReceiver(): WpeEventReceiver | undefined {
+    const screen = this.currentScreen as unknown as WpeEventReceiver;
+    return screen.supportsWpeEvents ? screen : undefined;
   }
 
   startTicking(): void {

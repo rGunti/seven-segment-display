@@ -1,6 +1,12 @@
 import dateFormat from 'dateformat';
 import { SegmentDisplayController } from '../segment-display';
 import { center } from '../utils';
+import {
+  WallpaperMediaPlaybackEvent,
+  WallpaperMediaPropertiesEvent,
+  WallpaperMediaTimelineEvent,
+} from 'wallpaper-engine-types';
+import { Logger } from '../log';
 
 export const WELCOME_ANIMATION = [
   // 345678901
@@ -54,6 +60,13 @@ export class RenderArgs<T extends DisplayCollection> {
 
 export interface Screen<T extends DisplayCollection> {
   render(renderArgs: RenderArgs<T>): void;
+}
+
+export interface WpeEventReceiver {
+  readonly supportsWpeEvents: boolean;
+  onTimelineChanged(event: WallpaperMediaTimelineEvent): void;
+  onPlaybackChanged(event: WallpaperMediaPlaybackEvent): void;
+  onPropertyChanged(event: WallpaperMediaPropertiesEvent): void;
 }
 
 export class WelcomeScreen implements Screen<MainDisplayCollection> {
@@ -128,5 +141,103 @@ export class ClockScreen implements Screen<MainDisplayCollection> {
     const timeDelta = now - this.bootTime;
     this.showDate = timeDelta > 100;
     this.showWeekday = timeDelta > 200;
+  }
+}
+
+export const WPE_MP_LOGGER = new Logger('WpeMusicPlayer');
+
+export class WpeMusicPlayer
+  implements Screen<MainDisplayCollection>, WpeEventReceiver
+{
+  readonly supportsWpeEvents = true;
+
+  private lastTimelineEvent: WallpaperMediaTimelineEvent | undefined;
+  private lastTimelineEventReceived = 0;
+  private timelineSkew = 0;
+  //private lastPlaybackEvent: WallpaperMediaPlaybackEvent | undefined;
+  //private lastPlaybackEventReceived = 0;
+  private lastPropertiesEvent: WallpaperMediaPropertiesEvent | undefined;
+  //private lastPropertiesEventReceived = 0;
+
+  //private songStartedAt = 0;
+
+  render(renderArgs: RenderArgs<MainDisplayCollection>): void {
+    const { displays } = renderArgs;
+    const now = renderArgs.now.getTime();
+
+    if (this.lastTimelineEvent && this.lastTimelineEvent.duration > 0) {
+      const { position } = this.lastTimelineEvent;
+      const offset =
+        this.lastTimelineEventReceived > 0
+          ? now - this.lastTimelineEventReceived
+          : 0;
+      const time = WpeMusicPlayer.formatTime(
+        Math.round((position * 1000 + offset - this.timelineSkew) / 1000),
+      );
+      displays.main.show(time);
+      displays.weekday.show(`${this.timelineSkew} ms`);
+    } else {
+      displays.main.show('--:--:--');
+    }
+
+    if (this.lastPropertiesEvent) {
+      displays.date.show(this.lastPropertiesEvent.title);
+      //displays.weekday.show(this.lastPropertiesEvent.artist);
+    } else {
+      displays.date.show('No title');
+      //displays.weekday.show('No artist');
+    }
+  }
+
+  private static formatTime(time: number): string {
+    // Takes the number of seconds and formats it into the format HH:mm:ss, including padding 0
+    // eslint-disable-next-line no-bitwise
+    const hours = ~~(time / 3600);
+    // eslint-disable-next-line no-bitwise
+    const minutes = ~~((time % 3600) / 60);
+    // eslint-disable-next-line no-bitwise
+    const seconds = ~~time % 60;
+
+    if (hours > 0) {
+      return `${hours.toString().padStart(2, '0')}:${minutes
+        .toString()
+        .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    } else {
+      return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+    }
+  }
+
+  onTimelineChanged(event: WallpaperMediaTimelineEvent): void {
+    const now = new Date().getTime();
+    if (this.lastTimelineEventReceived > 0) {
+      const positionDiff =
+        (event.position - (this.lastTimelineEvent?.position || 0)) * 1000;
+      const eventTimeDiff =
+        positionDiff <= 0 ? 0 : now - this.lastTimelineEventReceived;
+      const skew = positionDiff - eventTimeDiff;
+      WPE_MP_LOGGER.debug('Calculated time diff', {
+        positionDiff,
+        eventTimeDiff: now - this.lastTimelineEventReceived,
+        skew,
+        lastTimelineEventReceived: this.lastTimelineEventReceived,
+        lastTimelineEventUpdateDiff: this.timelineSkew,
+        now,
+      });
+      this.timelineSkew =
+        Math.abs(skew) > 1500 ? 0 : Math.max(Math.min(500, skew), -500);
+    }
+
+    this.lastTimelineEvent = event;
+    this.lastTimelineEventReceived = now;
+  }
+
+  onPlaybackChanged(_: WallpaperMediaPlaybackEvent): void {
+    //this.lastPlaybackEvent = event;
+    //this.lastPlaybackEventReceived = new Date().getTime();
+  }
+
+  onPropertyChanged(event: WallpaperMediaPropertiesEvent): void {
+    this.lastPropertiesEvent = event;
+    //this.lastPropertiesEventReceived = new Date().getTime();
   }
 }
