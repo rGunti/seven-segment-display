@@ -7,7 +7,7 @@ import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from '../segment-display/fonts';
 
 import { Logger } from '../log';
 import { repeatArr } from '../utils';
-import { Application, RenderArgs, Screen } from './base';
+import { Application, RenderArgs, Screen, WpeEventReceiver } from './base';
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
 import { WelcomeScreen } from './screens';
