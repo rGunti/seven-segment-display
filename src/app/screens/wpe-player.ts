@@ -4,11 +4,14 @@ import {
   WallpaperMediaTimelineEvent,
 } from 'wallpaper-engine-types';
 import { Logger } from '../../log';
-import { center, scrollToPosition } from '../../utils';
+import { center, left, repeat, scrollToPosition } from '../../utils';
 import { RenderArgs, Screen, WpeEventReceiver } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 export const WPE_MP_LOGGER = new Logger('WpeMusicPlayer');
+
+const AUDIO_BAR_CHAR = '=';
+const AUDIO_BAR_MODE: 'mean' | 'max' = 'max';
 
 export class WpeMusicPlayer
   implements Screen<MainDisplayCollection>, WpeEventReceiver
@@ -25,6 +28,7 @@ export class WpeMusicPlayer
   //private lastPropertiesEventReceived = 0;
 
   private lastScrollReset = 0;
+  private audioLevel = 0;
 
   //private songStartedAt = 0;
 
@@ -64,52 +68,39 @@ export class WpeMusicPlayer
       );
       displays.weekday.show('');
     } else {
-      let titleText = this.lastPropertiesEvent?.title || '';
-      let artistText = this.lastPropertiesEvent?.artist || '';
+      const titleText = this.lastPropertiesEvent?.title || 'No Title';
+      const artistText = this.lastPropertiesEvent?.artist || 'No Artist';
 
-      const maxLength = Math.max(titleText.length, artistText.length);
-      titleText += ' '.repeat(maxLength - titleText.length);
-      artistText += ' '.repeat(maxLength - artistText.length);
+      const textToDisplay =
+        (now - this.lastScrollReset) % 10000 < 5000 ? titleText : artistText;
 
       const titleIndex = isPaused
         ? 0
         : (Math.floor(
             (now - this.lastScrollReset) / WpeMusicPlayer.SCROLL_SPEED,
           ) %
-            (titleText.length + displays.date.displayCount)) -
+            (textToDisplay.length + displays.date.displayCount)) -
           displays.date.displayCount;
       const formattedTitleText = scrollToPosition(
-        titleText,
+        textToDisplay,
         displays.date.displayCount,
         displays.date.specialChars,
         titleIndex,
       );
       displays.date.show(formattedTitleText);
-      //WPE_MP_LOGGER.debug(
-      //  'Formatted title text',
-      //  titleIndex,
-      //  formattedTitleText,
-      //);
 
-      const artistIndex = isPaused
-        ? 0
-        : (Math.floor(
-            (now - this.lastScrollReset) / WpeMusicPlayer.SCROLL_SPEED,
-          ) %
-            (artistText.length + displays.date.displayCount)) -
-          displays.date.displayCount;
-      const formattedArtistText = scrollToPosition(
-        artistText,
-        displays.date.displayCount,
-        displays.date.specialChars,
-        artistIndex,
+      // Audio Bar
+      const formattedString = repeat(
+        AUDIO_BAR_CHAR,
+        Math.ceil(this.audioLevel * displays.weekday.displayCount),
       );
-      displays.weekday.show(formattedArtistText);
-      //WPE_MP_LOGGER.debug(
-      //  'Formatted artist text',
-      //  artistIndex,
-      //  formattedArtistText,
-      //);
+      displays.weekday.show(
+        left(
+          formattedString,
+          displays.weekday.displayCount,
+          displays.weekday.specialChars,
+        ),
+      );
     }
   }
 
@@ -139,14 +130,14 @@ export class WpeMusicPlayer
       const eventTimeDiff =
         positionDiff <= 0 ? 0 : now - this.lastTimelineEventReceived;
       const skew = positionDiff - eventTimeDiff;
-      WPE_MP_LOGGER.debug('Calculated time diff', {
-        positionDiff,
-        eventTimeDiff: now - this.lastTimelineEventReceived,
-        skew,
-        lastTimelineEventReceived: this.lastTimelineEventReceived,
-        lastTimelineEventUpdateDiff: this.timelineSkew,
-        now,
-      });
+      //WPE_MP_LOGGER.debug('Calculated time diff', {
+      //  positionDiff,
+      //  eventTimeDiff: now - this.lastTimelineEventReceived,
+      //  skew,
+      //  lastTimelineEventReceived: this.lastTimelineEventReceived,
+      //  lastTimelineEventUpdateDiff: this.timelineSkew,
+      //  now,
+      //});
       this.timelineSkew =
         Math.abs(skew) > 1500 ? 0 : Math.max(Math.min(500, skew), -500);
     }
@@ -170,5 +161,29 @@ export class WpeMusicPlayer
     this.lastPropertiesEvent = event;
     //this.lastPropertiesEventReceived = new Date().getTime();
     this.lastScrollReset = now;
+  }
+
+  onAudioLevelChanged(audioLevels: Uint8Array): void {
+    if (audioLevels.length !== 128) {
+      WPE_MP_LOGGER.error(
+        'Received audio levels with invalid length',
+        audioLevels.length,
+      );
+      return;
+    }
+
+    const combinedLevels = [];
+    for (let i = 0; i < 64; i++) {
+      combinedLevels.push(Math.max(audioLevels[i], audioLevels[i + 64]));
+    }
+
+    switch (AUDIO_BAR_MODE) {
+      case 'mean':
+        this.audioLevel = combinedLevels.reduce((a, b) => a + b, 0) / 64;
+        break;
+      case 'max':
+        this.audioLevel = Math.max(...combinedLevels);
+        break;
+    }
   }
 }

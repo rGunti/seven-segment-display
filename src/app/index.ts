@@ -7,10 +7,18 @@ import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from '../segment-display/fonts';
 
 import { Logger } from '../log';
 import { repeatArr } from '../utils';
-import { Application, RenderArgs, Screen, WpeEventReceiver } from './base';
+import {
+  Application,
+  RenderArgs,
+  Screen,
+  WPE_PAUSED,
+  WPE_PLAYING,
+  WPE_STOPPED,
+  WpeEventReceiver,
+} from './base';
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
-import { WelcomeScreen } from './screens';
+import { WelcomeScreen, WpeMusicPlayer } from './screens';
 import './style.scss';
 
 const LOGGER = new Logger('App');
@@ -26,7 +34,10 @@ export class App implements Application<MainDisplayCollection> {
   private readonly weekdayControllerRoot: HTMLElement;
 
   private readonly displays: MainDisplayCollection;
-  private currentScreen: Screen<MainDisplayCollection> = new WelcomeScreen();
+  private defaultScreen = new WelcomeScreen();
+  private wpeScreen = new WpeMusicPlayer();
+
+  private currentScreen: Screen<MainDisplayCollection> = this.defaultScreen;
 
   private framerate: number;
 
@@ -92,13 +103,25 @@ export class App implements Application<MainDisplayCollection> {
       !window.wallpaperRegisterMediaPlaybackListener ||
       !window.wallpaperRegisterMediaTimelineListener ||
       !window.wallpaperRegisterMediaPropertiesListener ||
-      !window.wallpaperRegisterMediaThumbnailListener
+      !window.wallpaperRegisterMediaThumbnailListener ||
+      !window.wallpaperRegisterAudioListener
     ) {
       LOGGER.error('Tried to initialize WPE events outside of WPE!');
       return;
     }
     window.wallpaperRegisterMediaPlaybackListener((e) => {
       WPE_LOGGER.debug('Playback Status changed', e);
+
+      switch (e.state) {
+        case WPE_STOPPED:
+          this.setScreen(this.currentScreen);
+          break;
+        case WPE_PLAYING:
+        case WPE_PAUSED:
+          this.setScreen(this.wpeScreen);
+          break;
+      }
+
       const wpe = this.currentWpeEventReceiver;
       if (wpe) {
         wpe.onPlaybackChanged(e);
@@ -116,6 +139,13 @@ export class App implements Application<MainDisplayCollection> {
       const wpe = this.currentWpeEventReceiver;
       if (wpe) {
         wpe.onPropertyChanged(e);
+      }
+    });
+    window.wallpaperRegisterAudioListener((e) => {
+      //WPE_LOGGER.debug('Audio changed', e);
+      const wpe = this.currentWpeEventReceiver;
+      if (wpe && wpe.onAudioLevelChanged) {
+        wpe.onAudioLevelChanged(e);
       }
     });
   }
