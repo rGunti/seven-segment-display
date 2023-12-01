@@ -2,6 +2,7 @@ import { ClockScreen } from '.';
 import { center } from '../../utils';
 import { RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
+import { isWpeEnabled } from '../plugins';
 
 const WELCOME_TEXT = 'WELCOME';
 
@@ -10,6 +11,8 @@ export class WelcomeScreen implements Screen<MainDisplayCollection> {
   private lastFrameChange = 0;
   private expectedFrameTime = 1000 / 25;
 
+  private wpeEnabled = isWpeEnabled();
+
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     this.advanceFrame();
 
@@ -17,6 +20,10 @@ export class WelcomeScreen implements Screen<MainDisplayCollection> {
     display.show(
       center(WELCOME_TEXT, display.displayCount, display.specialChars),
     );
+
+    if (this.wpeEnabled) {
+      renderArgs.displays.weekday.show('WPE');
+    }
 
     if (this.currentFrame === WELCOME_TEXT.length - 1) {
       renderArgs.changeScreen(new ClockScreen());

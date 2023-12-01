@@ -9,6 +9,7 @@ import { Logger } from '../log';
 import { repeatArr } from '../utils';
 import { Application, RenderArgs, Screen } from './base';
 import { MainDisplayCollection } from './collection';
+import { isWpeEnabled } from './plugins';
 import { WelcomeScreen } from './screens';
 import './style.scss';
 
@@ -80,7 +81,7 @@ export class App implements Application<MainDisplayCollection> {
   }
 
   registerEvents(): void {
-    if (window.wallpaperRegisterAudioListener) {
+    if (isWpeEnabled()) {
       LOGGER.debug('Detected Wallpaper Engine, registering events');
       this.registerWpeEvents();
     }
