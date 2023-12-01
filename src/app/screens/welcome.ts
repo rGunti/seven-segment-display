@@ -22,7 +22,13 @@ export class WelcomeScreen implements Screen<MainDisplayCollection> {
     );
 
     if (this.wpeEnabled) {
-      renderArgs.displays.weekday.show('WPE');
+      renderArgs.displays.weekday.show(
+        center(
+          'WPE enabled',
+          renderArgs.displays.weekday.displayCount,
+          renderArgs.displays.weekday.specialChars,
+        ),
+      );
     }
 
     if (this.currentFrame === WELCOME_TEXT.length - 1) {
