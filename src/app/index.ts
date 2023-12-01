@@ -5,17 +5,12 @@ import {
 } from '../segment-display';
 import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from '../segment-display/fonts';
 
-import './style.scss';
-import {
-  Application,
-  MainDisplayCollection,
-  RenderArgs,
-  Screen,
-  WpeEventReceiver,
-  WpeMusicPlayer,
-} from './startup';
 import { Logger } from '../log';
 import { repeatArr } from '../utils';
+import { Application, RenderArgs, Screen } from './base';
+import { MainDisplayCollection } from './collection';
+import { WelcomeScreen } from './screens';
+import './style.scss';
 
 const LOGGER = new Logger('App');
 const WPE_LOGGER = new Logger('App.WPE');
@@ -30,7 +25,7 @@ export class App implements Application<MainDisplayCollection> {
   private readonly weekdayControllerRoot: HTMLElement;
 
   private readonly displays: MainDisplayCollection;
-  private currentScreen: Screen<MainDisplayCollection> = new WpeMusicPlayer();
+  private currentScreen: Screen<MainDisplayCollection> = new WelcomeScreen();
 
   private framerate: number;
 

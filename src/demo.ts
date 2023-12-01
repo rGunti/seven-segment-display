@@ -1,4 +1,3 @@
-import './style.scss';
 import {
   FancySevenSegmentDisplay,
   SegmentDisplay,
@@ -6,6 +5,7 @@ import {
 } from './segment-display';
 import { SixteenSegmentDisplay } from './segment-display/16seg';
 import { SEVEN_FONT, SIXTEEN_FONT } from './segment-display/fonts';
+import './style.scss';
 
 function generateCharArray(...range: [number, number][]): string[] {
   const output = [];
@@ -34,7 +34,7 @@ const CHARS_TO_SHOW = generateCharArray(
   /*  [48, 57], // 0-9
   [65, 90], // A-Z
   [97, 122], // a-z
-*/ [32, 127]
+*/ [32, 127],
 ); /*.concat(['.', ':', '-', '_'])*/
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

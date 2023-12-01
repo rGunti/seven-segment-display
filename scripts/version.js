@@ -1,5 +1,5 @@
-import { writeFileSync } from 'fs';
 import * as dateFormat from 'dateformat';
+import { writeFileSync } from 'fs';
 
 const now = new Date();
 writeFileSync(
@@ -12,5 +12,5 @@ writeFileSync(
       revision: `${dateFormat.default(now, 'HH.MM.ss')}`,
     },
     author: 'rGunti',
-  })
+  }),
 );

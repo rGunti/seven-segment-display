@@ -1,12 +1,12 @@
+import dateFormat from 'dateformat';
 import {
   ColonDisplay,
   SIXTEEN_FONT_PINS,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from './segment-display';
-import dateFormat from 'dateformat';
-import './style.scss';
 import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from './segment-display/fonts';
+import './style.scss';
 import { center, left } from './utils';
 
 import * as versionInfo from './assets/version.json';
@@ -40,7 +40,7 @@ const DIGITS = [
 ];
 const CONTROLLER = new SegmentDisplayController(
   DIGITS,
-  SIXTEEN_FONT
+  SIXTEEN_FONT,
   //SIXTEEN_FONT_SPECIAL
 );
 
@@ -61,7 +61,7 @@ const DATE_CONTROLLER = new SegmentDisplayController(
     new SixteenSegmentDisplay(dateContainer),
   ],
   SIXTEEN_FONT,
-  SIXTEEN_FONT_SPECIAL
+  SIXTEEN_FONT_SPECIAL,
 );
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -81,7 +81,7 @@ const WEEKDAY_CONTROLLER = new SegmentDisplayController(
     new SixteenSegmentDisplay(weekdayContainer),
   ],
   SIXTEEN_FONT,
-  SIXTEEN_FONT_SPECIAL
+  SIXTEEN_FONT_SPECIAL,
 );
 
 function getCurrentTimeAsString(): string {
@@ -122,22 +122,22 @@ const MODES: Record<number, () => void> = {
       center(
         getCurrentDateAsString(),
         DATE_CONTROLLER.displayCount,
-        DATE_CONTROLLER.specialChars
-      )
+        DATE_CONTROLLER.specialChars,
+      ),
     );
     WEEKDAY_CONTROLLER.show(
       center(
         `${dateFormat(new Date(), 'dddd')}`,
         WEEKDAY_CONTROLLER.displayCount,
-        WEEKDAY_CONTROLLER.specialChars
-      )
+        WEEKDAY_CONTROLLER.specialChars,
+      ),
     );
   },
   [MODE_DEBUG_CHARS]: () => {
     const pinIndex = Math.floor(new Date().getTime() / 1000) % 16;
     const pin = SIXTEEN_FONT_PINS[pinIndex];
     CONTROLLER.show(
-      left(pin, CONTROLLER.displayCount, CONTROLLER.specialChars)
+      left(pin, CONTROLLER.displayCount, CONTROLLER.specialChars),
     );
     CONTROLLER.displays[6].setSegments([pin]);
     CONTROLLER.displays[7].setSegments([pin]);
@@ -145,15 +145,15 @@ const MODES: Record<number, () => void> = {
       center(
         'SEGMENT',
         DATE_CONTROLLER.displayCount,
-        DATE_CONTROLLER.specialChars
-      )
+        DATE_CONTROLLER.specialChars,
+      ),
     );
     WEEKDAY_CONTROLLER.show(
       center(
         'DEBUG',
         WEEKDAY_CONTROLLER.displayCount,
-        WEEKDAY_CONTROLLER.specialChars
-      )
+        WEEKDAY_CONTROLLER.specialChars,
+      ),
     );
   },
   [MODE_VERSION]: () => {
@@ -164,21 +164,21 @@ const MODES: Record<number, () => void> = {
         versionInfo.version.patch,
       ]
         .map((v) => v.toString().padStart(2, '0'))
-        .join('.')
+        .join('.'),
     );
     DATE_CONTROLLER.show(
       left(
         `Bld  ${versionInfo.version.revision}`,
         WEEKDAY_CONTROLLER.displayCount,
-        WEEKDAY_CONTROLLER.specialChars
-      )
+        WEEKDAY_CONTROLLER.specialChars,
+      ),
     );
     WEEKDAY_CONTROLLER.show(
       left(
         `<C> ${versionInfo.author}`,
         WEEKDAY_CONTROLLER.displayCount,
-        WEEKDAY_CONTROLLER.specialChars
-      )
+        WEEKDAY_CONTROLLER.specialChars,
+      ),
     );
   },
 };

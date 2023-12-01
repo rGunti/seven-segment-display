@@ -1,6 +1,6 @@
-import './basic.scss';
 import { SegmentDisplay } from '..';
 import { SEVEN_FONT, SegmentId } from '../fonts';
+import './basic.scss';
 
 export class SevenSegmentDigit implements SegmentDisplay {
   private readonly segments: Record<string, HTMLElement | null>;

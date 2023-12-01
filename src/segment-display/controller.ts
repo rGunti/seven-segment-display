@@ -5,7 +5,7 @@ export class SegmentDisplayController {
   constructor(
     public readonly displays: SegmentDisplay[],
     public readonly font: SegmentDisplayFont<string>,
-    public readonly specialChars: string[] = []
+    public readonly specialChars: string[] = [],
   ) {}
 
   get displayCount(): number {

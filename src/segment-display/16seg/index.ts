@@ -179,7 +179,7 @@ export class SixteenSegmentDisplay
           id,
           ...element.attributes,
         });
-      })
+      }),
     );
     root.appendChild(defs);
 
@@ -198,7 +198,7 @@ export class SixteenSegmentDisplay
         createSvgElement('use', {
           ...e.element,
           'data-segment-id': e.elementId,
-        })
+        }),
       )
       .forEach((el) => {
         g.appendChild(el);
@@ -213,7 +213,7 @@ export class SixteenSegmentDisplay
         r: 2,
         'data-segment-id': 'dec',
         class: 'svg-seg',
-      })
+      }),
     );
     g.appendChild(
       createSvgElement('circle', {
@@ -222,7 +222,7 @@ export class SixteenSegmentDisplay
         r: 2,
         'data-segment-id': 'dec2',
         class: 'svg-seg',
-      })
+      }),
     );
 
     return root;
@@ -230,13 +230,13 @@ export class SixteenSegmentDisplay
 
   private generateSegmentRecord(): Record<string, SVGElement> {
     const objects: { key: string; obj: SVGElement }[] = Object.keys(
-      SVG_TEMPLATE
+      SVG_TEMPLATE,
     )
       .concat('dec', 'dec2')
       .map((key) => ({
         key,
         obj: this.svgRoot.querySelector(
-          `[data-segment-id=${key}]`
+          `[data-segment-id=${key}]`,
         ) as SVGElement,
       }));
     const base: Record<string, SVGElement> = {};

@@ -13,6 +13,6 @@ describe('centering text', () => {
     'when the input is "%s" with requested with length of %f while ignoring %s, expect "%s"',
     (inputText, width, ignoreChars, expectedOutput) => {
       expect(center(inputText, width, ignoreChars)).toBe(expectedOutput);
-    }
+    },
   );
 });

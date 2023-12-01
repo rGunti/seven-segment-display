@@ -1,3 +1,3 @@
 export * from './basic';
-export * from './fancy';
 export * from './fake';
+export * from './fancy';

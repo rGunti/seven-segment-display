@@ -16,7 +16,7 @@ function constructDisplay(characters: number): SegmentDisplayController {
 test('display is empty when initialized', () => {
   const display = constructDisplay(3);
   expect(
-    display.displays.flatMap((d) => (d as FakeSegmentDisplay).activeSegments)
+    display.displays.flatMap((d) => (d as FakeSegmentDisplay).activeSegments),
   ).toEqual([]);
 });
 
@@ -24,7 +24,9 @@ test('display shows numbers correctly', () => {
   const display = constructDisplay(10);
   display.show('1234567890');
   expect(
-    display.displays.map((d) => (d as FakeSegmentDisplay).activeSegments.sort())
+    display.displays.map((d) =>
+      (d as FakeSegmentDisplay).activeSegments.sort(),
+    ),
   ).toEqual(
     [
       SEVEN_FONT[1],
@@ -37,7 +39,7 @@ test('display shows numbers correctly', () => {
       SEVEN_FONT[8],
       SEVEN_FONT[9],
       SEVEN_FONT[0],
-    ].map((i) => i.sort())
+    ].map((i) => i.sort()),
   );
 });
 
@@ -45,14 +47,16 @@ test('displays decimal point correctly', () => {
   const display = constructDisplay(4);
   display.show('12.34');
   expect(
-    display.displays.map((d) => (d as FakeSegmentDisplay).activeSegments.sort())
+    display.displays.map((d) =>
+      (d as FakeSegmentDisplay).activeSegments.sort(),
+    ),
   ).toEqual(
     [
       SEVEN_FONT[1],
       [...SEVEN_FONT[2], 'dec'],
       SEVEN_FONT[3],
       SEVEN_FONT[4],
-    ].map((i) => i.sort())
+    ].map((i) => i.sort()),
   );
 });
 
