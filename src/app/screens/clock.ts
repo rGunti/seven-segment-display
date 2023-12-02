@@ -22,7 +22,7 @@ export class ClockScreen implements Screen<MainDisplayCollection> {
     if (this.showDate) {
       displays.date.show(
         center(
-          dateFormat(now, 'dd. mmm. yyyy'),
+          dateFormat(now, 'dd mmmm yyyy'),
           displays.date.displayCount,
           displays.date.specialChars,
         ),
