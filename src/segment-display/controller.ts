@@ -1,5 +1,5 @@
 import { SegmentDisplay } from '.';
-import { SegmentDisplayFont } from './fonts';
+import { DEFAULT_KEY, SegmentDisplayFont } from './fonts';
 
 export class SegmentDisplayController {
   constructor(
@@ -32,13 +32,9 @@ export class SegmentDisplayController {
         chars += str[strIdx - 1];
       }
 
-      const segments = chars.split('').flatMap((char) => {
-        const charPins = this.font[char];
-        if (charPins === undefined) {
-          return [];
-        }
-        return charPins;
-      });
+      const segments = chars
+        .split('')
+        .flatMap((char) => this.font[char] || this.font[DEFAULT_KEY] || []);
       display.setSegments(segments);
     }
   }

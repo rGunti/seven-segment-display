@@ -1,4 +1,6 @@
+export const DEFAULT_KEY = '_DEFAULT';
 export const SIXTEEN_FONT: SegmentDisplayFont<SixteenSegmentId> = {
+  [DEFAULT_KEY]: ['d1', 'd2', 'l', 'm'],
   ' ': [],
   '!': ['b', 'dec'],
   '"': ['b', 'h'],
