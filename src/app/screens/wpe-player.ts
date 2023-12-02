@@ -5,7 +5,13 @@ import {
 } from 'wallpaper-engine-types';
 import { Logger } from '../../log';
 import { center, left, repeat, scrollToPosition } from '../../utils';
-import { RenderArgs, Screen, WpeEventReceiver } from '../base';
+import {
+  RenderArgs,
+  Screen,
+  WPE_PAUSED,
+  WPE_STOPPED,
+  WpeEventReceiver,
+} from '../base';
 import { MainDisplayCollection } from '../collection';
 
 export const WPE_MP_LOGGER = new Logger('WpeMusicPlayer');
@@ -36,8 +42,22 @@ export class WpeMusicPlayer
     const { displays } = renderArgs;
     const now = renderArgs.now.getTime();
 
-    const isPaused = this.lastPlaybackEvent?.state === 2;
+    const playbackState = this.lastPlaybackEvent?.state;
+    const isStopped =
+      playbackState === undefined ||
+      playbackState === null ||
+      playbackState === WPE_STOPPED;
+    const isPaused = playbackState === WPE_PAUSED;
     const showFlashText = Math.floor(now / 1000) % 2 === 0;
+
+    if (isStopped) {
+      displays.main.show('-- -- --');
+      displays.date.show(
+        center('READY', displays.date.displayCount, displays.date.specialChars),
+      );
+      displays.weekday.show('');
+      return;
+    }
 
     if (isPaused && showFlashText) {
       displays.main.show('');
@@ -54,8 +74,6 @@ export class WpeMusicPlayer
         Math.round((position * 1000 + offset - skew) / 1000),
       );
       displays.main.show(time);
-    } else {
-      displays.main.show('R EA DY');
     }
 
     if (isPaused && showFlashText) {

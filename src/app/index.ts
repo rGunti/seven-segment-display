@@ -114,7 +114,7 @@ export class App implements Application<MainDisplayCollection> {
 
       switch (e.state) {
         case WPE_STOPPED:
-          this.setScreen(this.currentScreen);
+          this.setScreen(this.defaultScreen);
           break;
         case WPE_PLAYING:
         case WPE_PAUSED:
