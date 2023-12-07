@@ -1,3 +1,5 @@
+export * from './time';
+
 export function repeat(str: string, amount: number): string {
   let sum = '';
   for (let i = 0; i < amount; i++) {
@@ -6,7 +8,18 @@ export function repeat(str: string, amount: number): string {
   return sum;
 }
 
-function calcStringLength(str: string, ignoreChars: Set<string>): number {
+export function repeatArr<T>(fn: () => T, amount: number): T[] {
+  const sum: T[] = [];
+  for (let i = 0; i < amount; i++) {
+    sum.push(fn());
+  }
+  return sum;
+}
+
+export function calcStringLength(
+  str: string,
+  ignoreChars: Set<string>,
+): number {
   let len = str.length;
   for (let i = 0; i < str.length; i++) {
     if (ignoreChars.has(str[i])) {
@@ -16,7 +29,11 @@ function calcStringLength(str: string, ignoreChars: Set<string>): number {
   return len;
 }
 
-export function left(str: string, width: number, ignoreChars: string[] = []) {
+export function left(
+  str: string,
+  width: number,
+  ignoreChars: Set<string> = new Set<string>([]),
+) {
   const strLen = calcStringLength(str, new Set<string>(ignoreChars));
   if (strLen >= width) {
     return str;
@@ -28,9 +45,9 @@ export function left(str: string, width: number, ignoreChars: string[] = []) {
 export function center(
   str: string,
   width: number,
-  ignoreChars: string[] = []
+  ignoreChars: Set<string> = new Set<string>([]),
 ): string {
-  const strLen = calcStringLength(str, new Set<string>(ignoreChars));
+  const strLen = calcStringLength(str, ignoreChars);
   if (strLen >= width) {
     return str;
   }
@@ -38,4 +55,51 @@ export function center(
   const spacesLeft = Math.floor(diff / 2);
   const spacesRight = Math.ceil(diff / 2);
   return `${repeat(' ', spacesLeft)}${str}${repeat(' ', spacesRight)}`;
+}
+
+export function limit(
+  str: string,
+  width: number,
+  ignoreChars: Set<string> = new Set<string>([]),
+): string {
+  const strLen = calcStringLength(str, new Set<string>(ignoreChars));
+  if (strLen >= width) {
+    return str.substring(0, width);
+  }
+  return str;
+}
+
+export function scrollToPosition(
+  str: string,
+  width: number,
+  ignoreChars: Set<string> = new Set<string>([]),
+  position: number,
+): string {
+  const ignoreCharSet = new Set<string>(ignoreChars);
+  const strLen = calcStringLength(str, ignoreCharSet);
+  if (strLen <= width) {
+    return center(str, width, ignoreChars);
+  }
+
+  let startPosition = position;
+  if (startPosition >= 0) {
+    if (startPosition > strLen) {
+      startPosition = 0;
+    } else if (ignoreCharSet.has(str[startPosition])) {
+      startPosition++;
+    }
+  }
+
+  let returnString = '';
+  while (calcStringLength(returnString, ignoreCharSet) < width) {
+    returnString += startPosition < 0 ? ' ' : str[startPosition];
+    startPosition++;
+    if (startPosition >= str.length) {
+      break;
+    }
+  }
+  if (returnString.length < width) {
+    returnString += repeat(' ', width - returnString.length);
+  }
+  return returnString;
 }

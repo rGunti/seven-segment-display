@@ -82,7 +82,7 @@ export class FancySevenSegmentDisplay
         createSvgElement('use', {
           ...e.element,
           'data-segment-id': e.elementId,
-        })
+        }),
       )
       .forEach((el) => {
         g.appendChild(el);
@@ -99,7 +99,7 @@ export class FancySevenSegmentDisplay
         r: 5,
         'data-segment-id': 'dec',
         class: 'svg-seg',
-      })
+      }),
     );
 
     return root;
@@ -203,9 +203,9 @@ export class ColonDisplay
               'data-segment-id': 'g',
               class: 'svg-seg',
             }),
-          ]
+          ],
         ),
-      ]
+      ],
     );
   }
 

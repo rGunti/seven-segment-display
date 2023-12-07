@@ -3,7 +3,7 @@ export const SVG_NS = 'http://www.w3.org/2000/svg';
 export function createSvgElement(
   elType: string,
   attributes?: { [attributeName: string]: unknown },
-  children?: SVGElement[]
+  children?: SVGElement[],
 ): SVGElement {
   const el = document.createElementNS(SVG_NS, elType);
   if (attributes) {
@@ -28,7 +28,7 @@ export function createPointList(points: Coordinate[]): string {
 
 export function scaleCoordinate(
   coordinate: Coordinate,
-  factor: number
+  factor: number,
 ): Coordinate {
   if (Array.isArray(coordinate)) {
     return [coordinate[0] * factor, coordinate[1] * factor];

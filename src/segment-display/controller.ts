@@ -1,11 +1,11 @@
 import { SegmentDisplay } from '.';
-import { SegmentDisplayFont } from './fonts';
+import { DEFAULT_KEY, SegmentDisplayFont } from './fonts';
 
 export class SegmentDisplayController {
   constructor(
     public readonly displays: SegmentDisplay[],
     public readonly font: SegmentDisplayFont<string>,
-    public readonly specialChars: string[] = []
+    public readonly specialChars: Set<string> = new Set<string>(),
   ) {}
 
   get displayCount(): number {
@@ -15,9 +15,7 @@ export class SegmentDisplayController {
   show(str: string): void {
     this.clear();
 
-    let offset = 0; /* str
-      .split('')
-      .filter((c) => INTEGRATED_CHARS.indexOf(c) >= 0).length*/
+    let offset = 0;
     for (let i = this.displayCount - 1; i >= 0; i--) {
       const display = this.displays[i];
       const strIdx = str.length - this.displayCount + i - offset;
@@ -27,18 +25,14 @@ export class SegmentDisplayController {
       }
 
       let chars = str[strIdx];
-      if (this.specialChars.indexOf(chars) >= 0 && strIdx > 0) {
+      if (this.specialChars.has(chars) && strIdx > 0) {
         offset += 1;
         chars += str[strIdx - 1];
       }
 
-      const segments = chars.split('').flatMap((char) => {
-        const charPins = this.font[char];
-        if (charPins === undefined) {
-          return [];
-        }
-        return charPins;
-      });
+      const segments = chars
+        .split('')
+        .flatMap((char) => this.font[char] || this.font[DEFAULT_KEY] || []);
       display.setSegments(segments);
     }
   }
