@@ -27,7 +27,11 @@ export function calcStringLength(
   return len;
 }
 
-export function left(str: string, width: number, ignoreChars: string[] = []) {
+export function left(
+  str: string,
+  width: number,
+  ignoreChars: Set<string> = new Set<string>([]),
+) {
   const strLen = calcStringLength(str, new Set<string>(ignoreChars));
   if (strLen >= width) {
     return str;
@@ -39,9 +43,9 @@ export function left(str: string, width: number, ignoreChars: string[] = []) {
 export function center(
   str: string,
   width: number,
-  ignoreChars: string[] = [],
+  ignoreChars: Set<string> = new Set<string>([]),
 ): string {
-  const strLen = calcStringLength(str, new Set<string>(ignoreChars));
+  const strLen = calcStringLength(str, ignoreChars);
   if (strLen >= width) {
     return str;
   }
@@ -54,7 +58,7 @@ export function center(
 export function limit(
   str: string,
   width: number,
-  ignoreChars: string[] = [],
+  ignoreChars: Set<string> = new Set<string>([]),
 ): string {
   const strLen = calcStringLength(str, new Set<string>(ignoreChars));
   if (strLen >= width) {
@@ -66,7 +70,7 @@ export function limit(
 export function scrollToPosition(
   str: string,
   width: number,
-  ignoreChars: string[] = [],
+  ignoreChars: Set<string> = new Set<string>([]),
   position: number,
 ): string {
   const ignoreCharSet = new Set<string>(ignoreChars);

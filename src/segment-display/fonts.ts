@@ -116,7 +116,7 @@ export const SIXTEEN_FONT: SegmentDisplayFont<SixteenSegmentId> = {
     'dec2',
   ],
 };
-export const SIXTEEN_FONT_SPECIAL = ['.', ':'];
+export const SIXTEEN_FONT_SPECIAL = new Set<string>(['.', ':']);
 
 export const SEVEN_FONT: SegmentDisplayFont<SevenSegmentId> = {
   // Digits
@@ -151,7 +151,7 @@ export const SEVEN_FONT: SegmentDisplayFont<SevenSegmentId> = {
   f: ['f'],
   g: ['g'],
 };
-export const SEVEN_FONT_SPECIAL = ['.'];
+export const SEVEN_FONT_SPECIAL = new Set<string>(['.']);
 
 export declare type SegmentDisplayFont<TSegmentId> = Record<
   string,
