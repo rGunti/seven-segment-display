@@ -14,7 +14,10 @@ export function repeatArr<T>(fn: () => T, amount: number): T[] {
   return sum;
 }
 
-function calcStringLength(str: string, ignoreChars: Set<string>): number {
+export function calcStringLength(
+  str: string,
+  ignoreChars: Set<string>,
+): number {
   let len = str.length;
   for (let i = 0; i < str.length; i++) {
     if (ignoreChars.has(str[i])) {
