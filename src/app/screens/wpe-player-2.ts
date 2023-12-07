@@ -24,7 +24,7 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
 
   private currentPlaybackState: WallpaperMediaPlaybackState = WPE_STOPPED;
   private currentTrackTime = 0;
-  private currentTrackDuration = 0;
+  //private currentTrackDuration = 0;
   private currentTrackTitle = WPE2_DEFAULT_TITLE;
   private currentTrackArtist = WPE2_DEFAULT_ARTIST;
 
@@ -112,7 +112,7 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
     }
 
     this.currentTrackTime = event.position;
-    this.currentTrackDuration = event.duration;
+    //this.currentTrackDuration = event.duration;
     this.lastTrackTimeUpdateReceived = now;
   }
 
