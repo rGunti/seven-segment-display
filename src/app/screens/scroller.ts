@@ -4,7 +4,7 @@ import { RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 export class TextScrollerScreen implements Screen<MainDisplayCollection> {
-  private readonly textLines: string[] = [
+  private textLines: string[] = [
     'This is a long text that should be scrolling across the display',
     'Short Text',
     'This is another long text that should be scrolling across the display',
@@ -23,6 +23,14 @@ export class TextScrollerScreen implements Screen<MainDisplayCollection> {
     private readonly scrollSpeed: number = 500,
     private readonly minFlipTime: number = 5_000,
   ) {}
+
+  updateText(lines: string[]): void {
+    this.textLines = lines;
+    this.currentLine = 0;
+    this.scrollPos = -20;
+    this.lastScrollPosUpdate = Date.now();
+    this.lastPageFlip = Date.now();
+  }
 
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     if (this.lastPageFlip === 0) {

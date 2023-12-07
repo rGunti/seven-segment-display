@@ -18,7 +18,7 @@ import {
 } from './base';
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
-import { WelcomeScreen, WpeMusicPlayer } from './screens';
+import { TextScrollerScreen, WpeMusicPlayer } from './screens';
 import './style.scss';
 
 const LOGGER = new Logger('App');
@@ -34,7 +34,7 @@ export class App implements Application<MainDisplayCollection> {
   private readonly weekdayControllerRoot: HTMLElement;
 
   private readonly displays: MainDisplayCollection;
-  private defaultScreen = new WelcomeScreen();
+  private defaultScreen = new TextScrollerScreen();
   private wpeScreen = new WpeMusicPlayer();
 
   private currentScreen: Screen<MainDisplayCollection> = this.defaultScreen;
