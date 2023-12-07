@@ -15,6 +15,10 @@ export class RenderArgs<T extends DisplayCollection> {
   changeScreen(screen: Screen<T>): void {
     this.owner.setScreen(screen);
   }
+
+  get time(): number {
+    return this.now.getTime();
+  }
 }
 
 export interface Screen<T extends DisplayCollection> {

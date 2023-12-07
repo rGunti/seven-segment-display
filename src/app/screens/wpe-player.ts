@@ -4,7 +4,13 @@ import {
   WallpaperMediaTimelineEvent,
 } from 'wallpaper-engine-types';
 import { Logger } from '../../log';
-import { center, left, repeat, scrollToPosition } from '../../utils';
+import {
+  center,
+  formatTime,
+  left,
+  repeat,
+  scrollToPosition,
+} from '../../utils';
 import {
   RenderArgs,
   Screen,
@@ -70,7 +76,7 @@ export class WpeMusicPlayer
           : 0;
       // If we're paused, we negate the offset for later
       const skew = this.lastPlaybackEvent?.state !== 2 ? this.timelineSkew : 0;
-      const time = WpeMusicPlayer.formatTime(
+      const time = formatTime(
         Math.round((position * 1000 + offset - skew) / 1000),
       );
       displays.main.show(time);
@@ -119,24 +125,6 @@ export class WpeMusicPlayer
           displays.weekday.specialChars,
         ),
       );
-    }
-  }
-
-  private static formatTime(time: number): string {
-    // Takes the number of seconds and formats it into the format HH:mm:ss, including padding 0
-    // eslint-disable-next-line no-bitwise
-    const hours = ~~(time / 3600);
-    // eslint-disable-next-line no-bitwise
-    const minutes = ~~((time % 3600) / 60);
-    // eslint-disable-next-line no-bitwise
-    const seconds = ~~time % 60;
-
-    if (hours > 0) {
-      return `${hours.toString().padStart(2, '0')}:${minutes
-        .toString()
-        .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    } else {
-      return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
     }
   }
 

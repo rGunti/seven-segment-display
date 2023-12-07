@@ -1,3 +1,5 @@
+export * from './time';
+
 export function repeat(str: string, amount: number): string {
   let sum = '';
   for (let i = 0; i < amount; i++) {

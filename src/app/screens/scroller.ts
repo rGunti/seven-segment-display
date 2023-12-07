@@ -22,6 +22,7 @@ export class TextScrollerScreen implements Screen<MainDisplayCollection> {
   constructor(
     private readonly scrollSpeed: number = 500,
     private readonly minFlipTime: number = 5_000,
+    private readonly renderDebugLine = false,
   ) {}
 
   updateText(lines: string[]): void {
@@ -39,7 +40,9 @@ export class TextScrollerScreen implements Screen<MainDisplayCollection> {
 
     const { displays } = renderArgs;
     this.renderCurrentText(displays.date);
-    this.renderDebugLine(displays.weekday, renderArgs.now.getTime());
+    if (this.renderDebugLine) {
+      this.doRenderDebugLine(displays.weekday, renderArgs.now.getTime());
+    }
     this.calculate(renderArgs);
   }
 
@@ -57,7 +60,7 @@ export class TextScrollerScreen implements Screen<MainDisplayCollection> {
     display.show(textToDisplay);
   }
 
-  private renderDebugLine(
+  private doRenderDebugLine(
     display: SegmentDisplayController,
     now: number,
   ): void {
