@@ -169,7 +169,7 @@ export class WpeMusicPlayer
     this.lastScrollReset = now;
   }
 
-  onAudioLevelChanged(audioLevels: Uint8Array): void {
+  onAudioLevelChanged(audioLevels: number[]): void {
     if (audioLevels.length !== 128) {
       WPE_MP_LOGGER.error(
         'Received audio levels with invalid length',

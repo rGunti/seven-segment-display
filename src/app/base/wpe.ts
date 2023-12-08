@@ -9,7 +9,7 @@ export interface WpeEventReceiver {
   onTimelineChanged(event: WallpaperMediaTimelineEvent): void;
   onPlaybackChanged(event: WallpaperMediaPlaybackEvent): void;
   onPropertyChanged(event: WallpaperMediaPropertiesEvent): void;
-  onAudioLevelChanged?(audioLevels: Uint8Array): void;
+  onAudioLevelChanged?(audioLevels: number[]): void;
 }
 
 export const WPE_STOPPED = 0;
