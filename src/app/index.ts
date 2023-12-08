@@ -9,6 +9,7 @@ import { Logger } from '../log';
 import { repeatArr } from '../utils';
 import {
   Application,
+  InputHandler,
   RenderArgs,
   Screen,
   WPE_PAUSED,
@@ -96,6 +97,8 @@ export class App implements Application<MainDisplayCollection> {
       LOGGER.debug('Detected Wallpaper Engine, registering events');
       this.registerWpeEvents();
     }
+
+    this.registerInputEvents();
   }
 
   private registerWpeEvents(): void {
@@ -150,13 +153,36 @@ export class App implements Application<MainDisplayCollection> {
     });
   }
 
+  private registerInputEvents(): void {
+    LOGGER.debug('Registering input events');
+    window.onkeydown = (e) => {
+      if (
+        this.currentInputHandler &&
+        this.currentInputHandler.onInputReceived(e)
+      ) {
+        e.stopPropagation();
+        return;
+      }
+    };
+  }
+
   get currentScreenSupportsWpeEvents(): boolean {
     return (this.currentScreen as unknown as WpeEventReceiver)
       .supportsWpeEvents;
   }
+
+  get currentScreenSupportsInput(): boolean {
+    return (this.currentScreen as unknown as InputHandler).supportsInput;
+  }
+
   get currentWpeEventReceiver(): WpeEventReceiver | undefined {
     const screen = this.currentScreen as unknown as WpeEventReceiver;
     return screen.supportsWpeEvents ? screen : undefined;
+  }
+
+  get currentInputHandler(): InputHandler | undefined {
+    const screen = this.currentScreen as unknown as InputHandler;
+    return screen.supportsInput ? screen : undefined;
   }
 
   startTicking(): void {
