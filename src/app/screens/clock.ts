@@ -1,12 +1,9 @@
 import dateFormat from 'dateformat';
-import { Logger } from '../../log';
 import { center } from '../../utils';
 import { InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 import * as versionInfo from '../../assets/version.json';
-
-const LOGGER = new Logger('ClockScreen');
 
 export class ClockScreen
   implements Screen<MainDisplayCollection>, InputHandler
