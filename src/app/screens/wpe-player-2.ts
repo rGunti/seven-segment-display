@@ -131,7 +131,7 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
     }
   }
 
-  onAudioLevelChanged?(audioLevels: Uint8Array): void {
+  onAudioLevelChanged?(audioLevels: number[]): void {
     if (audioLevels.length !== 128) {
       return;
     }
