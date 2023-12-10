@@ -1,4 +1,4 @@
-export function formatTime(time: number): string {
+export function formatTime(time: number, joinWith = ':'): string {
   // Takes the number of seconds and formats it into the format HH:mm:ss, including padding 0
   // eslint-disable-next-line no-bitwise
   const hours = ~~(time / 3600);
@@ -8,10 +8,12 @@ export function formatTime(time: number): string {
   const seconds = ~~time % 60;
 
   if (hours > 0) {
-    return `${hours.toString().padStart(2, '0')}:${minutes
+    return `${hours.toString().padStart(2, '0')}${joinWith}${minutes
       .toString()
-      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      .padStart(2, '0')}${joinWith}${seconds.toString().padStart(2, '0')}`;
   } else {
-    return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString()}${joinWith}${seconds
+      .toString()
+      .padStart(2, '0')}`;
   }
 }
