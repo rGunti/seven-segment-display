@@ -1,4 +1,5 @@
 import { SegmentDisplay } from '.';
+import { center, left } from '../utils';
 import { DEFAULT_KEY, SegmentDisplayFont } from './fonts';
 
 export class SegmentDisplayController {
@@ -35,6 +36,14 @@ export class SegmentDisplayController {
         .flatMap((char) => this.font[char] || this.font[DEFAULT_KEY] || []);
       display.setSegments(segments);
     }
+  }
+
+  showCenter(str: string): void {
+    this.show(center(str, this.displayCount, this.specialChars));
+  }
+
+  showLeft(str: string): void {
+    this.show(left(str, this.displayCount, this.specialChars));
   }
 
   clear(): void {

@@ -3,6 +3,7 @@ import { center } from '../../utils';
 import { InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
+import { CountdownScreen } from '.';
 import * as versionInfo from '../../assets/version.json';
 
 export class ClockScreen
@@ -13,6 +14,8 @@ export class ClockScreen
   private showDate = false;
   private showWeekday = false;
 
+  private moveToCountdown = false;
+
   private showVersion = false;
 
   private readonly bootTime = new Date().getTime();
@@ -21,6 +24,11 @@ export class ClockScreen
 
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     const { displays, now } = renderArgs;
+
+    if (this.moveToCountdown) {
+      renderArgs.changeScreen(new CountdownScreen());
+      return;
+    }
 
     if (this.showVersion) {
       const version = versionInfo.version;
@@ -92,6 +100,9 @@ export class ClockScreen
         return true;
       case 'v':
         this.showVersion = !this.showVersion;
+        return true;
+      case 'c':
+        this.moveToCountdown = true;
         return true;
     }
   }
