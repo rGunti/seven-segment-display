@@ -4,6 +4,12 @@ export default defineConfig({
   base: '',
   build: {
     sourcemap: 'inline',
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        gps: 'gps.html',
+      },
+    },
   },
   css: {
     preprocessorOptions: {
