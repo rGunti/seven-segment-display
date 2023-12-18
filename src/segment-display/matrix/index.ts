@@ -60,12 +60,6 @@ const SVG_TEMPLATE: Record<string, { [key: string]: unknown }> =
 
 export const MATRIX_PINS = Object.keys(SVG_TEMPLATE).sort();
 
-console.log('Segments', {
-  MATRIX_SEGMENT_IDS,
-  SVG_TEMPLATE,
-  MATRIX_PINS,
-});
-
 export class DotMatrixDisplay
   implements SegmentDisplay, FluentSegmentDisplay<DotMatrixDisplay>
 {
