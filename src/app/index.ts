@@ -20,7 +20,17 @@ import {
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
 import { WelcomeScreen, WpePlayer2 } from './screens';
+import { NewYearCountdownScreen } from './screens/countdown-newyear';
 import './style.scss';
+
+function determineDefaultScreen(): Screen<MainDisplayCollection> {
+  switch (window.location.hash) {
+    case '#newyear':
+      return new NewYearCountdownScreen();
+    default:
+      return new WelcomeScreen();
+  }
+}
 
 const LOGGER = new Logger('App');
 const WPE_LOGGER = new Logger('App.WPE');
@@ -35,7 +45,8 @@ export class App implements Application<MainDisplayCollection> {
   private readonly weekdayControllerRoot: HTMLElement;
 
   private readonly displays: MainDisplayCollection;
-  private defaultScreen = new WelcomeScreen();
+  private defaultScreen: Screen<MainDisplayCollection> =
+    determineDefaultScreen();
   private wpeScreen = new WpePlayer2();
 
   private currentScreen: Screen<MainDisplayCollection> = this.defaultScreen;
