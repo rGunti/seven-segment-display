@@ -1,11 +1,13 @@
 import {
   ColonDisplay,
+  DotMatrixDisplay,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from '../segment-display';
-import { SIXTEEN_FONT, SIXTEEN_FONT_SPECIAL } from '../segment-display/fonts';
+import { SIXTEEN_FONT } from '../segment-display/fonts';
 
 import { Logger } from '../log';
+import { MATRIX_FONT } from '../segment-display/matrix/font';
 import { repeatArr } from '../utils';
 import {
   Application,
@@ -77,19 +79,14 @@ export class App implements Application<MainDisplayCollection> {
 
     this.dateControllerRoot = App.createDisplayContainer('date');
     this.dateController = new SegmentDisplayController(
-      repeatArr(() => new SixteenSegmentDisplay(this.dateControllerRoot), 20),
-      SIXTEEN_FONT,
-      SIXTEEN_FONT_SPECIAL,
+      repeatArr(() => new DotMatrixDisplay(this.dateControllerRoot), 20),
+      MATRIX_FONT,
     );
 
     this.weekdayControllerRoot = App.createDisplayContainer('date');
     this.weekdayController = new SegmentDisplayController(
-      repeatArr(
-        () => new SixteenSegmentDisplay(this.weekdayControllerRoot),
-        20,
-      ),
-      SIXTEEN_FONT,
-      SIXTEEN_FONT_SPECIAL,
+      repeatArr(() => new DotMatrixDisplay(this.weekdayControllerRoot), 20),
+      MATRIX_FONT,
     );
 
     this.displays = {

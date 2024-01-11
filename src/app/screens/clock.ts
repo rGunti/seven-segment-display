@@ -34,15 +34,15 @@ export class ClockScreen
       const version = versionInfo.version;
       displays.main.show(`HE LL O!`);
       displays.date.show(
-        `V ${version.major.toString().padStart(2, '0')}.${version.minor
+        `v${version.major.toString().padStart(2, '0')}.${version.minor
           .toString()
-          .padStart(2, '0')}.${version.patch.toString().padStart(2, '0')} | R ${
+          .padStart(2, '0')}.${version.patch.toString().padStart(2, '0')} b${
           version.revision
         }`,
       );
       displays.weekday.show(
         center(
-          `<C> ${now.getFullYear()}, rGunti`,
+          `(C) ${now.getFullYear()}, rGunti`,
           displays.weekday.displayCount,
           displays.weekday.specialChars,
         ),
