@@ -1,0 +1,6 @@
+{
+	"name": "Segment Display Developer Box",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+	// "forwardPorts": [],
+	"postCreateCommand": "npm install"
+}
