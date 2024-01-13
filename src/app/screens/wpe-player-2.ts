@@ -18,6 +18,7 @@ import { MainDisplayCollection } from '../collection';
 const WPE2_IDLE_TEXT = ['Welcome', 'Ready to play', 'No song selected'];
 const WPE2_DEFAULT_TITLE = 'No Title';
 const WPE2_DEFAULT_ARTIST = 'No Artist';
+const WPE2_DEFAULT_ALBUM = '';
 
 export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
   readonly supportsWpeEvents = true;
@@ -27,6 +28,7 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
   //private currentTrackDuration = 0;
   private currentTrackTitle = WPE2_DEFAULT_TITLE;
   private currentTrackArtist = WPE2_DEFAULT_ARTIST;
+  private currentTrackAlbum = WPE2_DEFAULT_ALBUM;
 
   private lastTrackTimeUpdateReceived = 0;
   private timelineSkew = 0;
@@ -96,7 +98,13 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
   }
 
   private setTextToCurrentTrack(): void {
-    this.updateText([this.currentTrackTitle, this.currentTrackArtist]);
+    this.updateText(
+      [
+        this.currentTrackTitle,
+        this.currentTrackArtist,
+        this.currentTrackAlbum,
+      ].filter((s) => s.length > 0),
+    );
   }
 
   onTimelineChanged(event: WallpaperMediaTimelineEvent): void {
@@ -126,6 +134,7 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
   onPropertyChanged(event: WallpaperMediaPropertiesEvent): void {
     this.currentTrackTitle = event.title || WPE2_DEFAULT_TITLE;
     this.currentTrackArtist = event.artist || WPE2_DEFAULT_ARTIST;
+    this.currentTrackAlbum = event.albumTitle || WPE2_DEFAULT_ALBUM;
     if (this.currentPlaybackState !== WPE_STOPPED) {
       this.setTextToCurrentTrack();
     }
