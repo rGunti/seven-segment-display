@@ -18,11 +18,12 @@ export class WpeSettingsInterface extends BaseAppSettingsInterface {
     PROPERTY_LOGGER.debug('applyUserProperties', properties);
 
     const currentSettings = { ...this.currentSettings };
-    if (properties.fadeInTime?.value !== undefined) {
-      currentSettings.fadeInTime = properties.fadeInTime.value;
+    // Setting Keys are always provided in lower case
+    if (properties.fadeintime?.value !== undefined) {
+      currentSettings.fadeInTime = properties.fadeintime.value;
     }
-    if (properties.fadeOutTime?.value !== undefined) {
-      currentSettings.fadeOutTime = properties.fadeOutTime.value;
+    if (properties.fadeouttime?.value !== undefined) {
+      currentSettings.fadeOutTime = properties.fadeouttime.value;
     }
     this.currentSettings = currentSettings;
   }
