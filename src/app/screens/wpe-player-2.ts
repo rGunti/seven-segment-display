@@ -94,7 +94,24 @@ export class WpePlayer2 extends TextScrollerScreen implements WpeEventReceiver {
       return '';
     }
 
-    return repeat('=', Math.ceil(this.audioLevel * maxBarLength));
+    const blockDivisions = 5;
+    const barLength = Math.ceil(
+      this.audioLevel * maxBarLength * blockDivisions,
+    );
+    const fullBlocks = Math.floor(barLength / blockDivisions);
+    const partialBlockSize = barLength % blockDivisions;
+
+    return (
+      repeat('\x05', fullBlocks) +
+      this.renderPartialAudioBlock(partialBlockSize)
+    );
+  }
+
+  private renderPartialAudioBlock(level: number): string {
+    if (level === 0) {
+      return '';
+    }
+    return String.fromCharCode(level);
   }
 
   private setTextToCurrentTrack(): void {
