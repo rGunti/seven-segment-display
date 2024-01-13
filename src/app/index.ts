@@ -23,6 +23,7 @@ import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
 import { WelcomeScreen, WpePlayer2 } from './screens';
 import { NewYearCountdownScreen } from './screens/countdown-newyear';
+import { AppSettings, createSettingsInterface } from './settings';
 import './style.scss';
 
 function determineDefaultScreen(): Screen<MainDisplayCollection> {
@@ -61,6 +62,16 @@ export class App implements Application<MainDisplayCollection> {
   constructor(appRoot: HTMLElement, framerate = 60) {
     LOGGER.debug('Creating app ...');
     this.framerate = framerate;
+    createSettingsInterface().then((settings) => {
+      LOGGER.debug('Loading settings …');
+      settings.loadSettings();
+      settings.addUpdateHandler((s) => {
+        this.updateCustomizableCss(s);
+      });
+      this.updateCustomizableCss(settings.currentSettings);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as unknown as any).APP_SETTINGS = settings;
+    });
 
     this.timeControllerRoot = App.createDisplayContainer('time');
     this.timeController = new SegmentDisplayController(
@@ -98,6 +109,13 @@ export class App implements Application<MainDisplayCollection> {
     appRoot.appendChild(this.timeControllerRoot);
     appRoot.appendChild(this.dateControllerRoot);
     appRoot.appendChild(this.weekdayControllerRoot);
+  }
+
+  private updateCustomizableCss(settings: AppSettings): void {
+    LOGGER.debug('Updating customizable CSS');
+    const root = document.documentElement;
+    root.style.setProperty('--fade-in-time', `${settings.fadeInTime}ms`);
+    root.style.setProperty('--fade-out-time', `${settings.fadeOutTime}ms`);
   }
 
   registerEvents(): void {

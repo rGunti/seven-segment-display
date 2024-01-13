@@ -19,6 +19,9 @@ $color-off: rgba(255, 0, 0, 0.1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --fade-in-time: 100ms;
+  --fade-out-time: 500ms;
 }
 
 html,
@@ -65,12 +68,12 @@ body {
 
 .svg-seg {
   fill: $color-off;
-  transition: all 500ms ease;
+  transition: all var(--fade-out-time) ease;
 }
 
 .svg-seg-on {
   fill: $color-on;
-  transition: all 100ms ease;
+  transition: all var(--fade-in-time) ease;
 }
 
 .display {
