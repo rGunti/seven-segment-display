@@ -1,0 +1,50 @@
+{
+	"contentrating": "Everyone",
+	"description": "A segment clock displaying date and time, written in pure JavaScript, compiled together with Vite",
+	"file": "index.html",
+	"general": {
+		"properties": {
+			"fadeintime": {
+				"fraction": false,
+				"index": 0,
+				"max": 1000,
+				"min": 0,
+				"order": 100,
+				"text": "Fade In Time",
+				"type": "slider",
+				"value": 100
+			},
+			"fadeouttime": {
+				"fraction": false,
+				"index": 1,
+				"max": 1000,
+				"min": 0,
+				"order": 101,
+				"text": "Fade Out Time",
+				"type": "slider",
+				"value": 500
+			},
+			"schemecolor": {
+				"order": 0,
+				"text": "ui_browse_properties_scheme_color",
+				"type": "color",
+				"value": "0 0 0"
+			}
+		},
+		"supportsaudioprocessing": true
+	},
+	"preview": "preview.png",
+	"ratingsex": "none",
+	"ratingviolence": "none",
+	"snapshotformat": -1,
+	"snapshotoverlay": "",
+	"tags": [
+		"Retro"
+	],
+	"title": "Segment Display Clock",
+	"type": "web",
+	"version": 2,
+	"visibility": "public",
+	"workshopid": "3091188969",
+	"workshopurl": "steam://url/CommunityFilePage/3091188969"
+}
