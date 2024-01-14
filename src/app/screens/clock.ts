@@ -3,7 +3,7 @@ import { center } from '../../utils';
 import { InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
-import { CountdownScreen } from '.';
+import { CountdownScreen, ProgressBarScreen } from '.';
 import * as versionInfo from '../../assets/version.json';
 
 export class ClockScreen
@@ -14,7 +14,7 @@ export class ClockScreen
   private showDate = false;
   private showWeekday = false;
 
-  private moveToCountdown = false;
+  private moveToScreen: Screen<MainDisplayCollection> | null = null;
 
   private showVersion = false;
 
@@ -28,8 +28,8 @@ export class ClockScreen
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     const { displays, now } = renderArgs;
 
-    if (this.moveToCountdown) {
-      renderArgs.changeScreen(new CountdownScreen());
+    if (this.moveToScreen) {
+      renderArgs.changeScreen(this.moveToScreen);
       return;
     }
 
@@ -105,7 +105,10 @@ export class ClockScreen
         this.showVersion = !this.showVersion;
         return true;
       case 'c':
-        this.moveToCountdown = true;
+        this.moveToScreen = new CountdownScreen();
+        return true;
+      case 'p':
+        this.moveToScreen = new ProgressBarScreen();
         return true;
     }
   }
