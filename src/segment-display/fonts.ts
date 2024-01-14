@@ -134,7 +134,7 @@ export const SEVEN_FONT: SegmentDisplayFont<SevenSegmentId> = {
   _: [],
   '-': ['g'],
   '.': ['dec'],
-  ':': ['d', 'g'],
+  ':': ['dec', 'dec2'],
   // Letters
   A: ['a', 'b', 'c', 'e', 'f', 'g'],
   B: ['c', 'd', 'e', 'f', 'g'],
@@ -168,7 +168,8 @@ export declare type SevenSegmentId =
   | 'e'
   | 'f'
   | 'g'
-  | 'dec';
+  | 'dec'
+  | 'dec2';
 export declare type SixteenSegmentId =
   | 'a1'
   | 'a2'

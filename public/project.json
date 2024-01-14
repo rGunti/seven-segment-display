@@ -29,6 +29,27 @@
 				"text": "ui_browse_properties_scheme_color",
 				"type": "color",
 				"value": "0 0 0"
+			},
+			"timestyle": {
+				"index": 2,
+				"options": [
+					{
+						"label": "7 Segments",
+						"value": "7seg"
+					},
+					{
+						"label": "16 Segments",
+						"value": "16seg"
+					},
+					{
+						"label": "Matrix",
+						"value": "matrix"
+					}
+				],
+				"order": 102,
+				"text": "Time Style",
+				"type": "combo",
+				"value": "16seg"
 			}
 		},
 		"supportsaudioprocessing": true

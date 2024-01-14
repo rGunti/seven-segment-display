@@ -123,6 +123,8 @@ export class FancySevenSegmentDisplay
       g: this.svgRoot.querySelector(`[data-segment-id=g]`)!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       dec: this.svgRoot.querySelector(`[data-segment-id=dec]`)!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      dec2: this.svgRoot.querySelector(`[data-segment-id=dec]`)!, // We're just mapping dec2 to dec to make 7 and 16 seg fonts compatible
     };
   }
 

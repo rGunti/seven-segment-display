@@ -1,13 +1,14 @@
 import {
   ColonDisplay,
   DotMatrixDisplay,
+  FancySevenSegmentDisplay,
   SegmentDisplayController,
   SixteenSegmentDisplay,
 } from '../segment-display';
-import { SIXTEEN_FONT } from '../segment-display/fonts';
+import { SEVEN_FONT, SIXTEEN_FONT } from '../segment-display/fonts';
 
 import { Logger } from '../log';
-import { MATRIX_FONT } from '../segment-display/matrix/font';
+import { MATRIX_DEBUG_FONT, MATRIX_FONT } from '../segment-display/matrix/font';
 import { repeatArr } from '../utils';
 import {
   Application,
@@ -23,7 +24,12 @@ import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
 import { WelcomeScreen, WpePlayer2 } from './screens';
 import { NewYearCountdownScreen } from './screens/countdown-newyear';
-import { AppSettings, createSettingsInterface } from './settings';
+import {
+  AppSettings,
+  DEFAULT_SETTINGS,
+  createSettingsInterface,
+} from './settings';
+import { DisplayStyle } from './settings/base';
 import './style.scss';
 
 function determineDefaultScreen(): Screen<MainDisplayCollection> {
@@ -39,7 +45,8 @@ const LOGGER = new Logger('App');
 const WPE_LOGGER = new Logger('App.WPE');
 
 export class App implements Application<MainDisplayCollection> {
-  private readonly timeController: SegmentDisplayController;
+  private timeController: SegmentDisplayController;
+  private timeControllerMode = DEFAULT_SETTINGS.timeStyle;
   private readonly dateController: SegmentDisplayController;
   private readonly weekdayController: SegmentDisplayController;
 
@@ -67,25 +74,18 @@ export class App implements Application<MainDisplayCollection> {
       settings.loadSettings();
       settings.addUpdateHandler((s) => {
         this.updateCustomizableCss(s);
+        this.updateTimeDisplay(s, false);
       });
       this.updateCustomizableCss(settings.currentSettings);
+      this.updateTimeDisplay(settings.currentSettings, true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as unknown as any).APP_SETTINGS = settings;
     });
 
     this.timeControllerRoot = App.createDisplayContainer('time');
-    this.timeController = new SegmentDisplayController(
-      [
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new ColonDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new ColonDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-        new SixteenSegmentDisplay(this.timeControllerRoot),
-      ],
-      SIXTEEN_FONT,
+    this.timeController = this.createTimeSegmentController(
+      this.timeControllerRoot,
+      this.timeControllerMode,
     );
 
     this.dateControllerRoot = App.createDisplayContainer('date');
@@ -109,6 +109,69 @@ export class App implements Application<MainDisplayCollection> {
     appRoot.appendChild(this.timeControllerRoot);
     appRoot.appendChild(this.dateControllerRoot);
     appRoot.appendChild(this.weekdayControllerRoot);
+  }
+
+  private updateTimeDisplay(settings: AppSettings, force = false): void {
+    if (settings.timeStyle === this.timeControllerMode && !force) {
+      LOGGER.debug('Time style did not change, skipping update');
+      return;
+    }
+
+    LOGGER.info('Updating time display to', settings.timeStyle);
+    const root = this.timeControllerRoot;
+    root.replaceChildren();
+
+    this.timeController = this.createTimeSegmentController(
+      root,
+      settings.timeStyle,
+    );
+    this.timeControllerMode = settings.timeStyle;
+    this.displays.main = this.timeController;
+  }
+
+  private createTimeSegmentController(
+    root: HTMLElement,
+    timeStyle: DisplayStyle,
+  ): SegmentDisplayController {
+    switch (timeStyle) {
+      case '16seg':
+        return new SegmentDisplayController(
+          [
+            new SixteenSegmentDisplay(root),
+            new SixteenSegmentDisplay(root),
+            new ColonDisplay(root),
+            new SixteenSegmentDisplay(root),
+            new SixteenSegmentDisplay(root),
+            new ColonDisplay(root),
+            new SixteenSegmentDisplay(root),
+            new SixteenSegmentDisplay(root),
+          ],
+          SIXTEEN_FONT,
+        );
+      case '7seg':
+        return new SegmentDisplayController(
+          [
+            new FancySevenSegmentDisplay(root),
+            new FancySevenSegmentDisplay(root),
+            new ColonDisplay(root),
+            new FancySevenSegmentDisplay(root),
+            new FancySevenSegmentDisplay(root),
+            new ColonDisplay(root),
+            new FancySevenSegmentDisplay(root),
+            new FancySevenSegmentDisplay(root),
+          ],
+          SEVEN_FONT,
+        );
+      case 'matrix':
+        return new SegmentDisplayController(
+          repeatArr(() => new DotMatrixDisplay(root), 8),
+          MATRIX_FONT,
+        );
+    }
+    return new SegmentDisplayController(
+      [new DotMatrixDisplay(root)],
+      MATRIX_DEBUG_FONT,
+    );
   }
 
   private updateCustomizableCss(settings: AppSettings): void {

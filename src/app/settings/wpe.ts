@@ -25,6 +25,9 @@ export class WpeSettingsInterface extends BaseAppSettingsInterface {
     if (properties.fadeouttime?.value !== undefined) {
       currentSettings.fadeOutTime = properties.fadeouttime.value;
     }
+    if (properties.timestyle?.value !== undefined) {
+      currentSettings.timeStyle = properties.timestyle.value;
+    }
     this.currentSettings = currentSettings;
   }
 }

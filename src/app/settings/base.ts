@@ -27,12 +27,16 @@ export abstract class BaseAppSettingsInterface implements AppSettingsInterface {
   }
 }
 
+export declare type DisplayStyle = '16seg' | '7seg' | 'matrix';
+
 export interface AppSettings {
   fadeInTime: number;
   fadeOutTime: number;
+  timeStyle: DisplayStyle;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   fadeInTime: 100,
   fadeOutTime: 500,
+  timeStyle: '16seg',
 };
