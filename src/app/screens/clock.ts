@@ -19,6 +19,9 @@ export class ClockScreen
   private showVersion = false;
 
   private readonly bootTime = new Date().getTime();
+  private readonly customText: string | null = new URLSearchParams(
+    window.location.search,
+  ).get('text');
 
   readonly supportsInput = true;
 
@@ -73,7 +76,7 @@ export class ClockScreen
     if (this.showWeekday) {
       displays.weekday.show(
         center(
-          `${dateFormat(now, 'dddd')}`,
+          `${this.customText || dateFormat(now, 'dddd')}`,
           displays.weekday.displayCount,
           displays.weekday.specialChars,
         ),
