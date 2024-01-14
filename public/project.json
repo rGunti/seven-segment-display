@@ -1,6 +1,6 @@
 {
 	"contentrating": "Everyone",
-	"description": "A segment clock displaying date and time, written in pure JavaScript, compiled together with Vite",
+	"description": "A segment display displaying the current date and time in a calming red glow. When media content is played (music or video) it will switch to a playback display showing elapsed time, title, artist and album, if available.\r\n\r\nPlease note that due to technical restrictions, the elapsed time is displayed on a best-effort basis.\r\n- Playing YouTube videos for example can cause inaccurate readings and the \"Pause\" display is usually also delayed (tested with Brave).\r\n- Desktop apps, like Spotify, work most reliably.\r\n- VLC does not seem to report the current playback status to Windows, therefore this wallpaper wont work with it.\r\n\r\nIf you want to change the color of the display, use \"Show color options\" > \"Hue shift\".\r\n",
 	"file": "index.html",
 	"general": {
 		"properties": {
