@@ -1024,7 +1024,7 @@ export const MATRIX_FONT: SegmentDisplayFont<MatrixSegmentId> = {
   ],
   ë: [
     'b1',
-    'c2',
+    'd1',
     'a4',
     'a5',
     'b3',
@@ -1043,7 +1043,7 @@ export const MATRIX_FONT: SegmentDisplayFont<MatrixSegmentId> = {
   ],
   À: [
     'b1',
-    'd1',
+    'c2',
     'a4',
     'a5',
     'a6',
