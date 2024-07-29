@@ -33,7 +33,7 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "vite": "^5.3.4",
     "wallpaper-engine-types": "^1.0.12"
   },
