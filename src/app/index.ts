@@ -12,6 +12,7 @@ import { MATRIX_DEBUG_FONT, MATRIX_FONT } from '../segment-display/matrix/font';
 import { repeatArr } from '../utils';
 import {
   Application,
+  InputArgs,
   InputHandler,
   RenderArgs,
   Screen,
@@ -22,20 +23,29 @@ import {
 } from './base';
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
-import { WelcomeScreen, WpePlayer2 } from './screens';
+import {
+  ProgressBarScreen,
+  TextScrollerScreen,
+  WelcomeScreen,
+  WpePlayer2,
+} from './screens';
 import { NewYearCountdownScreen } from './screens/countdown-newyear';
 import {
   AppSettings,
   DEFAULT_SETTINGS,
   createSettingsInterface,
 } from './settings';
-import { DisplayStyle } from './settings/base';
+import { AppSettingsInterface, DisplayStyle } from './settings/base';
 import './style.scss';
 
 function determineDefaultScreen(): Screen<MainDisplayCollection> {
   switch (window.location.hash) {
     case '#newyear':
       return new NewYearCountdownScreen();
+    case '#demo-scroller':
+      return new TextScrollerScreen();
+    case '#demo-progressbar':
+      return new ProgressBarScreen();
     default:
       return new WelcomeScreen();
   }
@@ -59,6 +69,8 @@ export class App implements Application<MainDisplayCollection> {
     determineDefaultScreen();
   private wpeScreen = new WpePlayer2();
 
+  private settings?: AppSettingsInterface;
+
   private currentScreen: Screen<MainDisplayCollection> = this.defaultScreen;
 
   private framerate: number;
@@ -78,8 +90,10 @@ export class App implements Application<MainDisplayCollection> {
       });
       this.updateCustomizableCss(settings.currentSettings);
       this.updateTimeDisplay(settings.currentSettings, true);
+
+      this.settings = settings;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as unknown as any).APP_SETTINGS = settings;
+      (window as unknown as any).APP_SETTINGS = this.settings;
     });
 
     this.timeControllerRoot = App.createDisplayContainer('time');
@@ -247,7 +261,9 @@ export class App implements Application<MainDisplayCollection> {
     window.onkeydown = (e) => {
       if (
         this.currentInputHandler &&
-        this.currentInputHandler.onInputReceived(e)
+        this.currentInputHandler.onInputReceived(
+          new InputArgs(this.displays, new Date(), this, e),
+        )
       ) {
         e.stopPropagation();
         return;
@@ -261,7 +277,9 @@ export class App implements Application<MainDisplayCollection> {
   }
 
   get currentScreenSupportsInput(): boolean {
-    return (this.currentScreen as unknown as InputHandler).supportsInput;
+    return (
+      this.currentScreen as unknown as InputHandler<MainDisplayCollection>
+    ).supportsInput;
   }
 
   get currentWpeEventReceiver(): WpeEventReceiver | undefined {
@@ -269,8 +287,9 @@ export class App implements Application<MainDisplayCollection> {
     return screen.supportsWpeEvents ? screen : undefined;
   }
 
-  get currentInputHandler(): InputHandler | undefined {
-    const screen = this.currentScreen as unknown as InputHandler;
+  get currentInputHandler(): InputHandler<MainDisplayCollection> | undefined {
+    const screen = this
+      .currentScreen as unknown as InputHandler<MainDisplayCollection>;
     return screen.supportsInput ? screen : undefined;
   }
 
@@ -289,6 +308,10 @@ export class App implements Application<MainDisplayCollection> {
 
   setScreen(screen: Screen<MainDisplayCollection>): void {
     this.currentScreen = screen;
+  }
+
+  getSettingsInterface(): AppSettingsInterface {
+    return this.settings!;
   }
 
   private tick(): void {

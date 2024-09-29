@@ -1,4 +1,6 @@
-export interface InputHandler {
+import { DisplayCollection, InputArgs } from './screen';
+
+export interface InputHandler<T extends DisplayCollection> {
   readonly supportsInput: true;
-  onInputReceived(e: KeyboardEvent): boolean | undefined;
+  onInputReceived(e: InputArgs<T>): boolean | undefined;
 }

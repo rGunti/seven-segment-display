@@ -1,13 +1,14 @@
 import dateFormat from 'dateformat';
 import { center } from '../../utils';
-import { InputHandler, RenderArgs, Screen } from '../base';
+import { InputArgs, InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 import { CountdownScreen, ProgressBarScreen } from '.';
 import * as versionInfo from '../../assets/version.json';
+import { SettingsScreen } from './settings';
 
 export class ClockScreen
-  implements Screen<MainDisplayCollection>, InputHandler
+  implements Screen<MainDisplayCollection>, InputHandler<MainDisplayCollection>
 {
   private bootAnimationCompleted = false;
   private showTime = true;
@@ -90,8 +91,8 @@ export class ClockScreen
     }
   }
 
-  onInputReceived(e: KeyboardEvent): boolean | undefined {
-    switch (e.key) {
+  onInputReceived(e: InputArgs<MainDisplayCollection>): boolean | undefined {
+    switch (e.input.key) {
       case '1':
         this.showTime = !this.showTime;
         return true;
@@ -109,6 +110,9 @@ export class ClockScreen
         return true;
       case 'p':
         this.moveToScreen = new ProgressBarScreen();
+        return true;
+      case 's':
+        this.moveToScreen = new SettingsScreen();
         return true;
     }
   }
