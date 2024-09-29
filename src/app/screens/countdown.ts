@@ -1,7 +1,7 @@
 import { ClockScreen } from '.';
 import { Logger } from '../../log';
 import { formatTime } from '../../utils';
-import { InputHandler, RenderArgs, Screen } from '../base';
+import { InputArgs, InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 const LOGGER = new Logger('Countdown');
@@ -17,7 +17,7 @@ const SET_TIME_CURSOR = {
 };
 
 export class CountdownScreen
-  implements Screen<MainDisplayCollection>, InputHandler
+  implements Screen<MainDisplayCollection>, InputHandler<MainDisplayCollection>
 {
   readonly supportsInput = true;
 
@@ -95,13 +95,13 @@ export class CountdownScreen
     displays.weekday.showCenter('Enter Time');
   }
 
-  onInputReceived(e: KeyboardEvent): boolean | undefined {
-    LOGGER.debug('onInputReceived', e.key);
+  onInputReceived(e: InputArgs<MainDisplayCollection>): boolean | undefined {
+    LOGGER.debug('onInputReceived', e.input.key);
     switch (this.mode) {
       case MODES.Countdown:
-        return this.handleInputCountdown(e);
+        return this.handleInputCountdown(e.input);
       case MODES.SetTime:
-        return this.handleInputSetTime(e);
+        return this.handleInputSetTime(e.input);
       default:
         throw new Error(`Unknown mode: ${this.mode}`);
     }

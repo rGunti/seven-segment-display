@@ -14,6 +14,7 @@ import {
   RenderArgs,
   Screen,
 } from '../base';
+import { AppSettingsInterface } from '../settings';
 import { createDisplayContainer } from '../utils';
 import { GpsScreen } from './screens';
 
@@ -71,6 +72,9 @@ export class GpsApp implements Application<GpsCollection> {
     appRoot.appendChild(altitudeRoot);
     appRoot.appendChild(accuracyRoot);
     appRoot.appendChild(statusRoot);
+  }
+  getSettingsInterface(): AppSettingsInterface {
+    throw new Error('Method not implemented.');
   }
 
   setScreen(screen: Screen<GpsCollection>): void {
