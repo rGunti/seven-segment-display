@@ -1,10 +1,10 @@
 import { ClockScreen } from '.';
 import { left, repeat } from '../../utils';
-import { InputHandler, RenderArgs, Screen } from '../base';
+import { InputArgs, InputHandler, RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
 export class ProgressBarScreen
-  implements Screen<MainDisplayCollection>, InputHandler
+  implements Screen<MainDisplayCollection>, InputHandler<MainDisplayCollection>
 {
   readonly supportsInput = true;
 
@@ -37,8 +37,8 @@ export class ProgressBarScreen
     this.currentValue = Math.min(1.0, Math.max(0.0, newValue));
   }
 
-  onInputReceived(e: KeyboardEvent): boolean | undefined {
-    switch (e.key) {
+  onInputReceived(e: InputArgs<MainDisplayCollection>): boolean | undefined {
+    switch (e.input.key) {
       case 'Escape':
         this.moveToScreen = new ClockScreen();
         return;
