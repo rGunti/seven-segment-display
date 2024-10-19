@@ -13,5 +13,5 @@ export async function createSettingsInterface(): Promise<AppSettingsInterface> {
   }
 
   const { LocalStorageSettingsInterface } = await import('./local-storage');
-  return new LocalStorageSettingsInterface();
+  return new LocalStorageSettingsInterface(window?.location !== undefined);
 }
