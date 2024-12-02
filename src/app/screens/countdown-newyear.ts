@@ -1,3 +1,4 @@
+import dateFormat from 'dateformat';
 import { formatTime } from '../../utils';
 import { RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
@@ -35,16 +36,30 @@ export class NewYearCountdownScreen implements Screen<MainDisplayCollection> {
     if (timeDiff >= DAY_MS) {
       const days = Math.floor(timeDiff / DAY_MS);
       timeString = addSpaces(`${days} d`.padStart(6, ' '));
+      const remainderTime = timeDiff % DAY_MS;
+      const remainderTimeStr = formatTime(remainderTime / 1000, {
+        showUnits: true,
+        joinWith: ' ',
+      });
+
+      additional = `${remainderTimeStr}`.padStart(11);
     } else if (timeDiff >= 0) {
-      timeString = formatTime(
-        timeDiff / 1000,
-        timeDiff % 1000 > 500 ? ' ' : ':',
-      );
+      timeString = formatTime(timeDiff / 1000, {
+        joinWith: timeDiff % 1000 > 500 ? ' ' : ':',
+      });
     } else {
       timeString = addSpaces(`${this.newYear.getFullYear()}`);
       additional = 'Happy New Year!';
     }
     displays.main.show(timeString);
     displays.date.showCenter(additional);
+    displays.weekday.show(
+      dateFormat(
+        now,
+        now.getMilliseconds() < 500
+          ? 'dd mmm yyyy    HH:MM'
+          : 'dd mmm yyyy    HH MM',
+      ),
+    );
   }
 }

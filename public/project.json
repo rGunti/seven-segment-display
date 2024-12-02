@@ -1,71 +1,69 @@
 {
-	"contentrating": "Everyone",
-	"description": "A segment display displaying the current date and time in a calming red glow. When media content is played (music or video) it will switch to a playback display showing elapsed time, title, artist and album, if available.\r\n\r\nPlease note that due to technical restrictions, the elapsed time is displayed on a best-effort basis.\r\n- Playing YouTube videos for example can cause inaccurate readings and the \"Pause\" display is usually also delayed (tested with Brave).\r\n- Desktop apps, like Spotify, work most reliably.\r\n- VLC does not seem to report the current playback status to Windows, therefore this wallpaper wont work with it.\r\n\r\nIf you want to change the color of the display, use \"Show color options\" > \"Hue shift\".\r\n",
-	"file": "index.html",
-	"general": {
-		"properties": {
-			"fadeintime": {
-				"fraction": false,
-				"index": 0,
-				"max": 1000,
-				"min": 0,
-				"order": 100,
-				"text": "Fade In Time",
-				"type": "slider",
-				"value": 100
-			},
-			"fadeouttime": {
-				"fraction": false,
-				"index": 1,
-				"max": 1000,
-				"min": 0,
-				"order": 101,
-				"text": "Fade Out Time",
-				"type": "slider",
-				"value": 500
-			},
-			"schemecolor": {
-				"order": 0,
-				"text": "ui_browse_properties_scheme_color",
-				"type": "color",
-				"value": "0 0 0"
-			},
-			"timestyle": {
-				"index": 2,
-				"options": [
-					{
-						"label": "7 Segments",
-						"value": "7seg"
-					},
-					{
-						"label": "16 Segments",
-						"value": "16seg"
-					},
-					{
-						"label": "Matrix",
-						"value": "matrix"
-					}
-				],
-				"order": 102,
-				"text": "Time Style",
-				"type": "combo",
-				"value": "16seg"
-			}
-		},
-		"supportsaudioprocessing": true
-	},
-	"preview": "preview.png",
-	"ratingsex": "none",
-	"ratingviolence": "none",
-	"snapshotformat": -1,
-	"snapshotoverlay": "",
-	"tags": [
-		"Retro"
-	],
-	"title": "Segment Display Clock",
-	"type": "web",
-	"version": 2,
-	"visibility": "public",
-	"workshopid": "3091188969",
-	"workshopurl": "steam://url/CommunityFilePage/3091188969"
+  "contentrating": "Everyone",
+  "description": "A segment display displaying the current date and time in a calming red glow. When media content is played (music or video) it will switch to a playback display showing elapsed time, title, artist and album, if available.\r\n\r\nPlease note that due to technical restrictions, the elapsed time is displayed on a best-effort basis.\r\n- Playing YouTube videos for example can cause inaccurate readings and the \"Pause\" display is usually also delayed (tested with Brave).\r\n- Desktop apps, like Spotify, work most reliably.\r\n- VLC does not seem to report the current playback status to Windows, therefore this wallpaper wont work with it.\r\n\r\nIf you want to change the color of the display, use \"Show color options\" > \"Hue shift\".\r\n",
+  "file": "index.html",
+  "general": {
+    "properties": {
+      "fadeintime": {
+        "fraction": false,
+        "index": 0,
+        "max": 1000,
+        "min": 0,
+        "order": 100,
+        "text": "Fade In Time",
+        "type": "slider",
+        "value": 100
+      },
+      "fadeouttime": {
+        "fraction": false,
+        "index": 1,
+        "max": 1000,
+        "min": 0,
+        "order": 101,
+        "text": "Fade Out Time",
+        "type": "slider",
+        "value": 500
+      },
+      "schemecolor": {
+        "order": 0,
+        "text": "ui_browse_properties_scheme_color",
+        "type": "color",
+        "value": "0 0 0"
+      },
+      "timestyle": {
+        "index": 2,
+        "options": [
+          {
+            "label": "7 Segments",
+            "value": "7seg"
+          },
+          {
+            "label": "16 Segments",
+            "value": "16seg"
+          },
+          {
+            "label": "Matrix",
+            "value": "matrix"
+          }
+        ],
+        "order": 102,
+        "text": "Time Style",
+        "type": "combo",
+        "value": "16seg"
+      }
+    },
+    "supportsaudioprocessing": true
+  },
+  "preview": "preview.png",
+  "ratingsex": "none",
+  "ratingviolence": "none",
+  "snapshotformat": -1,
+  "snapshotoverlay": "",
+  "tags": ["Retro"],
+  "title": "Segment Display Clock",
+  "type": "web",
+  "version": 2,
+  "visibility": "public",
+  "workshopid": "3091188969",
+  "workshopurl": "steam://url/CommunityFilePage/3091188969"
 }

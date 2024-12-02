@@ -1,4 +1,26 @@
-export function formatTime(time: number, joinWith = ':'): string {
+export type FormatTimeOptions = {
+  joinWith: string;
+  showUnits: boolean;
+  padLargestUnitWithZero: boolean;
+  alwaysShowHours: boolean;
+};
+
+export const DEFAULT_FORMAT_TIME_OPTIONS: FormatTimeOptions = {
+  joinWith: ':',
+  showUnits: false,
+  padLargestUnitWithZero: false,
+  alwaysShowHours: false,
+};
+
+export function formatTime(
+  time: number,
+  options: Partial<FormatTimeOptions> = DEFAULT_FORMAT_TIME_OPTIONS,
+): string {
+  const finalOptions = {
+    ...DEFAULT_FORMAT_TIME_OPTIONS,
+    ...options,
+  };
+
   // Takes the number of seconds and formats it into the format HH:mm:ss, including padding 0
   // eslint-disable-next-line no-bitwise
   const hours = ~~(time / 3600);
@@ -7,13 +29,35 @@ export function formatTime(time: number, joinWith = ':'): string {
   // eslint-disable-next-line no-bitwise
   const seconds = ~~time % 60;
 
-  if (hours > 0) {
-    return `${hours.toString().padStart(2, '0')}${joinWith}${minutes
-      .toString()
-      .padStart(2, '0')}${joinWith}${seconds.toString().padStart(2, '0')}`;
-  } else {
-    return `${minutes.toString()}${joinWith}${seconds
-      .toString()
-      .padStart(2, '0')}`;
-  }
+  const elements: string[] = [
+    hours > 0 || finalOptions.alwaysShowHours
+      ? formatTimeComponent(
+          hours,
+          finalOptions.padLargestUnitWithZero,
+          'h',
+          finalOptions.showUnits,
+        )
+      : '',
+    formatTimeComponent(
+      minutes,
+      hours > 0 || finalOptions.padLargestUnitWithZero,
+      'm',
+      finalOptions.showUnits,
+    ),
+    formatTimeComponent(seconds, true, 's', finalOptions.showUnits),
+  ];
+
+  return elements.join(finalOptions.joinWith);
+}
+
+function formatTimeComponent(
+  value: number,
+  padWithZero: boolean,
+  unit: string,
+  showUnits: boolean,
+): string {
+  return (
+    value.toString().padStart(2, padWithZero ? '0' : ' ') +
+    (showUnits ? unit : '')
+  );
 }

@@ -55,7 +55,9 @@ export class CountdownScreen
       const timeDiff = this.countdownTime - renderArgs.time;
       if (timeDiff >= 0) {
         displays.main.show(
-          formatTime(timeDiff / 1000, timeDiff % 1000 > 500 ? ' ' : ':'),
+          formatTime(timeDiff / 1000, {
+            joinWith: timeDiff % 1000 > 500 ? ' ' : ':',
+          }),
         );
         displays.weekday.showCenter('');
       } else if (timeDiff >= -60_000) {
