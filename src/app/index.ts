@@ -24,12 +24,12 @@ import {
 import { MainDisplayCollection } from './collection';
 import { isWpeEnabled } from './plugins';
 import {
+  CountdownScreen,
   ProgressBarScreen,
   TextScrollerScreen,
   WelcomeScreen,
   WpePlayer2,
 } from './screens';
-import { NewYearCountdownScreen } from './screens/countdown-newyear';
 import {
   AppSettings,
   DEFAULT_SETTINGS,
@@ -39,9 +39,19 @@ import { AppSettingsInterface, DisplayStyle } from './settings/base';
 import './style.scss';
 
 function determineDefaultScreen(): Screen<MainDisplayCollection> {
+  const queryParams = new URLSearchParams(window.location.search);
+
   switch (window.location.hash) {
     case '#newyear':
-      return new NewYearCountdownScreen();
+      return new CountdownScreen(
+        new Date(new Date().getFullYear() + 1, 0, 1, 0, 0, 0, 0),
+        queryParams.get('message') || `Happy ${new Date().getFullYear() + 1}!`,
+      );
+    case '#countdown':
+      return new CountdownScreen(
+        queryParams.get('target') || '',
+        queryParams.get('message'),
+      );
     case '#demo-scroller':
       return new TextScrollerScreen();
     case '#demo-progressbar':

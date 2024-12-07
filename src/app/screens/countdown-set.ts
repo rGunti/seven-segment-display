@@ -3,7 +3,8 @@ import { formatTime } from '../../utils';
 import { RenderArgs, Screen } from '../base';
 import { MainDisplayCollection } from '../collection';
 
-const DAY = 24 * 60 * 60;
+const HOUR = 60 * 60;
+const DAY = 24 * HOUR;
 const DAY_MS = DAY * 1000;
 
 function addSpaces(str: string): string {
@@ -15,21 +16,25 @@ function addSpaces(str: string): string {
     );
 }
 
-export class NewYearCountdownScreen implements Screen<MainDisplayCollection> {
-  private readonly newYear = new Date(
-    new Date().getFullYear() + 1,
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-  );
+export class CountdownScreen implements Screen<MainDisplayCollection> {
+  private readonly target: Date;
+  private readonly completedMessage: string;
+
+  constructor(target: Date | string, completedMessage: string | null) {
+    if (typeof target === 'string') {
+      this.target = new Date(Date.parse(target));
+    } else {
+      this.target = target;
+    }
+
+    this.completedMessage = completedMessage || 'Countdown complete';
+  }
 
   render(renderArgs: RenderArgs<MainDisplayCollection>): void {
     const { displays } = renderArgs;
     const now = new Date();
-    const timeDiff = this.newYear.getTime() - now.getTime();
+    const timeDiff = this.target.getTime() - now.getTime();
+    const odd = now.getMilliseconds() < 500;
 
     let timeString: string;
     let additional = '';
@@ -42,24 +47,19 @@ export class NewYearCountdownScreen implements Screen<MainDisplayCollection> {
         joinWith: ' ',
       });
 
-      additional = `${remainderTimeStr}`.padStart(11);
+      additional = `${remainderTimeStr}`.padStart(13);
     } else if (timeDiff >= 0) {
       timeString = formatTime(timeDiff / 1000, {
-        joinWith: timeDiff % 1000 > 500 ? ' ' : ':',
+        joinWith: odd ? ' ' : ':',
       });
     } else {
-      timeString = addSpaces(`${this.newYear.getFullYear()}`);
-      additional = 'Happy New Year!';
+      timeString = odd ? '' : '--:--:--';
+      additional = this.completedMessage;
     }
     displays.main.show(timeString);
     displays.date.showCenter(additional);
     displays.weekday.show(
-      dateFormat(
-        now,
-        now.getMilliseconds() < 500
-          ? 'dd mmm yyyy    HH:MM'
-          : 'dd mmm yyyy    HH MM',
-      ),
+      dateFormat(now, odd ? 'dd mmm yyyy    HH MM' : 'dd mmm yyyy    HH:MM'),
     );
   }
 }

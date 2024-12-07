@@ -47,7 +47,7 @@ export function formatTime(
     formatTimeComponent(seconds, true, 's', finalOptions.showUnits),
   ];
 
-  return elements.join(finalOptions.joinWith);
+  return elements.filter((i) => i !== '').join(finalOptions.joinWith);
 }
 
 function formatTimeComponent(

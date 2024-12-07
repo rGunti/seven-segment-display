@@ -1,6 +1,6 @@
 export * from './clock';
-export * from './countdown';
-export * from './countdown-newyear';
+export { CountdownScreen as InteractiveCountdownScreen } from './countdown';
+export * from './countdown-set';
 export * from './progress-bar';
 export * from './scroller';
 export * from './welcome';
