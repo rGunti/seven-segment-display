@@ -53,8 +53,8 @@ export class CountdownScreen implements Screen<MainDisplayCollection> {
         joinWith: odd ? ' ' : ':',
       });
     } else {
-      timeString = odd ? '' : '--:--:--';
-      additional = this.completedMessage;
+      timeString = odd ? '' : '0:00';
+      additional = odd ? this.completedMessage : '';
     }
     displays.main.show(timeString);
     displays.date.showCenter(additional);
