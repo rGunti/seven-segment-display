@@ -40,21 +40,23 @@ import './style.scss';
 
 function determineDefaultScreen(): Screen<MainDisplayCollection> {
   const queryParams = new URLSearchParams(window.location.search);
+  const app =
+    queryParams.get('app') || `${window.location.hash.replace('#', '')}`;
 
-  switch (window.location.hash) {
-    case '#newyear':
+  switch (app) {
+    case 'newyear':
       return new CountdownScreen(
         new Date(new Date().getFullYear() + 1, 0, 1, 0, 0, 0, 0),
         queryParams.get('message') || `Happy ${new Date().getFullYear() + 1}!`,
       );
-    case '#countdown':
+    case 'countdown':
       return new CountdownScreen(
         queryParams.get('target') || '',
         queryParams.get('message'),
       );
-    case '#demo-scroller':
+    case 'demo-scroller':
       return new TextScrollerScreen();
-    case '#demo-progressbar':
+    case 'demo-progressbar':
       return new ProgressBarScreen();
     default:
       return new WelcomeScreen();
