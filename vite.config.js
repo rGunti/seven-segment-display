@@ -12,7 +12,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.join(__dirname, 'src', 'index.html'),
+        display: path.join(__dirname, 'src', 'index.html'),
         gps: path.join(__dirname, 'src', 'gps.html'),
+        config: path.join(__dirname, 'src', 'config.html'),
       },
     },
   },

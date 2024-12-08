@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./icon.png" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="apple-mobile-web-app-status-bar" content="#000000" />
+    <meta name="apple-touch-icon" href="./icon.png" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="SegClock" />
+    <title>Config &ndash; Segment Display Clock</title>
+  </head>
+  <body>
+    <h1>Segment Display</h1>
+    <div id="preview">
+      <b>Preview</b>
+    </div>
+
+    <form id="launchForm" action="display.html" method="get">
+      <table>
+        <tr>
+          <td colspan="2" class="header">Settings</td>
+        </tr>
+        <!-- Time Display Style -->
+        <tr>
+          <td class="label">Time Display Style</td>
+          <td>
+            <select name="timeStyle">
+              <option value="7seg">7 Segment</option>
+              <option value="16seg" selected>16 Segment</option>
+              <option value="matrix">Matrix Display</option>
+            </select>
+          </td>
+        </tr>
+        <!-- App -->
+        <tr>
+          <td class="label">App</td>
+          <td>
+            <select name="app">
+              <option value="clock" selected>Clock (default)</option>
+              <option value="countdown">Countdown</option>
+              <option value="newyear">New Year Countdown</option>
+            </select>
+          </td>
+        </tr>
+        <tr data-show-when-app="clock">
+          <td class="label"></td>
+          <td>Shows the current time, date and day of week.</td>
+        </tr>
+        <tr data-show-when-app="countdown">
+          <td class="label"></td>
+          <td>A timer counting down to the provided date and time.</td>
+        </tr>
+        <tr data-show-when-app="newyear">
+          <td class="label"></td>
+          <td>
+            A timer counting down to the next year. Shows a flashing message
+            when the next year starts.
+          </td>
+        </tr>
+
+        <!-- For app Countdown -->
+        <tr data-show-when-app="countdown">
+          <td colspan="2" class="header">Countdown App</td>
+        </tr>
+        <tr data-show-when-app="countdown">
+          <td class="label">Target</td>
+          <td>
+            <input type="datetime-local" name="target" />
+          </td>
+        </tr>
+        <tr data-show-when-app="countdown">
+          <td class="label">Message</td>
+          <td>
+            <input
+              type="text"
+              name="message"
+              placeholder="Countdown complete"
+              maxlength="20"
+            />
+          </td>
+        </tr>
+
+        <!-- Note -->
+        <tr>
+          <td colspan="2" class="header">Note</td>
+        </tr>
+        <tr>
+          <td class="label">Bookmarks supported!</td>
+          <td>
+            After launching the app with your settings, you can bookmark it to
+            reopen it with the same settings at any time.
+          </td>
+        </tr>
+
+        <!-- Submit -->
+        <tr>
+          <td colspan="2" class="submit">
+            <button type="submit">Launch</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <footer>
+      <p>
+        &COPY; 2024, Raphael "rGunti" Guntersweiler
+        <br />
+        <a href="https://github.com/rGunti/segment-display">Source Code</a>
+        &ndash;
+        <a href="https://github.com/rGunti/segment-display/blob/main/LICENSE.md"
+          >Licensed under EUPL</a
+        >
+      </p>
+    </footer>
+
+    <script type="module" src="config.ts"></script>
+  </body>
+</html>

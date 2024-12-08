@@ -137,22 +137,23 @@ export class App implements Application<MainDisplayCollection> {
     appRoot.appendChild(this.weekdayControllerRoot);
   }
 
-  private updateTimeDisplay(settings: AppSettings, force = false): void {
-    if (settings.timeStyle === this.timeControllerMode && !force) {
+  public setTimeDisplayStyle(timeDisplay: DisplayStyle, force = false): void {
+    if (timeDisplay === this.timeControllerMode && !force) {
       LOGGER.debug('Time style did not change, skipping update');
       return;
     }
 
-    LOGGER.info('Updating time display to', settings.timeStyle);
+    LOGGER.info('Updating time display to', timeDisplay);
     const root = this.timeControllerRoot;
     root.replaceChildren();
 
-    this.timeController = this.createTimeSegmentController(
-      root,
-      settings.timeStyle,
-    );
-    this.timeControllerMode = settings.timeStyle;
+    this.timeController = this.createTimeSegmentController(root, timeDisplay);
+    this.timeControllerMode = timeDisplay;
     this.displays.main = this.timeController;
+  }
+
+  private updateTimeDisplay(settings: AppSettings, force = false): void {
+    this.setTimeDisplayStyle(settings.timeStyle, force);
   }
 
   private createTimeSegmentController(

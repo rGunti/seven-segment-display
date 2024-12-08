@@ -1,0 +1,78 @@
+@use 'sass:color';
+
+body {
+  max-width: 600px;
+  vertical-align: middle;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+#preview {
+  border: 1px solid white;
+  padding: 5px;
+  margin-bottom: 5px;
+
+  .display {
+    &.time {
+      height: 120px;
+    }
+    &.date {
+      height: 50px;
+    }
+  }
+}
+
+#launchForm {
+  table {
+    width: 100%;
+    border-spacing: 0;
+  }
+  td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  td.label {
+    font-weight: bold;
+    width: 200px;
+    border-left: 1px solid white;
+    padding-left: 5px;
+  }
+  td.header {
+    font-weight: bold;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    font-size: x-large;
+  }
+  td.submit {
+    text-align: right;
+    border-top: 1px solid white;
+  }
+
+  input[type='text'] {
+    width: 100%;
+  }
+}
+
+footer {
+  font-size: small;
+  text-align: center;
+}
+
+button {
+  border: 1px solid green;
+  border-radius: 5px;
+  background-color: green;
+  padding: 5px 15px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: color.adjust($color: #008000, $lightness: -10%);
+  }
+  &:active {
+    background-color: color.adjust($color: #008000, $lightness: -20%);
+  }
+}
