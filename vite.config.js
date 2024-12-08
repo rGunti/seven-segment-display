@@ -1,3 +1,4 @@
+import legacy from '@vitejs/plugin-legacy';
 import path from 'path';
 import { defineConfig } from 'vite';
 
@@ -24,4 +25,9 @@ export default defineConfig({
       },
     },
   },
+  plugins: [
+    legacy({
+      targets: ['defaults', 'iOS >= 6', 'IE 11'],
+    }),
+  ],
 });
