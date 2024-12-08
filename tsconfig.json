@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Type Checking */
-    "types": ["wallpaper-engine-types"]
+    "types": ["wallpaper-engine-types", "jest"]
   },
   "include": ["src"]
 }
