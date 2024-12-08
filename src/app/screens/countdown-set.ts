@@ -40,7 +40,7 @@ export class CountdownScreen implements Screen<MainDisplayCollection> {
     let additional = '';
     if (timeDiff >= DAY_MS) {
       const days = Math.floor(timeDiff / DAY_MS);
-      timeString = addSpaces(`${days} d`.padStart(6, ' '));
+      timeString = addSpaces(`${days} D`.padStart(6, ' '));
       const remainderTime = timeDiff % DAY_MS;
       const remainderTimeStr = formatTime(remainderTime / 1000, {
         showUnits: true,
