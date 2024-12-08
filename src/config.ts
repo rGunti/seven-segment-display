@@ -1,5 +1,6 @@
 import { App } from './app';
 import { DisplayStyle } from './app/settings/base';
+import * as versionInfo from './assets/version.json';
 import { Logger } from './log';
 import './style.scss';
 import './styles/config.scss';
@@ -27,6 +28,18 @@ function onTimeDisplayChange(value: DisplayStyle, app: App) {
 }
 
 LOG.info('Initializing app');
+const versionSpan = document.querySelector<HTMLSpanElement>('#version');
+if (versionSpan) {
+  const version = [
+    versionInfo.version.major,
+    versionInfo.version.minor,
+    versionInfo.version.patch,
+  ]
+    .map((i) => `${i}`.padStart(2, '0'))
+    .join('.');
+  versionSpan.textContent = `v${version} b${versionInfo.version.revision}`;
+}
+
 const previewRoot = document.querySelector<HTMLDivElement>('#preview');
 if (!previewRoot) {
   throw abort('Preview Root not found!');
