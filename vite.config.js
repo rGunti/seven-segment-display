@@ -1,13 +1,18 @@
+import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '',
+  root: './src',
   build: {
-    sourcemap: 'inline',
+    sourcemap: true,
+    outDir: '../dist',
+    emptyOutDir: true,
+    copyPublicDir: true,
     rollupOptions: {
       input: {
-        main: 'index.html',
-        gps: 'gps.html',
+        main: path.join(__dirname, 'src', 'index.html'),
+        gps: path.join(__dirname, 'src', 'gps.html'),
       },
     },
   },
