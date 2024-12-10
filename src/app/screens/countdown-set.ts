@@ -7,6 +7,24 @@ const HOUR = 60 * 60;
 const DAY = 24 * HOUR;
 const DAY_MS = DAY * 1000;
 
+const DONE_ANIMATION = [
+  //        <>         |
+  '                    ',
+  '         <>         ',
+  '        <<>>        ',
+  '       <<<>>>       ',
+  '      <<<  >>>      ',
+  '     <<<    >>>     ',
+  '    <<<      >>>    ',
+  '   <<<        >>>   ',
+  '  <<<          >>>  ',
+  ' <<<            >>> ',
+  '<<<              >>>',
+  '<<                >>',
+  '<                  >',
+  '                    ',
+];
+
 function addSpaces(str: string): string {
   return str
     .split('')
@@ -34,10 +52,15 @@ export class CountdownScreen implements Screen<MainDisplayCollection> {
     const { displays } = renderArgs;
     const now = new Date();
     const timeDiff = this.target.getTime() - now.getTime();
-    const odd = now.getMilliseconds() < 500;
+    let odd = now.getMilliseconds() < 500;
 
     let timeString: string;
     let additional = '';
+    // eslint-disable-next-line prefer-const
+    let dateRow = dateFormat(
+      now,
+      odd ? 'dd mmm yyyy    HH MM' : 'dd mmm yyyy    HH:MM',
+    );
     if (timeDiff >= DAY_MS) {
       const days = Math.floor(timeDiff / DAY_MS);
       timeString = addSpaces(`${days} D`.padStart(6, ' '));
@@ -53,13 +76,18 @@ export class CountdownScreen implements Screen<MainDisplayCollection> {
         joinWith: odd ? ' ' : ':',
       });
     } else {
+      odd = now.getSeconds() % 2 === 0;
+
       timeString = odd ? '' : '0:00';
-      additional = odd ? this.completedMessage : '';
+      additional = odd
+        ? this.completedMessage
+        : DONE_ANIMATION[
+            Math.floor(now.getMilliseconds() / (1000 / 14)) %
+              DONE_ANIMATION.length
+          ];
     }
     displays.main.show(timeString);
     displays.date.showCenter(additional);
-    displays.weekday.show(
-      dateFormat(now, odd ? 'dd mmm yyyy    HH MM' : 'dd mmm yyyy    HH:MM'),
-    );
+    displays.weekday.show(dateRow);
   }
 }
