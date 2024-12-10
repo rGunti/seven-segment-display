@@ -80,3 +80,10 @@ button {
     background-color: color.adjust($color: #008000, $lightness: -20%);
   }
 }
+
+a {
+  color: white;
+  &:hover {
+    color: gainsboro;
+  }
+}
