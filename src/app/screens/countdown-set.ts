@@ -82,7 +82,7 @@ export class CountdownScreen implements Screen<MainDisplayCollection> {
       additional = odd
         ? this.completedMessage
         : DONE_ANIMATION[
-            Math.floor(now.getMilliseconds() / (1000 / 14)) %
+            Math.floor(now.getMilliseconds() / (1000 / DONE_ANIMATION.length)) %
               DONE_ANIMATION.length
           ];
     }
