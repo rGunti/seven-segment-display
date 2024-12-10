@@ -1,5 +1,6 @@
 import { App } from './app';
-import { DisplayStyle } from './app/settings/base';
+import { AppSettingsInterface, DisplayStyle } from './app/settings/base';
+import { MemorySettingsInterface } from './app/settings/memory';
 import * as versionInfo from './assets/version.json';
 import { Logger } from './log';
 import './style.scss';
@@ -22,9 +23,27 @@ function onAppChanged(value: string) {
   });
 }
 
-function onTimeDisplayChange(value: DisplayStyle, app: App) {
+function onTimeDisplayChange(
+  settings: AppSettingsInterface,
+  value: DisplayStyle,
+) {
   LOG.info('Changing time display to', value);
-  app.setTimeDisplayStyle(value);
+  settings.saveSettings({
+    ...settings.currentSettings,
+    timeStyle: value,
+  });
+}
+
+function onFadeTimeChanged(
+  settings: AppSettingsInterface,
+  prop: ('fadeInTime' | 'fadeOutTime') | string,
+  value: number,
+) {
+  LOG.info('fade input changed', prop, value);
+  settings.saveSettings({
+    ...settings.currentSettings,
+    [prop]: value,
+  });
 }
 
 LOG.info('Initializing app');
@@ -45,7 +64,8 @@ if (!previewRoot) {
   throw abort('Preview Root not found!');
 }
 
-const previewApp = new App(previewRoot);
+const settings = new MemorySettingsInterface();
+const previewApp = new App(previewRoot, 30, settings);
 
 const form = document.querySelector<HTMLFormElement>('#launchForm');
 if (!form) {
@@ -64,16 +84,37 @@ if (!timeStyleDropdown) {
   throw abort('Time style dropdown missing');
 }
 
+const fadeTimeInputs = [
+  form.querySelector<HTMLInputElement>('input[type=number][name=fadeInTime]'),
+  form.querySelector<HTMLInputElement>('input[type=number][name=fadeOutTime]'),
+].filter((i) => !!i);
+if (fadeTimeInputs.length === 0) {
+  throw abort('Fade Time inputs missing');
+}
+fadeTimeInputs.forEach((input) => {
+  input.onchange = (e) => {
+    const inputElement = e.currentTarget as HTMLInputElement;
+    onFadeTimeChanged(
+      settings,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      inputElement.attributes.getNamedItem('name')!.value,
+      inputElement.valueAsNumber,
+    );
+  };
+});
+
 appDropdown.onchange = (e) =>
   onAppChanged((e?.target as HTMLSelectElement)?.value);
 timeStyleDropdown.onchange = (e) =>
   onTimeDisplayChange(
+    settings,
     (e.target as HTMLSelectElement).value as DisplayStyle,
-    previewApp,
   );
 
 setTimeout(() => {
   onAppChanged(appDropdown.value);
-  onTimeDisplayChange(timeStyleDropdown.value as DisplayStyle, previewApp);
+  onTimeDisplayChange(settings, timeStyleDropdown.value as DisplayStyle);
+  onFadeTimeChanged(settings, 'fadeInTime', fadeTimeInputs[0].valueAsNumber);
+  onFadeTimeChanged(settings, 'fadeOutTime', fadeTimeInputs[1].valueAsNumber);
   previewApp.startTicking();
 }, 100);

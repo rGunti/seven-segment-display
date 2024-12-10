@@ -6,3 +6,7 @@ export function createDisplayContainer(
   container.classList.add(...additionalClasses);
   return container;
 }
+
+export function jsonClone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
+}

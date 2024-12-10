@@ -66,6 +66,15 @@ function determineDefaultScreen(): Screen<MainDisplayCollection> {
 const LOGGER = new Logger('App');
 const WPE_LOGGER = new Logger('App.WPE');
 
+function getSettings(
+  input: AppSettingsInterface | null,
+): Promise<AppSettingsInterface> {
+  if (input) {
+    return new Promise((resolve) => resolve(input));
+  }
+  return createSettingsInterface();
+}
+
 export class App implements Application<MainDisplayCollection> {
   private timeController: SegmentDisplayController;
   private timeControllerMode = DEFAULT_SETTINGS.timeStyle;
@@ -90,10 +99,14 @@ export class App implements Application<MainDisplayCollection> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private tickTimer: any | undefined;
 
-  constructor(appRoot: HTMLElement, framerate = 60) {
+  constructor(
+    appRoot: HTMLElement,
+    framerate = 60,
+    appSettings: AppSettingsInterface | null = null,
+  ) {
     LOGGER.debug('Creating app ...');
     this.framerate = framerate;
-    createSettingsInterface().then((settings) => {
+    getSettings(appSettings).then((settings) => {
       LOGGER.debug('Loading settings …');
       settings.loadSettings();
       settings.addUpdateHandler((s) => {
@@ -137,7 +150,7 @@ export class App implements Application<MainDisplayCollection> {
     appRoot.appendChild(this.weekdayControllerRoot);
   }
 
-  public setTimeDisplayStyle(timeDisplay: DisplayStyle, force = false): void {
+  private setTimeDisplayStyle(timeDisplay: DisplayStyle, force = false): void {
     if (timeDisplay === this.timeControllerMode && !force) {
       LOGGER.debug('Time style did not change, skipping update');
       return;

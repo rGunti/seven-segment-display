@@ -38,6 +38,35 @@
             </select>
           </td>
         </tr>
+        <!-- Fade In Time -->
+        <tr>
+          <td class="label">Fade In Time</td>
+          <td>
+            <input
+              type="number"
+              name="fadeInTime"
+              value="100"
+              min="0"
+              max="2500"
+              step="50"
+            />
+            <span>ms</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">Fade Out Time</td>
+          <td>
+            <input
+              type="number"
+              name="fadeOutTime"
+              value="500"
+              min="0"
+              max="2500"
+              step="50"
+            />
+            <span>ms</span>
+          </td>
+        </tr>
         <!-- App -->
         <tr>
           <td class="label">App</td>
@@ -47,6 +76,8 @@
               <option value="countdown">Countdown</option>
               <option value="newyear">New Year Countdown</option>
             </select>
+            <br />
+            <small>Apps are not displayed in the preview window above.</small>
           </td>
         </tr>
         <tr data-show-when-app="clock">
