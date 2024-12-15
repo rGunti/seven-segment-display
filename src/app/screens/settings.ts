@@ -11,14 +11,42 @@ const LABELS: Record<keyof AppSettings, string> = {
   timeStyle: 'Time Style',
   fadeInTime: 'Fade In Time',
   fadeOutTime: 'Fade Out Time',
+  color: 'Color',
+  segmentColor: 'Segment Color',
+  backgroundColor: 'Background Color',
 };
 
-const KEYS: (keyof AppSettings)[] = Object.keys(LABELS).map(
-  (k) => k as keyof AppSettings,
-);
+const IGNORED_SETTINGS: (keyof AppSettings)[] = [
+  'segmentColor',
+  'backgroundColor',
+];
+
+const KEYS: (keyof AppSettings)[] = Object.keys(LABELS)
+  .map((k) => k as keyof AppSettings)
+  .filter((k) => IGNORED_SETTINGS.indexOf(k) < 0);
 
 const OPTIONS: DisplayStyle[] = ['7seg', '16seg', 'matrix'];
 const OPTIONS_INDEX: Record<DisplayStyle, number> = OPTIONS.reduce(
+  (p, c, i) => {
+    return {
+      ...p,
+      [c]: i,
+    };
+  },
+  {} as Record<DisplayStyle, number>,
+);
+
+const COLOR_OPTIONS = [
+  'red',
+  'green',
+  'blue',
+  'yellow',
+  'orange',
+  'purple',
+  'magenta',
+  'cyan',
+];
+const COLOR_OPTIONS_INDEX: Record<string, number> = COLOR_OPTIONS.reduce(
   (p, c, i) => {
     return {
       ...p,
@@ -46,6 +74,9 @@ const SETTINGS_RENDER: Record<
   },
   fadeInTime: (c) => `${c.fadeInTime} ms`,
   fadeOutTime: (c) => `${c.fadeOutTime} ms`,
+  color: (c) => `${c.color}`,
+  segmentColor: (c) => `${c.segmentColor}`,
+  backgroundColor: (c) => `${c.backgroundColor}`,
 };
 
 const SETTING_UPDATE: Record<
@@ -69,6 +100,21 @@ const SETTING_UPDATE: Record<
   fadeOutTime: (s, d) => {
     const delta = d ? -50 : 50;
     s.fadeOutTime = Math.max(Math.min(s.fadeOutTime + delta, 2500), 0);
+  },
+  color: (s, d) => {
+    const delta = d ? -1 : 1;
+    const currentIndex = COLOR_OPTIONS_INDEX[s.color];
+    const newIndex =
+      d && currentIndex === 0
+        ? COLOR_OPTIONS.length - 1
+        : (currentIndex + delta) % COLOR_OPTIONS.length;
+    s.color = COLOR_OPTIONS[newIndex];
+  },
+  segmentColor: () => {
+    /* ignored */
+  },
+  backgroundColor: () => {
+    /* ignored */
   },
 };
 

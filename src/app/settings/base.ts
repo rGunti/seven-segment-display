@@ -41,7 +41,7 @@ export interface AppSettings {
 export const DEFAULT_SETTINGS: AppSettings = {
   fadeInTime: 100,
   fadeOutTime: 500,
-  color: '#ff0000',
+  color: 'red',
   segmentColor: 'rgba(255, 0, 0, 0.1)',
   backgroundColor: 'black',
   timeStyle: '16seg',
