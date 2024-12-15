@@ -56,16 +56,16 @@ body {
 }
 
 .on {
-  background-color: $color-on;
-  color: $color-on;
+  background-color: var(--color-on);
+  color: var(--color-on);
 }
 
 .svg-seg {
-  fill: $color-off;
+  fill: var(--color-off);
 }
 
 .svg-seg-on {
-  fill: $color-on;
+  fill: var(--color-on);
 }
 
 #time-display {

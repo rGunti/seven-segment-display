@@ -34,6 +34,14 @@ function onTimeDisplayChange(
   });
 }
 
+function onColorChange(settings: AppSettingsInterface, value: string) {
+  LOG.info('Changing color to', value);
+  settings.saveSettings({
+    ...settings.currentSettings,
+    color: value,
+  });
+}
+
 function onFadeTimeChanged(
   settings: AppSettingsInterface,
   prop: ('fadeInTime' | 'fadeOutTime') | string,
@@ -111,10 +119,22 @@ timeStyleDropdown.onchange = (e) =>
     (e.target as HTMLSelectElement).value as DisplayStyle,
   );
 
+const colorInput = form.querySelector<HTMLInputElement>(
+  'input[type=color][name=color]',
+);
+if (!colorInput) {
+  throw abort('Color input missing');
+}
+colorInput.onchange = (e) =>
+  onColorChange(settings, (e.target as HTMLInputElement).value);
+colorInput.oninput = (e) =>
+  onColorChange(settings, (e.target as HTMLInputElement).value);
+
 setTimeout(() => {
   onAppChanged(appDropdown.value);
   onTimeDisplayChange(settings, timeStyleDropdown.value as DisplayStyle);
   onFadeTimeChanged(settings, 'fadeInTime', fadeTimeInputs[0].valueAsNumber);
   onFadeTimeChanged(settings, 'fadeOutTime', fadeTimeInputs[1].valueAsNumber);
+  onColorChange(settings, colorInput.value);
   previewApp.startTicking();
 }, 100);

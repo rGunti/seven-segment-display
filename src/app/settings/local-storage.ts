@@ -63,6 +63,9 @@ export class LocalStorageSettingsInterface extends BaseAppSettingsInterface {
         case 'fadeOutTime':
           returnValue = { ...returnValue, fadeOutTime: Number.parseInt(value) };
           break;
+        case 'color':
+          returnValue = { ...returnValue, color: value };
+          break;
         default:
           LOGGER.warning('Unsupported query parameter', key, value);
           break;

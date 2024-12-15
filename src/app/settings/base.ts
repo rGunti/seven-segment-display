@@ -32,11 +32,13 @@ export declare type DisplayStyle = '16seg' | '7seg' | 'matrix';
 export interface AppSettings {
   fadeInTime: number;
   fadeOutTime: number;
+  color: string;
   timeStyle: DisplayStyle;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   fadeInTime: 100,
   fadeOutTime: 500,
+  color: '#ff0000',
   timeStyle: '16seg',
 };

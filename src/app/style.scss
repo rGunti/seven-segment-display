@@ -1,27 +1,27 @@
-// *** VARIABLES ***
-$color-bg: black;
-
-$color-on: rgba(255, 0, 0, 1);
-$color-off: rgba(255, 0, 0, 0.1);
-
 // *** STYLING ***
 :root {
+  // ** Variables **
+  --fade-in-time: 100ms;
+  --fade-out-time: 500ms;
+
+  --color-background: black;
+  --color-on: rgba(255, 0, 0, 1);
+  --color-off: rgba(255, 0, 0, 0.1);
+
+  // ** Base Style **
   font-family: system-ui;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: $color-bg;
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-
-  --fade-in-time: 100ms;
-  --fade-out-time: 500ms;
 }
 
 html,
@@ -67,12 +67,12 @@ body {
 }
 
 .svg-seg {
-  fill: $color-off;
+  fill: var(--color-off);
   transition: all var(--fade-out-time) ease;
 }
 
 .svg-seg-on {
-  fill: $color-on;
+  fill: var(--color-on);
   transition: all var(--fade-in-time) ease;
 }
 

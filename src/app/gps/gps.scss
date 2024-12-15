@@ -64,12 +64,12 @@ body {
 }
 
 .svg-seg {
-  fill: $color-off;
+  fill: var(--color-off);
   transition: all 500ms ease;
 }
 
 .svg-seg-on {
-  fill: $color-on;
+  fill: var(--color-on);
   transition: all 100ms ease;
 }
 

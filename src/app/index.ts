@@ -215,10 +215,11 @@ export class App implements Application<MainDisplayCollection> {
   }
 
   private updateCustomizableCss(settings: AppSettings): void {
-    LOGGER.debug('Updating customizable CSS');
+    LOGGER.debug('Updating customizable CSS', settings);
     const root = document.documentElement;
     root.style.setProperty('--fade-in-time', `${settings.fadeInTime}ms`);
     root.style.setProperty('--fade-out-time', `${settings.fadeOutTime}ms`);
+    root.style.setProperty('--color-on', `${settings.color}`);
   }
 
   registerEvents(): void {
