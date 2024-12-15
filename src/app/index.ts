@@ -220,6 +220,8 @@ export class App implements Application<MainDisplayCollection> {
     root.style.setProperty('--fade-in-time', `${settings.fadeInTime}ms`);
     root.style.setProperty('--fade-out-time', `${settings.fadeOutTime}ms`);
     root.style.setProperty('--color-on', `${settings.color}`);
+    root.style.setProperty('--color-off', `${settings.segmentColor}`);
+    root.style.setProperty('--color-background', `${settings.backgroundColor}`);
   }
 
   registerEvents(): void {

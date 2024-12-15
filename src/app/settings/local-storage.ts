@@ -66,6 +66,12 @@ export class LocalStorageSettingsInterface extends BaseAppSettingsInterface {
         case 'color':
           returnValue = { ...returnValue, color: value };
           break;
+        case 'bg':
+          returnValue = { ...returnValue, backgroundColor: value };
+          break;
+        case 'seg':
+          returnValue = { ...returnValue, segmentColor: value };
+          break;
         default:
           LOGGER.warning('Unsupported query parameter', key, value);
           break;
