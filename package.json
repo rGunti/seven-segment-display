@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:global": "vite --host 0.0.0.0",
     "build": "run-s scripts:version build:tsc build:vite",
     "build:tsc": "tsc",
     "build:vite": "vite build",
