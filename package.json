@@ -20,7 +20,7 @@
     "fix:prettier": "prettier -w ."
   },
   "devDependencies": {
-    "@types/dateformat": "^5.0.2",
+    "@types/dateformat": "^5.0.3",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@vitejs/plugin-legacy": "^6.0.0",
